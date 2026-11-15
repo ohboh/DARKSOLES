@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="1_a0vif"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v078q"]
+render_priority = 0
+shader = ExtResource("1_a0vif")
+shader_parameter/pigment = Color(1, 0.27058825, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_hnqfm"]
+
+[node name="Fireball" type="MeshInstance3D" unique_id=420350395]
+transform = Transform3D(0.19, 0, 0, 0, 0.19, 0, 0, 0, 0.19, 0, 0, 0)
+visible = false
+material_override = SubResource("ShaderMaterial_v078q")
+mesh = SubResource("SphereMesh_hnqfm")

@@ -1,0 +1,24 @@
+[gd_scene format=4]
+
+[ext_resource type="ShaderMaterial" path="res://game/world/materials/masonry.tres" id="stone"]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Wall_01.fbx" id="model_Wall_01"]
+
+
+[node name="Wall" type="Node3D" unique_id=94613012]
+
+[node name="MeshInstance3D" parent="." instance=ExtResource("model_Wall_01")]
+transform = Transform3D(0.1505, 0, 0, 0, 0.16, 0, 0, 0, 0.031999994, 0, -1.5999998, 0)
+
+[node name="Cube_038" parent="MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = ExtResource("stone")
+
+[node name="MeshInstance3D2" parent="." instance=ExtResource("model_Wall_01")]
+transform = Transform3D(0.1505, 0, 0, 0, 0.16, 0, 0, 0, 0.031999994, 0, 1.6000003, 0)
+
+[node name="Cube_038" parent="MeshInstance3D2" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = ExtResource("stone")
+
+[editable path="MeshInstance3D"]
+[editable path="MeshInstance3D2"]

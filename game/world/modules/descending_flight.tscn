@@ -1,0 +1,46 @@
+[gd_scene format=3]
+[ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="ink"]
+[ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/TEX_Stair_02.png" id="tex"]
+[ext_resource type="PackedScene" path="res://game/world/modules/sconce.tscn" id="sconce"]
+[sub_resource type="ShaderMaterial" id="stone"]
+shader = ExtResource("ink")
+shader_parameter/atlas = ExtResource("tex")
+[sub_resource type="BoxMesh" id="tread"]
+size = Vector3(3.32,0.15,0.376)
+[node name="DescendingFlight" type="Node3D"]
+[node name="LowerLandingLight" parent="." instance=ExtResource("sconce")]
+position = Vector3(-1.50,0.14,-1.30)
+rotation = Vector3(0,3.141593,0)
+scale = Vector3(0.36,0.36,0.36)
+[node name="Tread1" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.075,1.3125)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread2" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.2,0.9375)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread3" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.325,0.5625)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread4" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.45,0.1875)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread5" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.575,-0.1875)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread6" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.7,-0.5625)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread7" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.825,-0.9375)
+mesh = SubResource("tread")
+material_override = SubResource("stone")
+[node name="Tread8" type="MeshInstance3D" parent="."]
+position = Vector3(0,-0.95,-1.3125)
+mesh = SubResource("tread")
+material_override = SubResource("stone")

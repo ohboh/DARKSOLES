@@ -1,0 +1,10 @@
+[gd_scene format=3]
+[ext_resource type="Shader" path="res://game/rendering/shaders/route_omen.gdshader" id="shader"]
+[sub_resource type="ShaderMaterial" id="paint"]
+resource_local_to_scene = true
+shader = ExtResource("shader")
+[sub_resource type="PlaneMesh" id="patch"]
+size = Vector2(1.65,2.35)
+[node name="RouteOmen" type="MeshInstance3D"]
+mesh = SubResource("patch")
+material_override = SubResource("paint")

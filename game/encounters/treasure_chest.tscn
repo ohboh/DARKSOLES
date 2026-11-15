@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/encounters/treasure_chest.gd" id="settings"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/illustration.gdshader" id="1_a2o80"]
+[ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Treasure Box.jpg" id="2_6kfff"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_67wna"]
+render_priority = 0
+shader = ExtResource("1_a2o80")
+shader_parameter/illustration = ExtResource("2_6kfff")
+
+[sub_resource type="QuadMesh" id="QuadMesh_vi80y"]
+size = Vector2(1.75, 1.75)
+
+[node name="TreasureChest" type="Node3D" unique_id=140923498]
+script = ExtResource("settings")
+
+[node name="Illustration" type="MeshInstance3D" parent="." unique_id=302958347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+material_override = SubResource("ShaderMaterial_67wna")
+mesh = SubResource("QuadMesh_vi80y")

@@ -1,0 +1,46 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://game/world/dungeon.gd" id="controller"]
+[ext_resource type="Script" path="res://game/gameplay/run.gd" id="run"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://game/player/equipment/fireball.tscn" id="bolt"]
+[ext_resource type="PackedScene" path="res://game/ui/hud.tscn" id="hud"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/post.gdshader" id="post"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/palette.gdshader" id="palette"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/hurt_vignette.gdshader" id="blood_shader"]
+[ext_resource type="Script" path="res://game/rendering/hurt_vignette.gd" id="blood_script"]
+[sub_resource type="ShaderMaterial" id="blood"]
+resource_local_to_scene = true
+shader = ExtResource("blood_shader")
+[sub_resource type="ShaderMaterial" id="postfx"]
+resource_local_to_scene = true
+shader = ExtResource("post")
+[sub_resource type="ShaderMaterial" id="quantize"]
+resource_local_to_scene = true
+shader = ExtResource("palette")
+[node name="Darksoles" type="Node3D"]
+script = ExtResource("run")
+[node name="Dungeon" type="Node3D" parent="."]
+script = ExtResource("controller")
+[node name="Player" parent="." instance=ExtResource("player")]
+[node name="Fireball" parent="." instance=ExtResource("bolt")]
+[node name="Interface" type="CanvasLayer" parent="."]
+[node name="Dither" type="ColorRect" parent="Interface"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+material = SubResource("postfx")
+[node name="HurtVignette" type="ColorRect" parent="Interface"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+material = SubResource("blood")
+script = ExtResource("blood_script")
+[node name="HUD" parent="Interface" instance=ExtResource("hud")]
+[node name="Composite" type="BackBufferCopy" parent="Interface"]
+copy_mode = 2
+[node name="Palette" type="ColorRect" parent="Interface"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+material = SubResource("quantize")

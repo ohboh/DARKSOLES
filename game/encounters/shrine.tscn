@@ -1,0 +1,22 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://game/encounters/shrine.gd" id="settings"]
+[ext_resource type="PackedScene" path="res://game/world/modules/candle.tscn" id="wax"]
+
+[node name="Shrine" type="Node3D" ]
+script = ExtResource("settings")
+
+
+[node name="Center" parent="." instance=ExtResource("wax")]
+position = Vector3(0,0.88,0)
+rotation = Vector3(0,0,0)
+scale = Vector3(0.88,0.88,0.88)
+
+[node name="Left" parent="." instance=ExtResource("wax")]
+position = Vector3(-0.32,0.48,0.1)
+rotation = Vector3(0,0,0)
+scale = Vector3(0.48,0.48,0.48)
+
+[node name="Right" parent="." instance=ExtResource("wax")]
+position = Vector3(0.3,0.59,-0.04)
+rotation = Vector3(0,0,0)
+scale = Vector3(0.59,0.59,0.59)

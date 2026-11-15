@@ -1,0 +1,42 @@
+[gd_scene format=4]
+
+[ext_resource type="ShaderMaterial" path="res://game/world/materials/masonry.tres" id="stone"]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Pillar.fbx" id="model_Pillar"]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Arch.fbx" id="model_Arch"]
+
+
+[node name="Arch" type="Node3D" unique_id=819407834]
+
+[node name="LeftPillar" type="Node3D" parent="." unique_id=1432078451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.25, 0)
+
+[node name="MeshInstance3D" parent="LeftPillar" instance=ExtResource("model_Pillar")]
+transform = Transform3D(0.054881554, 0, 0, 0, 0.14900662, 0, 0, 0, 0.061963044, -2.0935651e-07, -2.2350984, 0)
+
+[node name="Cylinder_019" parent="LeftPillar/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = ExtResource("stone")
+
+[node name="RightPillar" type="Node3D" parent="." unique_id=409686664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.25, 0)
+
+[node name="MeshInstance3D" parent="RightPillar" instance=ExtResource("model_Pillar")]
+transform = Transform3D(0.054881554, 0, 0, 0, 0.14900662, 0, 0, 0, 0.061963044, -2.0935651e-07, -2.2350984, 0)
+
+[node name="Cylinder_019" parent="RightPillar/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = ExtResource("stone")
+
+[node name="Lintel" type="Node3D" parent="." unique_id=1532819844]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.35, 0)
+
+[node name="MeshInstance3D" parent="Lintel" instance=ExtResource("model_Arch")]
+transform = Transform3D(0.15884116, 0, 0, 0, 0.05666667, 0, 0, 0, 0.08499996, 0.00014527194, -0.6125151, 0.00038597806)
+
+[node name="Cube_031" parent="Lintel/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = ExtResource("stone")
+
+[editable path="LeftPillar/MeshInstance3D"]
+[editable path="RightPillar/MeshInstance3D"]
+[editable path="Lintel/MeshInstance3D"]

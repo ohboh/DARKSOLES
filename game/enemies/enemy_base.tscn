@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://jart7r5t3h6"]
+
+[ext_resource type="Shader" uid="uid://dp3gya3hn214w" path="res://game/rendering/shaders/illustration.gdshader" id="1_qm7ts"]
+[ext_resource type="Texture2D" uid="uid://b642w3e63nwe" path="res://art/sprites/Identified Monster Ver.21/Wraith.jpg" id="2_sjdbi"]
+[ext_resource type="Script" uid="uid://bsk6c7ybbrka1" path="res://game/enemies/enemy.gd" id="script"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2yst6"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_qm7ts")
+
+[sub_resource type="QuadMesh" id="QuadMesh_5fuh2"]
+size = Vector2(2.4, 2.4)
+
+[sub_resource type="Gradient" id="Gradient_r1itd"]
+colors = PackedColorArray(1, 1, 1, 0.56, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qhgfk"]
+gradient = SubResource("Gradient_r1itd")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="Enemy" type="Node3D" unique_id=1918114722]
+script = ExtResource("script")
+illustration = ExtResource("2_sjdbi")
+
+[node name="Illustration" type="MeshInstance3D" parent="." unique_id=718635760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.106, 0)
+material_override = SubResource("ShaderMaterial_2yst6")
+mesh = SubResource("QuadMesh_5fuh2")
+
+[node name="AttackGlow" type="Sprite3D" parent="." unique_id=97794327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13, -0.2)
+visible = false
+pixel_size = 0.048
+billboard = 1
+texture = SubResource("GradientTexture2D_qhgfk")

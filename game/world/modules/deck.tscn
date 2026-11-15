@@ -1,0 +1,38 @@
+[gd_scene format=4]
+
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Floor_Tiles.fbx" id="model_Floor_Tiles"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/flagstone.gdshader" id="1_loyle"]
+[ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/TEX_Ground_04.png" id="2_lkbsd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sivi3"]
+render_priority = 0
+shader = ExtResource("1_loyle")
+shader_parameter/ground = ExtResource("2_lkbsd")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q41io"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Deck" type="Node3D" unique_id=1616718016]
+
+[node name="Flagstones" type="Node3D" parent="." unique_id=1745841757]
+
+[node name="MeshInstance3D" parent="Flagstones" instance=ExtResource("model_Floor_Tiles")]
+transform = Transform3D(0.16499999, 0, 0, 0, 100, 0, 0, 0, 0.15, 0, -0.00049999997, 0)
+
+[node name="Plane_003" parent="Flagstones/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("ShaderMaterial_sivi3")
+
+[node name="Vault" type="Node3D" parent="." unique_id=257520605]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 14, 0)
+
+[node name="MeshInstance3D" parent="Vault" instance=ExtResource("model_Floor_Tiles")]
+transform = Transform3D(0.16499999, 0, 0, 0, 100, 0, 0, 0, 0.15, 0, -0.00049999997, 0)
+
+[node name="Plane_003" parent="Vault/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("StandardMaterial3D_q41io")
+
+[editable path="Flagstones/MeshInstance3D"]
+[editable path="Vault/MeshInstance3D"]

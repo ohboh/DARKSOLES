@@ -1,0 +1,102 @@
+[gd_scene format=4]
+
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Candle_01.fbx" id="model_Candle_01"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="1_tvwld"]
+[ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Dungeon_Map.png" id="2_4nh1b"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/wick.gdshader" id="3_gxi82"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5dcv7"]
+render_priority = 0
+shader = ExtResource("1_tvwld")
+shader_parameter/atlas = ExtResource("2_4nh1b")
+shader_parameter/pigment = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6nfo0"]
+render_priority = 0
+shader = ExtResource("1_tvwld")
+shader_parameter/pigment = Color(0.76862746, 0.75686276, 0.69411767, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_0evwp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7enw0"]
+render_priority = 0
+shader = ExtResource("1_tvwld")
+shader_parameter/pigment = Color(0.4392157, 0.5019608, 0.5647059, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0p7ps"]
+bottom_radius = 0.29
+radial_segments = 12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_72w7e"]
+render_priority = 0
+shader = ExtResource("1_tvwld")
+shader_parameter/pigment = Color(0.4117647, 0.4117647, 0.4117647, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jg77p"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jmh6i"]
+render_priority = 0
+shader = ExtResource("3_gxi82")
+
+[sub_resource type="QuadMesh" id="QuadMesh_hq153"]
+size = Vector2(0.3, 0.52)
+
+[sub_resource type="Gradient" id="Gradient_8qivm"]
+colors = PackedColorArray(1, 1, 1, 0.56, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ah6m0"]
+gradient = SubResource("Gradient_8qivm")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="Sconce" type="Node3D" unique_id=626158572]
+
+[node name="Wax" type="Node3D" parent="." unique_id=2107403742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" parent="Wax" instance=ExtResource("model_Candle_01")]
+transform = Transform3D(0.2729292, 0, 0, 0, 0.3251526, 0, 0, 0, 0.25, 0, -0.5, 0)
+
+[node name="Cylinder_027" parent="Wax/MeshInstance3D" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("ShaderMaterial_5dcv7")
+
+[node name="DripA" type="MeshInstance3D" parent="." unique_id=1686568388]
+transform = Transform3D(0.08509639, 0, 0, 0, 0.18000004, 0, 0, 0, 0.08509639, 0.20710284, -0.08639999, 0.10439173)
+material_override = SubResource("ShaderMaterial_6nfo0")
+mesh = SubResource("SphereMesh_0evwp")
+
+[node name="DripB" type="MeshInstance3D" parent="." unique_id=1531366943]
+transform = Transform3D(0.08509639, 0, 0, 0, 0.27000007, 0, 0, 0, 0.08509639, -0.1909123, -0.12959997, 0.13384409)
+material_override = SubResource("ShaderMaterial_6nfo0")
+mesh = SubResource("SphereMesh_0evwp")
+
+[node name="DripC" type="MeshInstance3D" parent="." unique_id=412602727]
+transform = Transform3D(0.08509639, 0, 0, 0, 0.36000007, 0, 0, 0, 0.08509639, -0.014340159, -0.17279997, -0.23953307)
+material_override = SubResource("ShaderMaterial_6nfo0")
+mesh = SubResource("SphereMesh_0evwp")
+
+[node name="Saucer" type="MeshInstance3D" parent="." unique_id=3553648]
+transform = Transform3D(0.85, 0, 0, 0, 0.07, 0, 0, 0, 0.85, 0, -1, 0)
+material_override = SubResource("ShaderMaterial_7enw0")
+mesh = SubResource("CylinderMesh_0p7ps")
+
+[node name="Bracket" type="MeshInstance3D" parent="." unique_id=133500667]
+transform = Transform3D(-0.026476836, 0.21999998, 0, -0.038832683, -0.15000002, 0, 0, 0, 0.047, 0.11, -1.075, 0)
+material_override = SubResource("ShaderMaterial_72w7e")
+mesh = SubResource("BoxMesh_jg77p")
+
+[node name="Flame" type="MeshInstance3D" parent="." unique_id=564586965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23, 0)
+material_override = SubResource("ShaderMaterial_jmh6i")
+mesh = SubResource("QuadMesh_hq153")
+
+[node name="Halo" type="Sprite3D" parent="." unique_id=1794904387]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23, 0)
+pixel_size = 0.016
+billboard = 1
+texture = SubResource("GradientTexture2D_ah6m0")
+
+[node name="LightSource" type="Marker3D" parent="." groups=["torch_sources"]]
+[editable path="Wax/MeshInstance3D"]

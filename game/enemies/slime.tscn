@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c51w875byyjbh"]
+
+[ext_resource type="Texture2D" uid="uid://d0cpj0e1lc6eq" path="res://art/sprites/Identified Monster Ver.21/Marine Drop.jpg" id="3_iotit"]
+[ext_resource type="Shader" uid="uid://dp3gya3hn214w" path="res://game/rendering/shaders/illustration.gdshader" id="4_8kyi6"]
+[ext_resource type="PackedScene" path="res://game/enemies/enemy_base.tscn" id="base"]
+[ext_resource type="Script" uid="uid://betjwcxg1sq54" path="res://game/enemies/slime.gd" id="slime"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_igwns"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_8kyi6")
+
+[node name="Slime" unique_id=1861328316 instance=ExtResource("base")]
+script = ExtResource("slime")
+squash = 0.25
+illustration = ExtResource("3_iotit")
+base_health = 3
+heavy_chance = 0.32
+light_windup = 0.95
+heavy_windup = 1.32
+recovery_range = Vector2(0.8, 1.4)
+
+[node name="Illustration" parent="." index="0" unique_id=718635760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("ShaderMaterial_igwns")
+
+[node name="AttackGlow" parent="." index="1" unique_id=97794327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -0.2)

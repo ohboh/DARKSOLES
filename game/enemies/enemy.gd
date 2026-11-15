@@ -70,9 +70,9 @@ func advance_attack(dt: float, depth: float) -> bool:
 
 func animate(dt: float, clock: float):
 	hit=maxf(0.,hit-dt)
-	glow.visible=mode=="wind"
+	glow.visible=mode=="wind" and not heavy
 	if glow.visible:
-		var tint=Color.RED if heavy else Color.WHITE
+		var tint=Color.WHITE
 		tint.a=.35+.6*(1.-timer/dur)
 		glow.modulate=tint
 	sprite.material_override.set_shader_parameter("hit_flash",hit/.15)

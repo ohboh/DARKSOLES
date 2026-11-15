@@ -2,11 +2,10 @@
 [ext_resource type="Script" path="res://game/ui/hud.gd" id="hud"]
 [ext_resource type="Script" path="res://game/ui/action_icon.gd" id="icon"]
 [ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Wraith.jpg" id="title"]
-[ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Treasure Box.jpg" id="chest"]
 [sub_resource type="SystemFont" id="serif"]
 font_names = PackedStringArray("Georgia","Noto Serif","serif")
 [sub_resource type="StyleBoxFlat" id="button"]
-bg_color = Color(0.08,0.08,0.08,1)
+bg_color = Color(0,0,0,1)
 border_width_left = 1
 border_width_right = 1
 border_width_top = 1
@@ -80,22 +79,6 @@ anchor_bottom = 1.00000000
 mouse_filter = 2
 visible = false
 
-[node name="Background" type="ColorRect" parent="Relic"]
-anchor_left = 0.00000000
-anchor_top = 0.00000000
-anchor_right = 1.00000000
-anchor_bottom = 1.00000000
-mouse_filter = 2
-color = Color(0,0,0,1)
-
-[node name="Rule" type="ColorRect" parent="Relic"]
-anchor_left = 0.14444444
-anchor_top = 0.29743590
-anchor_right = 0.85555556
-anchor_bottom = 0.29829060
-mouse_filter = 2
-color = Color(0.65,0.65,0.65,1)
-
 [node name="Treasure" type="Control" parent="."]
 anchor_left = 0.00000000
 anchor_top = 0.00000000
@@ -103,14 +86,6 @@ anchor_right = 1.00000000
 anchor_bottom = 1.00000000
 mouse_filter = 2
 visible = false
-
-[node name="Background" type="ColorRect" parent="Treasure"]
-anchor_left = 0.00000000
-anchor_top = 0.72222222
-anchor_right = 1.00000000
-anchor_bottom = 1.00000000
-mouse_filter = 2
-color = Color(0,0,0,1)
 
 [node name="Play" type="Control" parent="."]
 anchor_left = 0.00000000
@@ -127,16 +102,6 @@ anchor_right = 0.73148148
 anchor_bottom = 0.27692308
 mouse_filter = 2
 texture = ExtResource("title")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Artwork" type="TextureRect" parent="Relic"]
-anchor_left = 0.31481481
-anchor_top = 0.09059829
-anchor_right = 0.68518519
-anchor_bottom = 0.26153846
-mouse_filter = 2
-texture = ExtResource("chest")
 expand_mode = 1
 stretch_mode = 5
 
@@ -258,121 +223,133 @@ action_mode = 0
 focus_mode = 0
 
 [node name="Heading" type="Label" parent="Relic"]
-anchor_left = 0.00000000
-anchor_top = 0.33170940
-anchor_right = 1.00000000
-anchor_bottom = 0.35478632
+anchor_left = 0.03
+anchor_top = 0.045
+anchor_right = 0.97
+anchor_bottom = 0.077
 mouse_filter = 2
 text = "RELIC FOUND"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 18
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Offer" type="Label" parent="Relic"]
-anchor_left = 0.00000000
-anchor_top = 0.37461538
-anchor_right = 1.00000000
-anchor_bottom = 0.44384615
+anchor_left = 0.03
+anchor_top = 0.077
+anchor_right = 0.97
+anchor_bottom = 0.146
 mouse_filter = 2
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 54
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Description" type="Label" parent="Relic"]
-anchor_left = 0.00000000
-anchor_top = 0.45897436
-anchor_right = 1.00000000
-anchor_bottom = 0.48461538
+anchor_left = 0.03
+anchor_top = 0.146
+anchor_right = 0.97
+anchor_bottom = 0.2
 mouse_filter = 2
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 20
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Instruction" type="Label" parent="Relic"]
-anchor_left = 0.00000000
-anchor_top = 0.53581197
-anchor_right = 1.00000000
-anchor_bottom = 0.56401709
+anchor_left = 0.03
+anchor_top = 0.2
+anchor_right = 0.97
+anchor_bottom = 0.245
 mouse_filter = 2
 text = "Replace one action"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 22
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Slot1" type="Button" parent="Relic"]
-anchor_left = 0.05925926
-anchor_top = 0.59145299
-anchor_right = 0.34074074
-anchor_bottom = 0.65128205
+anchor_left = 0.02962963
+anchor_top = 0.87777778
+anchor_right = 0.33518519
+anchor_bottom = 0.97606838
 text = "Replace"
 action_mode = 0
 focus_mode = 0
 
 [node name="Slot2" type="Button" parent="Relic"]
-anchor_left = 0.35555556
-anchor_top = 0.59145299
-anchor_right = 0.63703704
-anchor_bottom = 0.65128205
+anchor_left = 0.34629630
+anchor_top = 0.87777778
+anchor_right = 0.65185185
+anchor_bottom = 0.97606838
 text = "Replace"
 action_mode = 0
 focus_mode = 0
 
 [node name="Slot3" type="Button" parent="Relic"]
-anchor_left = 0.65185185
-anchor_top = 0.59145299
-anchor_right = 0.93333333
-anchor_bottom = 0.65128205
+anchor_left = 0.66296296
+anchor_top = 0.87777778
+anchor_right = 0.96851852
+anchor_bottom = 0.97606838
 text = "Replace"
 action_mode = 0
 focus_mode = 0
 
 [node name="Leave" type="Button" parent="Relic"]
-anchor_left = 0.27777778
-anchor_top = 0.69230769
-anchor_right = 0.72222222
-anchor_bottom = 0.74358974
+anchor_left = 0.345
+anchor_top = 0.8
+anchor_right = 0.655
+anchor_bottom = 0.862
 text = "Leave it"
 action_mode = 0
 focus_mode = 0
 
 [node name="Heading" type="Label" parent="Treasure"]
-anchor_left = 0.00000000
-anchor_top = 0.74709402
-anchor_right = 1.00000000
-anchor_bottom = 0.79581197
+anchor_left = 0.03
+anchor_top = 0.06
+anchor_right = 0.97
+anchor_bottom = 0.12
 mouse_filter = 2
 text = "Treasure found."
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 38
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Question" type="Label" parent="Treasure"]
-anchor_left = 0.00000000
-anchor_top = 0.80316239
-anchor_right = 1.00000000
-anchor_bottom = 0.83649573
+anchor_left = 0.03
+anchor_top = 0.12
+anchor_right = 0.97
+anchor_bottom = 0.165
 mouse_filter = 2
 text = "Do you want to open it?"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 26
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0,0,0,1)
 
 [node name="Open" type="Button" parent="Treasure"]
-anchor_left = 0.09259259
-anchor_top = 0.86324786
-anchor_right = 0.47777778
-anchor_bottom = 0.92649573
+anchor_left = 0.02962963
+anchor_top = 0.87777778
+anchor_right = 0.49
+anchor_bottom = 0.97606838
 text = "Open"
 action_mode = 0
 focus_mode = 0
 
 [node name="Leave" type="Button" parent="Treasure"]
-anchor_left = 0.52222222
-anchor_top = 0.86324786
-anchor_right = 0.90740741
-anchor_bottom = 0.92649573
+anchor_left = 0.51
+anchor_top = 0.87777778
+anchor_right = 0.96851852
+anchor_bottom = 0.97606838
 text = "Leave it"
 action_mode = 0
 focus_mode = 0

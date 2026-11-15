@@ -1,4 +1,6 @@
 extends Node3D
+## Distance in corridor tiles at which the player stops and combat begins. One tile is 3 world units.
+@export_range(0.25, 3.0, 0.05) var enemy_encounter_range := 1.0
 @onready var cam=$Player
 @onready var world=$Dungeon
 @onready var hands=$Player/Hands
@@ -142,6 +144,14 @@ func decide_treasure(open:bool):
 	treasure_index=-1
 	state="run"
 	if not open: return
+	if world.slime_scene and randf() < chest.obj.slime_ambush_chance:
+		chest.obj.queue_free()
+		chest.obj=world.slime_scene.instantiate()
+		chest.node.add_child(chest.obj)
+		chest.obj.start_encounter(p)
+		chest.kind="foe"
+		chest.dead=false
+		return
 	var pool=chest.obj.relics.filter(func(x): return not slots.has(x))
 	if pool.is_empty():
 		maximum+=chest.obj.vitality_bonus
@@ -171,9 +181,10 @@ func advance(dt):
 	if jt>=0:
 		if tiles[jt].paths.size()==1: pending=tiles[jt].paths.keys()[0]
 		elif near<0 and pending==9 and jt+1-p<3: slow=.28
+	var previous_position: float = p
 	p+=dt*(cam.walking_speed+minf(1.4,p/120))*slow
-	var encounter_position: float = near - world.enemy_encounter_range
-	if near>=0: p=minf(p,encounter_position)
+	var encounter_position: float = near - enemy_encounter_range
+	if near>=0: p=minf(p,maxf(previous_position,encounter_position))
 	if jt>=0 and pending!=0: p=minf(p,jt+.5)
 	fight=near if near>=0 and p>=encounter_position-0.001 else -1
 	if fight>=0: combat(tiles[fight].obj,dt)
@@ -257,7 +268,7 @@ func _process(delta):
 		light_dirty=false
 	hurt_vignette.update_health(hp,maximum,flash,dt)
 	post.set_shader_parameter("parry",success)
-	quantize.set_shader_parameter("menu",state in ["title","relic","dead"])
+	quantize.set_shader_parameter("menu",state in ["title","dead"])
 	ui.refresh()
 
 

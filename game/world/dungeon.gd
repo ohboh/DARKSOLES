@@ -1,15 +1,22 @@
 extends Node3D
 signal geometry_changed
 @export_group("Encounters")
-## Distance in corridor tiles at which the player stops and combat begins. One tile is 3 world units.
-@export_range(0.25, 3.0, 0.05) var enemy_encounter_range := 1.0
 @export var skeleton_scene: PackedScene = preload("res://game/enemies/skeleton.tscn")
 @export var slime_scene: PackedScene = preload("res://game/enemies/slime.tscn")
-@export_range(0,1,.01) var slime_chance := .22
 @export var wraith_scene: PackedScene = preload("res://game/enemies/wraith.tscn")
+@export var bandit_scene: PackedScene = preload("res://game/enemies/bandit.tscn")
+@export var spider_scene: PackedScene = preload("res://game/enemies/spider.tscn")
+@export var undead_scene: PackedScene = preload("res://game/enemies/undead.tscn")
 @export var treasure_scene: PackedScene = preload("res://game/encounters/treasure_chest.tscn")
 @export var shrine_scene: PackedScene = preload("res://game/encounters/shrine.tscn")
-@export_range(0,1,.01) var skeleton_chance := .45
+@export_group("Enemy Spawn Weights")
+## Relative encounter weights. Zero disables an enemy.
+@export_range(0,100,1) var skeleton_weight := 25
+@export_range(0,100,1) var slime_weight := 7
+@export_range(0,100,1) var wraith_weight := 20
+@export_range(0,100,1) var bandit_weight := 15
+@export_range(0,100,1) var spider_weight := 13
+@export_range(0,100,1) var undead_weight := 10
 @export_group("Dungeon")
 @export var corridor_scene: PackedScene = preload("res://game/world/corridor.tscn")
 @export_range(0,1,.01) var roaming_enemy_chance := .17
@@ -50,6 +57,24 @@ func branch(junction:int,kind:String,outgoing:Dictionary):
 
 func reward(kind):
 	return ["","","foe"] if kind=="foe" else ["",kind]
+func pick_enemy() -> PackedScene:
+	var scenes = [skeleton_scene, slime_scene, wraith_scene, bandit_scene, spider_scene, undead_scene]
+	var weights = PackedFloat32Array([skeleton_weight, slime_weight, wraith_weight, bandit_weight, spider_weight, undead_weight])
+	var total := 0.0
+	for i in scenes.size():
+		if scenes[i] == null:
+			weights[i] = 0.0
+		total += weights[i]
+	if total <= 0.0:
+		return null
+	var roll := randf() * total
+	for i in scenes.size():
+		if weights[i] > 0:
+			if roll <= weights[i]:
+				return scenes[i]
+			roll -= weights[i]
+	return null
+
 func generate(p:float,heading:float,position_at:Callable):
 	while tail<=p+lookahead:
 		if tiles.has(tail-1):
@@ -97,9 +122,11 @@ func generate(p:float,heading:float,position_at:Callable):
 		node.configure(n,t.paths,t.terrain,stair_drop)
 		match t.kind:
 			"foe":
+				var scene := pick_enemy()
+				if scene == null:
+					t.kind=""
+					continue
 				last_foe=n
-				var roll=randf()
-				var scene=slime_scene if roll<slime_chance else (skeleton_scene if roll<slime_chance+(1.-slime_chance)*skeleton_chance else wraith_scene)
 				t.obj=scene.instantiate()
 				node.add_child(t.obj)
 				t.obj.start_encounter(p)

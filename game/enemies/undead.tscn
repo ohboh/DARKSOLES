@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/enemies/enemy_base.tscn" id="base"]
+[ext_resource type="Texture2D" path="res://art/sprites/Unidentified Ver.20/Weird Humanoid.jpg" id="art"]
+
+[node name="Undead" instance=ExtResource("base")]
+illustration = ExtResource("art")
+base_health = 3
+heavy_chance = 0.55

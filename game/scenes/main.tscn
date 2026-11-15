@@ -1,46 +1,77 @@
-[gd_scene format=3]
-[ext_resource type="Script" path="res://game/world/dungeon.gd" id="controller"]
-[ext_resource type="Script" path="res://game/gameplay/run.gd" id="run"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="player"]
+[gd_scene format=3 uid="uid://8jfcum0tl6hx"]
+
+[ext_resource type="Script" uid="uid://drpvq3aam5kyp" path="res://game/rendering/hurt_vignette.gd" id="blood_script"]
+[ext_resource type="Shader" uid="uid://b5s286llgbxho" path="res://game/rendering/shaders/hurt_vignette.gdshader" id="blood_shader"]
 [ext_resource type="PackedScene" path="res://game/player/equipment/fireball.tscn" id="bolt"]
+[ext_resource type="Script" uid="uid://cxton12qsrrss" path="res://game/world/dungeon.gd" id="controller"]
 [ext_resource type="PackedScene" path="res://game/ui/hud.tscn" id="hud"]
-[ext_resource type="Shader" path="res://game/rendering/shaders/post.gdshader" id="post"]
-[ext_resource type="Shader" path="res://game/rendering/shaders/palette.gdshader" id="palette"]
-[ext_resource type="Shader" path="res://game/rendering/shaders/hurt_vignette.gdshader" id="blood_shader"]
-[ext_resource type="Script" path="res://game/rendering/hurt_vignette.gd" id="blood_script"]
-[sub_resource type="ShaderMaterial" id="blood"]
-resource_local_to_scene = true
-shader = ExtResource("blood_shader")
+[ext_resource type="Shader" uid="uid://bpuli36q3mes8" path="res://game/rendering/shaders/palette.gdshader" id="palette"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="player"]
+[ext_resource type="Shader" uid="uid://dsgvkjekw4b4g" path="res://game/rendering/shaders/post.gdshader" id="post"]
+[ext_resource type="Script" uid="uid://dkpit4slen6ov" path="res://game/gameplay/run.gd" id="run"]
+
 [sub_resource type="ShaderMaterial" id="postfx"]
 resource_local_to_scene = true
 shader = ExtResource("post")
+shader_parameter/parry = 0.0
+
 [sub_resource type="ShaderMaterial" id="quantize"]
 resource_local_to_scene = true
 shader = ExtResource("palette")
-[node name="Darksoles" type="Node3D"]
+shader_parameter/menu = false
+
+[sub_resource type="ShaderMaterial" id="blood"]
+resource_local_to_scene = true
+shader = ExtResource("blood_shader")
+shader_parameter/clear_center = 0.54
+shader_parameter/peak_density = 0.32
+shader_parameter/injury = 0.0
+shader_parameter/impact = 0.0
+shader_parameter/beat = 0.0
+
+[node name="Darksoles" type="Node3D" unique_id=1091938980]
 script = ExtResource("run")
-[node name="Dungeon" type="Node3D" parent="."]
+enemy_encounter_range = 0.75
+
+[node name="Dungeon" type="Node3D" parent="." unique_id=1349853871]
 script = ExtResource("controller")
-[node name="Player" parent="." instance=ExtResource("player")]
-[node name="Fireball" parent="." instance=ExtResource("bolt")]
-[node name="Interface" type="CanvasLayer" parent="."]
-[node name="Dither" type="ColorRect" parent="Interface"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
+
+[node name="Player" parent="." unique_id=799476707 instance=ExtResource("player")]
+transform = Transform3D(1, 0, 0, 0, 0.9954909, 0.094857164, 0, -0.094857164, 0.9954909, 0, 1.7, 0)
+bash_stun = 0.6000000000000001
+
+[node name="Fireball" parent="." unique_id=1391911953 instance=ExtResource("bolt")]
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=817013011]
+
+[node name="Dither" type="ColorRect" parent="Interface" unique_id=822374025]
 material = SubResource("postfx")
-[node name="HurtVignette" type="ColorRect" parent="Interface"]
-visible = false
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-material = SubResource("blood")
-script = ExtResource("blood_script")
-[node name="HUD" parent="Interface" instance=ExtResource("hud")]
-[node name="Composite" type="BackBufferCopy" parent="Interface"]
+
+[node name="HUD" parent="Interface" unique_id=826006307 instance=ExtResource("hud")]
+layout_mode = 3
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Composite" type="BackBufferCopy" parent="Interface" unique_id=477942828]
 copy_mode = 2
-[node name="Palette" type="ColorRect" parent="Interface"]
+
+[node name="Palette" type="ColorRect" parent="Interface" unique_id=592684561]
+material = SubResource("quantize")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-material = SubResource("quantize")
+
+[node name="HurtVignette" type="ColorRect" parent="Interface" unique_id=1867051346]
+visible = false
+material = SubResource("blood")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("blood_script")

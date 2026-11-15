@@ -75,6 +75,8 @@ func animate(dt: float, clock: float):
 		var tint=Color.WHITE
 		tint.a=.35+.6*(1.-timer/dur)
 		glow.modulate=tint
+	var rim := lerpf(0.26, 0.55, clampf(1.0-timer/dur, 0.0, 1.0)) if heavy and mode=="wind" else 0.0
+	sprite.material_override.set_shader_parameter("heavy_rim", rim)
 	sprite.material_override.set_shader_parameter("hit_flash",hit/.15)
 	var angle=.07*(1.-timer/dur) if mode=="wind" else .009*sin(clock*2.)
 	sprite.transform=rest_pose

@@ -50,19 +50,9 @@ func _draw():
 	if run.fight<0: return
 	var enemy=run.tiles[run.fight].obj
 	var center=run.cam.unproject_position(enemy.glow.global_position)*Vector2(540,1170)/size
-	if enemy.mode=="wind" and enemy.heavy:
-		# Inward-facing fangs close in as the strike approaches.
-		var remaining := clampf(enemy.timer / enemy.dur, 0.0, 1.0)
-		for side in [-1, 1]:
-			var tip: Vector2 = center + Vector2(side * lerpf(38.0, 83.0, remaining), 0)
-			var fang := PackedVector2Array([
-				tip + Vector2(side * 10, -17), tip, tip + Vector2(side * 7, 7)
-			])
-			draw_polyline(fang, Color.BLACK, 8)
-			draw_polyline(fang, Color.RED, 4)
-	elif enemy.mode=="wind":
+	if enemy.mode=="wind":
 		draw_arc(center,42,0,TAU,80,Color.WHITE,2)
-		draw_arc(center,42+114*enemy.timer/enemy.dur,0,TAU,100,Color.WHITE,4)
+		draw_arc(center,42+114*enemy.timer/enemy.dur,0,TAU,100,Color.RED if enemy.heavy else Color.WHITE,4)
 	elif enemy.mode=="stun":
 		draw_string(get_theme_default_font(),Vector2(0,center.y-137),"STUNNED",HORIZONTAL_ALIGNMENT_CENTER,540,17)
 

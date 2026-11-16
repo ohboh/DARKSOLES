@@ -22,6 +22,7 @@ func refresh():
 	$Treasure.visible=run.state=="treasure"
 	$Play.visible=run.state in ["run","turn"]
 	if $Play.visible:
+		$Play/BranchPrompt.visible = run.pending == 9 and run.choices().size() > 1
 		$Play/Distance.text="%d m"%int(run.p*2)
 		$Play/Notice.text=run.notice if run.notice_t>0 else ""
 		for i in 3:

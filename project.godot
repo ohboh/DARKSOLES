@@ -32,6 +32,10 @@ window/handheld/orientation=1
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
+[gui]
+
+theme/custom_font="res://art/fonts/Beholden-Regular.ttf"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

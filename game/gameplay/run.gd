@@ -256,6 +256,8 @@ func _process(delta):
 	for t in tiles.values():
 		if t.dead: continue
 		if t.kind=="foe": t.obj.animate(dt,time)
+	light_clock+=dt
+	if light_clock>.12: light_clock=0.; light_dirty=true
 	if light_dirty:
 		var lights: Array[Vector3]=[]
 		collect_lights(tiles,lights)

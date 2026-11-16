@@ -1,9 +1,8 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://game/ui/hud.gd" id="hud"]
 [ext_resource type="Script" path="res://game/ui/action_icon.gd" id="icon"]
-[ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Wraith.jpg" id="title"]
-[sub_resource type="SystemFont" id="serif"]
-font_names = PackedStringArray("Georgia","Noto Serif","serif")
+[ext_resource type="FontFile" path="res://art/fonts/Beholden-Regular.ttf" id="font"]
+[sub_resource type="StyleBoxEmpty" id="empty"]
 [sub_resource type="StyleBoxFlat" id="button"]
 bg_color = Color(0,0,0,1)
 border_width_left = 1
@@ -12,7 +11,7 @@ border_width_top = 1
 border_width_bottom = 1
 border_color = Color(0.65,0.65,0.65,1)
 [sub_resource type="Theme" id="theme"]
-default_font = SubResource("serif")
+default_font = ExtResource("font")
 default_font_size = 23
 Button/styles/normal = SubResource("button")
 Button/styles/hover = SubResource("button")
@@ -39,13 +38,30 @@ anchor_bottom = 1.00000000
 mouse_filter = 2
 color = Color(0,0,0,1)
 
-[node name="Rule" type="ColorRect" parent="Title"]
-anchor_left = 0.14444444
-anchor_top = 0.29743590
-anchor_right = 0.85555556
-anchor_bottom = 0.29829060
+[node name="Heading" type="Label" parent="Title"]
+anchor_left = 0.00000000
+anchor_top = 0.40000000
+anchor_right = 1.00000000
+anchor_bottom = 0.50000000
 mouse_filter = 2
-color = Color(0.65,0.65,0.65,1)
+text = "DARKSOLES"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 72
+
+[node name="Descend" type="Button" parent="Title"]
+anchor_left = 0.00000000
+anchor_top = 0.00000000
+anchor_right = 1.00000000
+anchor_bottom = 1.00000000
+text = ""
+flat = true
+action_mode = 0
+focus_mode = 0
+theme_override_styles/normal = SubResource("empty")
+theme_override_styles/hover = SubResource("empty")
+theme_override_styles/pressed = SubResource("empty")
+theme_override_styles/focus = SubResource("empty")
 
 [node name="Death" type="Control" parent="."]
 anchor_left = 0.00000000
@@ -95,91 +111,6 @@ anchor_bottom = 1.00000000
 mouse_filter = 2
 visible = false
 
-[node name="Artwork" type="TextureRect" parent="Title"]
-anchor_left = 0.26851852
-anchor_top = 0.06324786
-anchor_right = 0.73148148
-anchor_bottom = 0.27692308
-mouse_filter = 2
-texture = ExtResource("title")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Heading" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.33709402
-anchor_right = 1.00000000
-anchor_bottom = 0.42940171
-mouse_filter = 2
-text = "DARKSOLES"
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 72
-
-[node name="Intro" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.43555556
-anchor_right = 1.00000000
-anchor_bottom = 0.47145299
-mouse_filter = 2
-text = "John Darksoles descends."
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 28
-
-[node name="Premise" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.47329060
-anchor_right = 1.00000000
-anchor_bottom = 0.50534188
-mouse_filter = 2
-text = "The dungeon does not end."
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 25
-
-[node name="Routes" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.56918803
-anchor_right = 1.00000000
-anchor_bottom = 0.59611111
-mouse_filter = 2
-text = "Tap a path at each junction."
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 21
-
-[node name="Combat" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.60170940
-anchor_right = 1.00000000
-anchor_bottom = 0.62735043
-mouse_filter = 2
-text = "Guard light blows. Parry as the rings meet."
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
-
-[node name="Loot" type="Label" parent="Title"]
-anchor_left = 0.00000000
-anchor_top = 0.63333333
-anchor_right = 1.00000000
-anchor_bottom = 0.65897436
-mouse_filter = 2
-text = "Find relics inside treasure chests."
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
-
-[node name="Descend" type="Button" parent="Title"]
-anchor_left = 0.22222222
-anchor_top = 0.71709402
-anchor_right = 0.77777778
-anchor_bottom = 0.77948718
-text = "Descend"
-action_mode = 0
-focus_mode = 0
-
 [node name="Heading" type="Label" parent="Death"]
 anchor_left = 0.00000000
 anchor_top = 0.35427350
@@ -228,7 +159,7 @@ anchor_top = 0.045
 anchor_right = 0.97
 anchor_bottom = 0.077
 mouse_filter = 2
-text = "RELIC FOUND"
+text = "RELIC"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 18
@@ -267,7 +198,7 @@ anchor_top = 0.2
 anchor_right = 0.97
 anchor_bottom = 0.245
 mouse_filter = 2
-text = "Replace one action"
+text = "Replace one"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 22
@@ -316,7 +247,7 @@ anchor_top = 0.06
 anchor_right = 0.97
 anchor_bottom = 0.12
 mouse_filter = 2
-text = "Treasure found."
+text = "Treasure"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 38
@@ -329,7 +260,7 @@ anchor_top = 0.12
 anchor_right = 0.97
 anchor_bottom = 0.165
 mouse_filter = 2
-text = "Do you want to open it?"
+text = "Open it?"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 26

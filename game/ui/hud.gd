@@ -1,7 +1,7 @@
 extends Control
 
 var run
-@export var descriptions={"Shield Bash":"Stagger a foe. Requires your shield arm.","Fireball":"Cast at the nearest foe for two damage.","Mend":"Drink the blood flask to restore one life."}
+@export var descriptions={"Shield Bash":"Staggers a foe.","Fireball":"Burns the nearest foe.","Mend":"Restores one life."}
 
 func bind(controller):
 	run=controller

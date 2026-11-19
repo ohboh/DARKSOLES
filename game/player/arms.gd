@@ -57,15 +57,16 @@ func animate(run,dt):
 	previous_distance=run.p
 	if not run.arm and left_available: channels[0].restore()
 	left_available=run.arm
-	blade.visible="Sword" in run.slots or "Parry" in run.slots
-	shield.visible=run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
-	var has_book="Fireball" in run.slots and (not shield.visible or not blade.visible)
-	left_book.visible=has_book and blade.visible and run.arm
-	right_book.visible=has_book and not left_book.visible
+	var has_blade: bool = "Sword" in run.slots or "Parry" in run.slots
+	var has_shield: bool = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
+	var has_book: bool = "Fireball" in run.slots and (not has_shield or not has_blade)
+	left_book.visible = has_book and has_blade and run.arm
+	right_book.visible = has_book and not left_book.visible
 
-	blade.visible=false
-	shield.visible=false
-	$Rig.visible=has_book
+	# The animated weapons draw the sword and shield; the procedural ones stay hidden.
+	blade.visible = false
+	shield.visible = false
+	$Rig.visible = has_book
 	if not has_book: return
 	var guarding=run.guard>0 or run.bash>0
 	var left_animated=run.arm and channels[0].update_hand(dt,moving,guarding)

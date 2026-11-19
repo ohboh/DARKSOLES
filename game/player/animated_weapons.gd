@@ -2,6 +2,15 @@ extends Node3D
 signal strike(action: StringName)
 @export_group("Framing")
 @export var view_offset := Vector3(0, 0.18, 0)
+@export_group("Walking")
+@export var walk_bob := Vector2(0.009, 0.012)
+@export_range(0.0, 5.0, 0.1) var walk_roll_degrees := 0.7
+@export_range(0.1, 4.0, 0.1) var steps_per_tile := 1.6
+var previous_distance := 0.0
+var walk_strength := 0.0
+var rest_position := Vector3.ZERO
+var shield_material: ShaderMaterial
+var shield_outline: ShaderMaterial
 @export_group("Impact timing")
 ## Seconds into each slash at which damage lands.
 @export var slash_impact_times := PackedFloat32Array([0.20, 0.20, 0.20])
@@ -69,10 +78,12 @@ func _ready():
 		outline.shader = preload("res://game/rendering/shaders/contour.gdshader")
 		# Compress shield depth while preserving its projected position and size.
 		if mesh.name == "Shield":
-			material.set_shader_parameter("view_depth_scale", 0.25)
-			outline.set_shader_parameter("view_depth_scale", 0.25)
+			shield_material = material
+			shield_outline = outline
+			set_shield_depth(0.25)
 		material.next_pass = outline
 		mesh.material_override = material
+	rest_position = position
 	reset_playback()
 
 func emit_strike(action: StringName):
@@ -111,12 +122,28 @@ func cue(action: StringName, has_left: bool):
 		&"blocked":
 			if has_left: play_clip(1, shield_parry)
 
+func set_shield_depth(depth: float):
+	shield_material.set_shader_parameter("view_depth_scale", depth)
+	shield_outline.set_shader_parameter("view_depth_scale", depth)
+
 func reset_playback():
 	next_slash = 0
+	previous_distance = 0.0
+	walk_strength = 0.0
+	position = rest_position
+	rotation.z = 0.0
 	for side in 2:
 		hold_idle(side)
 
-func animate(run, _dt):
+func animate(run, dt):
+	var moving: bool = run.state == "run" and run.fight < 0 and run.p > previous_distance
+	previous_distance = run.p
+	walk_strength = move_toward(walk_strength, 1.0 if moving else 0.0, dt * 7.0)
+	var phase: float = run.p * TAU * steps_per_tile
+	position = rest_position + Vector3(sin(phase * 0.5) * walk_bob.x, sin(phase) * walk_bob.y, 0) * walk_strength
+	rotation.z = sin(phase * 0.5) * deg_to_rad(walk_roll_degrees) * walk_strength
+	var parrying: bool = players[0].is_playing() and players[0].current_animation == sword_parry
+	set_shield_depth(1.0 if parrying else 0.25)
 	$Rig/Sword_armature.visible = "Sword" in run.slots or "Parry" in run.slots
 	$Rig/Shield_armature.visible = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
 

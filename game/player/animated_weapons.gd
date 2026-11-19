@@ -8,7 +8,12 @@ signal strike(action: StringName)
 @export_range(0.1, 4.0, 0.1) var steps_per_tile := 1.6
 var previous_distance := 0.0
 var walk_strength := 0.0
-var rest_position := Vector3.ZERO
+@export_range(0.0, 6.28, 0.05) var shield_phase_offset := 1.9
+@export_range(0.0, 2.0, 0.05) var shield_sway_scale := 0.65
+var weapon_roots: Array[Node3D] = []
+var rest_transforms: Array[Transform3D] = []
+var camera_to_rig := Basis.IDENTITY
+var current_shield_depth := -1.0
 var shield_material: ShaderMaterial
 var shield_outline: ShaderMaterial
 @export_group("Impact timing")
@@ -85,7 +90,11 @@ func _ready():
 			set_shield_depth(0.25)
 		material.next_pass = outline
 		mesh.material_override = material
-	rest_position = position
+	camera_to_rig = rig.basis.inverse()
+	for side in ["Sword", "Shield"]:
+		var root: Node3D = rig.get_node(side + "_armature")
+		weapon_roots.append(root)
+		rest_transforms.append(root.transform)
 	reset_playback()
 
 func emit_strike(action: StringName):
@@ -147,6 +156,8 @@ func cue(action: StringName, has_left: bool):
 			if has_left: play_clip(1, shield_parry)
 
 func set_shield_depth(depth: float):
+	if depth == current_shield_depth: return
+	current_shield_depth = depth
 	shield_material.set_shader_parameter("view_depth_scale", depth)
 	shield_outline.set_shader_parameter("view_depth_scale", depth)
 
@@ -155,20 +166,28 @@ func reset_playback():
 	next_slash = 0
 	previous_distance = 0.0
 	walk_strength = 0.0
-	position = rest_position
-	rotation.z = 0.0
+	for side in weapon_roots.size():
+		weapon_roots[side].transform = rest_transforms[side]
 	for side in 2:
 		hold_idle(side)
 
 func animate(run, dt):
-	var moving: bool = run.state == "run" and run.fight < 0 and run.p > previous_distance
+	var moving: bool = intro_stage == 0 and run.state == "run" and run.fight < 0 and run.p > previous_distance
 	previous_distance = run.p
 	walk_strength = move_toward(walk_strength, 1.0 if moving else 0.0, dt * 7.0)
 	var phase: float = run.p * TAU * steps_per_tile
-	position = rest_position + Vector3(sin(phase * 0.5) * walk_bob.x, sin(phase) * walk_bob.y, 0) * walk_strength
-	rotation.z = sin(phase * 0.5) * deg_to_rad(walk_roll_degrees) * walk_strength
+	for side in 2:
+		var hand_phase := phase + (shield_phase_offset if side == 1 else 0.0)
+		var strength := walk_strength * (shield_sway_scale if side == 1 else 1.0)
+		var lateral := sin(hand_phase * 0.5)
+		var offset := Vector3(lateral * walk_bob.x, sin(hand_phase) * walk_bob.y, 0) * strength
+		var pose := rest_transforms[side]
+		pose.origin += camera_to_rig * offset
+		var roll := Basis(Vector3.BACK, lateral * deg_to_rad(walk_roll_degrees) * strength)
+		pose.basis = camera_to_rig * roll * $Rig.basis * pose.basis
+		weapon_roots[side].transform = pose
 	var parrying: bool = players[0].is_playing() and players[0].current_animation == sword_parry
 	set_shield_depth(1.0 if parrying else 0.25)
-	$Rig/Sword_armature.visible = "Sword" in run.slots or "Parry" in run.slots
-	$Rig/Shield_armature.visible = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
+	weapon_roots[0].visible = "Sword" in run.slots or "Parry" in run.slots
+	weapon_roots[1].visible = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
 

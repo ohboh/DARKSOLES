@@ -57,10 +57,6 @@ func animate(run,dt):
 	previous_distance=run.p
 	if not run.arm and left_available: channels[0].restore()
 	left_available=run.arm
-	var guarding=run.guard>0 or run.bash>0
-	var left_animated=run.arm and channels[0].update_hand(dt,moving,guarding)
-	var right_animated=channels[1].update_hand(dt,moving,run.slash>0 or run.parry>0)
-
 	blade.visible="Sword" in run.slots or "Parry" in run.slots
 	shield.visible=run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
 	var has_book="Fireball" in run.slots and (not shield.visible or not blade.visible)
@@ -70,6 +66,11 @@ func animate(run,dt):
 	blade.visible=false
 	shield.visible=false
 	$Rig.visible=has_book
+	if not has_book: return
+	var guarding=run.guard>0 or run.bash>0
+	var left_animated=run.arm and channels[0].update_hand(dt,moving,guarding)
+	var right_animated=channels[1].update_hand(dt,moving,run.slash>0 or run.parry>0)
+
 	guard_lift=lerpf(guard_lift,1. if guarding else 0.,minf(1.,dt*14.))
 	var breathing=Vector3.UP*(.004*sin(run.time*2.1)+.004*sin(run.p*TAU))
 	if not left_animated:

@@ -53,6 +53,7 @@ var turn_to=Vector3.ZERO
 var turn_entry_heading=0.
 const JUNCTION_HALF_WIDTH=1.5
 func _ready():
+	hands.get_node("AnimatedWeapons").strike.connect(resolve_weapon_strike)
 	world.geometry_changed.connect(func(): light_dirty=true)
 	ui.bind(self)
 	var save=ConfigFile.new()
@@ -106,20 +107,31 @@ func act(i):
 	if state!="run" or cd[i]>0: return
 	var id=slots[i]
 	match id:
-		"Sword": slash=.18; hit(fight,cam.sword_damage)
+		"Sword": pass
 		"Shield":
 			if not arm: return
 			guard=cam.guard_window
 		"Parry": parry=cam.parry_window
 		"Shield Bash":
 			if not arm or fight<0: return
-			bash=.2; hit(fight,randi_range(0,cam.bash_max_damage),cam.bash_stun)
+			pass
 		"Fireball":
 			if near<0: return
 			projectile=near; flight=cam.flight_duration
 		"Mend": hp=mini(maximum,hp+cam.flask_healing); say("Blood flask")
 	cd[i]=cam.cooldowns[id]
 	hands.cue(StringName(id.to_lower().replace(" ","_")),arm)
+func resolve_weapon_strike(action: StringName):
+	if state != "run" or fight < 0: return
+	match action:
+		&"sword":
+			slash = .18
+			hit(fight, cam.sword_damage)
+		&"shield_bash":
+			if not arm: return
+			bash = .2
+			hit(fight, randi_range(0, cam.bash_max_damage), cam.bash_stun)
+
 func combat(enemy,dt):
 	if not enemy.advance_attack(dt,p): return
 	if parry>0:

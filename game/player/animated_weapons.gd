@@ -1,4 +1,12 @@
 extends Node3D
+signal strike(action: StringName)
+@export_group("Framing")
+@export var view_offset := Vector3(0, -0.04, 0.32)
+@export_group("Impact timing")
+## Seconds into each slash at which damage lands.
+@export var slash_impact_times := PackedFloat32Array([0.20, 0.20, 0.20])
+@export_range(0.0, 1.0, 0.01) var bash_impact_time := 0.33
+
 
 @export var sword_slashes: Array[StringName] = [&"Sword_Slash_1", &"Sword_Slash_2", &"Sword_Slash_3"]
 @export var sword_parry: StringName = &"Sword_Parry"
@@ -13,6 +21,7 @@ func _ready():
 	var rig = $Rig
 	var camera: Camera3D = rig.get_node("Camera")
 	rig.transform = camera.transform.affine_inverse()
+	rig.position += view_offset
 	camera.current = false
 	camera.queue_free()
 	var source: AnimationPlayer = rig.get_node("AnimationPlayer")
@@ -29,6 +38,16 @@ func _ready():
 			for track in range(animation.get_track_count()-1, -1, -1):
 				if not str(animation.track_get_path(track)).begins_with(side+"_armature/"):
 					animation.remove_track(track)
+			var slash_index := sword_slashes.find(clip)
+			if slash_index >= 0 or clip == shield_bash:
+				var impact := bash_impact_time
+				var action: StringName = &"shield_bash"
+				if slash_index >= 0:
+					impact = slash_impact_times[mini(slash_index, slash_impact_times.size()-1)] if not slash_impact_times.is_empty() else animation.length * 0.5
+					action = &"sword"
+				var track := animation.add_track(Animation.TYPE_METHOD)
+				animation.track_set_path(track, NodePath(".."))
+				animation.track_insert_key(track, clampf(impact, 0.0, animation.length), {"method": &"emit_strike", "args": [action]})
 			library.add_animation(clip, animation)
 		player.add_animation_library("", library)
 		players.append(player)
@@ -44,6 +63,9 @@ func _ready():
 		material.next_pass = outline
 		mesh.material_override = material
 	reset_playback()
+
+func emit_strike(action: StringName):
+	strike.emit(action)
 
 func finish_action(clip: StringName, side: int):
 	if side == 0 and clip != sword_return:

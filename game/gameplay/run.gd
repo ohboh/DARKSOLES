@@ -4,6 +4,9 @@ extends Node3D
 @onready var cam=$Player
 @onready var world=$Dungeon
 @onready var hands=$Player/Hands
+@onready var weapons=$Player/Hands/AnimatedWeapons
+var hit_stop_remaining := 0.0
+var movement_scale := 1.0
 @onready var bolt=$Fireball
 @onready var ui=$Interface/HUD
 @onready var hurt_vignette=$Interface/HurtVignette
@@ -68,6 +71,9 @@ func clear_outgoing_corridor():
 	outgoing_corridor.clear()
 
 func reset_run():
+	hit_stop_remaining = 0.0
+	movement_scale = 1.0
+	weapons.set_playback_speed(1.0)
 	hands.reset_playback()
 	hands.get_node("AnimatedWeapons").start_run()
 	clear_outgoing_corridor()
@@ -101,12 +107,15 @@ func hit(idx,amount,stun=0.):
 	if not tiles.has(idx) or tiles[idx].dead: return
 	var t=tiles[idx]
 	t.obj.take_hit(amount,stun)
+	if amount > 0 or stun > 0:
+		hit_stop_remaining = cam.hit_stop_duration
+		if hit_stop_remaining > 0: weapons.set_playback_speed(0.0)
 	if t.obj.hp<=0:
 		t.dead=true; t.obj.hide(); kills+=1; say("Slain")
 		if fight==idx: fight=-1
 		if near==idx: near=-1
 func act(i):
-	if state!="run" or cd[i]>0 or hands.get_node("AnimatedWeapons").intro_stage > 0: return
+	if state!="run" or hit_stop_remaining > 0 or cd[i]>0 or weapons.intro_stage > 0: return
 	var id=slots[i]
 	match id:
 		"Sword": pass
@@ -195,6 +204,7 @@ func advance(dt):
 	if jt>=0:
 		if tiles[jt].paths.size()==1: pending=tiles[jt].paths.keys()[0]
 		elif near<0 and pending==9 and jt+1-p<3: slow=.28
+	movement_scale = slow
 	var previous_position: float = p
 	p+=dt*(cam.walking_speed+minf(1.4,p/120))*slow
 	var encounter_position: float = near - enemy_encounter_range
@@ -231,6 +241,10 @@ func advance(dt):
 	for k in tiles.keys():
 		if k<int(p)-2: tiles[k].node.queue_free(); tiles.erase(k)
 func _process(delta):
+	if hit_stop_remaining > 0:
+		hit_stop_remaining = maxf(0.0, hit_stop_remaining - delta)
+		if hit_stop_remaining > 0: return
+		weapons.set_playback_speed(movement_scale)
 	var dt=minf(delta,.05)
 	time+=dt
 	if state not in ["title","dead"]:

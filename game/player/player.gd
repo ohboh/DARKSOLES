@@ -1,6 +1,8 @@
 extends Camera3D
 @export_range(0.,20.,.5) var stair_look_down := 9.0
 @export_range(.1,5,.1) var walking_speed := 1.6
+@export_group("Combat feel")
+@export_range(0.0, 0.15, 0.005) var hit_stop_duration := 0.045
 @export_group("Player")
 @export_range(1,50) var starting_health := 5
 @export var guard_window := .7

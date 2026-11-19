@@ -166,7 +166,12 @@ func reset_playback():
 	for side in 2:
 		hold_idle(side)
 
+func set_playback_speed(speed: float):
+	for player in players:
+		player.speed_scale = speed
+
 func animate(run, dt):
+	set_playback_speed(0.0 if run.hit_stop_remaining > 0 else (run.movement_scale if run.state == "run" else 1.0))
 	var moving: bool = intro_stage == 0 and run.state == "run" and run.fight < 0 and run.p > previous_distance
 	previous_distance = run.p
 	walk_strength = move_toward(walk_strength, 1.0 if moving else 0.0, dt * 7.0)

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://game/player/animated_weapons.gd" id="script"]
+[ext_resource type="PackedScene" path="res://art/models/weapons.blend" id="rig"]
+[node name="AnimatedWeapons" type="Node3D"]
+script = ExtResource("script")
+[node name="Rig" parent="." instance=ExtResource("rig")]

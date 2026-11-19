@@ -36,10 +36,12 @@ func _ready():
 		channel.setup(skeleton,alignment)
 
 func cue(slot:StringName, has_left:bool):
+	$AnimatedWeapons.cue(slot,has_left)
 	for side in 2:
 		if side==1 or has_left: channels[side].begin(slot,false)
 
 func reset_playback():
+	$AnimatedWeapons.reset_playback()
 	for channel in channels: channel.restore()
 	previous_distance=0.
 	left_available=true
@@ -50,6 +52,7 @@ func place_palm(side:int,target:Vector3):
 	skeleton.set_bone_pose_position(shoulders[side],shoulder_poses[side]+local_target-palms[side])
 
 func animate(run,dt):
+	$AnimatedWeapons.animate(run,dt)
 	var moving=run.state in ["run","turn"] and (run.p>previous_distance or run.state=="turn")
 	previous_distance=run.p
 	if not run.arm and left_available: channels[0].restore()
@@ -64,6 +67,9 @@ func animate(run,dt):
 	left_book.visible=has_book and blade.visible and run.arm
 	right_book.visible=has_book and not left_book.visible
 
+	blade.visible=false
+	shield.visible=false
+	$Rig.visible=has_book
 	guard_lift=lerpf(guard_lift,1. if guarding else 0.,minf(1.,dt*14.))
 	var breathing=Vector3.UP*(.004*sin(run.time*2.1)+.004*sin(run.p*TAU))
 	if not left_animated:
@@ -76,3 +82,4 @@ func animate(run,dt):
 		# Only the fallback rotates the sword in camera space. Authored clips use the grip socket.
 		var bind_basis=(global_transform.affine_inverse()*skeleton.global_transform*skeleton.get_bone_global_pose(right_socket.bone_idx)).basis
 		blade.basis=bind_basis.inverse()*Basis(Vector3.BACK,swing*1.6+run.parry*3)*bind_basis*sword_grip.basis
+

@@ -1,6 +1,7 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://game/player/player.gd" id="controller"]
 [ext_resource type="Script" path="res://game/player/arms.gd" id="hands"]
+[ext_resource type="PackedScene" path="res://game/player/animated_weapons.tscn" id="weapons"]
 [ext_resource type="PackedScene" path="res://game/player/equipment/sword.tscn" id="sword"]
 [ext_resource type="PackedScene" path="res://game/player/equipment/shield.tscn" id="shield"]
 [ext_resource type="PackedScene" path="res://game/player/equipment/tome.tscn" id="tome"]
@@ -99,3 +100,5 @@ transform = Transform3D(0.052673254, 0.05681893, -0.08423568, -0.10159212, 0.027
 visible = false
 
 [editable path="Hands/Rig"]
+
+[node name="AnimatedWeapons" parent="Hands" instance=ExtResource("weapons")]

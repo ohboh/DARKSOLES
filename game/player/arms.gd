@@ -82,4 +82,3 @@ func animate(run,dt):
 		# Only the fallback rotates the sword in camera space. Authored clips use the grip socket.
 		var bind_basis=(global_transform.affine_inverse()*skeleton.global_transform*skeleton.get_bone_global_pose(right_socket.bone_idx)).basis
 		blade.basis=bind_basis.inverse()*Basis(Vector3.BACK,swing*1.6+run.parry*3)*bind_basis*sword_grip.basis
-

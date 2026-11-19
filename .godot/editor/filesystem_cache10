@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1794754349
+::res://::1795074265
 icon.svg::CompressedTexture2D::7932054279207129367::1794726758::1794726767::1::::<><><>0<>0<>085fd0f9c74f91cb066f8b956230f32c<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1794751102::0::1::::<><><>0<>0<><>::
 ::res://addons/::1794730172
@@ -176,7 +176,21 @@ uv_cache_cleanup.gd::GDScript::9183584812265977825::1794730168::0::1::::McpUvCac
 uv_resolution_policy.gd::GDScript::4403246687985614915::1794730168::0::1::::<>RefCounted<><>0<>1<><>::
 variant_serializer.gd::GDScript::6116444788409653190::1794730168::0::1::::<>RefCounted<><>0<>1<><>::
 windows_port_reservation.gd::GDScript::3786839279967695522::1794730168::0::1::::McpWindowsPortReservation<>RefCounted<><>0<>1<><>::
-::res://art/::1794731060
+::res://art/::1794813160
+::res://art/fonts/::1794810573
+Beholden-Regular.ttf::FontFile::4062730465617957545::1620462878::1794809929::1::::<><><>0<>0<>dff18bbbab0a7d33ef1a1a6ea6bec837<>res://.godot/imported/Beholden-Regular.ttf-3c539bda73d7b52e74f427d4f624a68e.fontdata::
+::res://art/models/::1795075229
+shield.blend::PackedScene::1785970676518882831::1794888652::1794896912::1::::<><><>0<>0<>f1b358456d7ebb7c1910d6423643a885<>res://.godot/imported/shield.blend-15adfc1d045c0a1c558aee492ca8486b.scn::uid://daa6l3wnvqr08::::res://art/models/shield_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png
+shield.glb::PackedScene::7059066927771200682::1794888703::1794896909::1::::<><><>0<>0<>f7da13d0c246a862d06f4ca5d4b0c633<>res://.godot/imported/shield.glb-cfd0b00add6231d6a7f28ec7dee1de79.scn::uid://daa6l3wnvqr08::::res://art/models/shield_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png
+shield_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png::CompressedTexture2D::7161165426846891559::1794896909::1794896913::1::::<><><>0<>0<>c9c7675f0a917bc7b7f058b75b87b32e<>res://.godot/imported/shield_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png-b982a4e961b998aec146bd25eabae3fd.s3tc.ctex::
+weapons.blend::PackedScene::7749244254145411870::1795071430::1795074281::1::::<><><>0<>0<>6f6afbe74e2cb44a53d0af7f85a8c7cc<>res://.godot/imported/weapons.blend-6398683d4cf30337805108cda8cc3bb9.scn::uid://ddh2yr2v6b2da::::res://art/models/textures/Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png<>uid://cric0xvkj0n6p::::res://art/models/weapons_Swords.png.png
+weapons_runtime.glb::PackedScene::4909947197390348264::1795075247::1795075256::1::::<><><>0<>0<>5c710a5af9ae68bbcf72c5d07e5e547a<>res://.godot/imported/weapons_runtime.glb-11d924fe0f6ca084f68930e1db313077.scn::uid://cyswd25cagse3::::res://art/models/weapons_runtime_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png<>uid://8okrhk5y0mds::::res://art/models/weapons_runtime_Swords.png
+weapons_runtime_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png::CompressedTexture2D::6495875010060346204::1795074843::1795075256::1::::<><><>0<>0<>404e356b85a8195c3906d22949899a99<>res://.godot/imported/weapons_runtime_Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png-c76b95c11833c5acdd79c22a36bc56a9.s3tc.ctex::
+weapons_runtime_Swords.png::CompressedTexture2D::2345771041543579952::1795074844::1795075256::1::::<><><>0<>0<>7d0d0b6e68e5294a4f683b60f155f24b<>res://.godot/imported/weapons_runtime_Swords.png-528428f63ee6aae3add9ed6bbc14c2b4.s3tc.ctex::
+weapons_Swords.png.png::CompressedTexture2D::5982734051043712185::1794927421::1795074273::1::::<><><>0<>0<>33f035120f5d6a3c4f4788bf15060118<>res://.godot/imported/weapons_Swords.png.png-2a7ef1711ed5df442b21d9bf17495639.s3tc.ctex::
+::res://art/models/textures/::1795074273
+Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.001.png::CompressedTexture2D::5817420153463990198::1794927418::1794927724::1::::<><><>0<>0<>b4f1bdba3bd0d8ebd2082b45d45d3310<>res://.godot/imported/Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.001.png-dd3860c21ed255e5d7743763d8bba75c.ctex::
+Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png::CompressedTexture2D::7385962379732543402::1794927418::1795074273::1::::<><><>0<>0<>fef5cc3dfa5b485ae085f6265f6a8b4d<>res://.godot/imported/Barrel_Lid_Barell_Lid_Mat_AlbedoTransparency.png-742a9d5ec8039f246fe192ba0b6938a0.s3tc.ctex::
 ::res://art/player/::1794731141
 ::res://art/player/Fp hands/::1794731329
 Fp hands.blend::PackedScene::1863761035509548287::1778566882::1794731260::1::::<><><>0<>0<>baef7e7ad532af6d06270b45fc7cc410<>res://.godot/imported/Fp hands.blend-4ef7ffba6a1ca2d577a97aa0a347673a.scn::uid://b7b60ncljup07::::res://art/player/Fp hands/texture of the arms 2.png
@@ -236,7 +250,7 @@ Windowed_Wall_02.fbx::PackedScene::5258320103522172988::1743953012::1794731278::
 GobLogo.png::CompressedTexture2D::5229470174749918602::1744824499::1794731200::1::::<><><>0<>0<>61e81e960bbec767d7250232cdf38fcc<>res://.godot/imported/GobLogo.png-8a2e4871df79835dff6374088ff88757.ctex::
 InitialG.png::CompressedTexture2D::5873136608223177796::1744827103::1794731201::1::::<><><>0<>0<>798a1d2f2acf9d0312163fc04e19b6a8<>res://.godot/imported/InitialG.png-c16e8cc56fa6c4a189f8d59928e354df.ctex::
 PSXDungeon.png::CompressedTexture2D::513336222330310031::1745601424::1794731200::1::::<><><>0<>0<>1df545bda7e22c1e27c3b0ae7e3b0062<>res://.godot/imported/PSXDungeon.png-1e92495dce091b31bca32e8d79e6e102.ctex::
-::res://art/PSX_Dungeon/PSX_Dungeon/Textures/::1794731200
+::res://art/PSX_Dungeon/PSX_Dungeon/Textures/::1794754365
 CratesAndBarrels_Map.png::CompressedTexture2D::3288273813687449344::1743793809::1794731200::1::::<><><>0<>0<>e538ff21b624fd83f4259710c7cc4258<>res://.godot/imported/CratesAndBarrels_Map.png-0314b9514398f0a1f736f3687fcbac46.ctex::
 Doors_Map.png::CompressedTexture2D::6337225169273577578::1744832436::1794731200::1::::<><><>0<>0<>eff645074b716e424ee9bcc0e7ac4fae<>res://.godot/imported/Doors_Map.png-b1a354806fcf48d6575ce597d95b5698.ctex::
 Dungeon_Map.png::CompressedTexture2D::5910389801922446399::1744572623::1794754365::1::::<><><>0<>0<>01e33a842156c1c91b63dcebb8a33364<>res://.godot/imported/Dungeon_Map.png-c6d239b5f2c039120df424248ce959ed.s3tc.ctex::
@@ -259,7 +273,7 @@ TEX_Stair_02.png::CompressedTexture2D::9189845067375541191::1744141874::17947311
 TEX_Wall_03.png::CompressedTexture2D::8996948979704554905::1741384330::1794731199::1::::<><><>0<>0<>0db3edbb93db0d46ddd5d07b1303e6e6<>res://.godot/imported/TEX_Wall_03.png-7682de57b311b15daa62c03f4e1521c7.ctex::
 TEX_Water_01.png::CompressedTexture2D::4874007757208027676::1742842079::1794731199::1::::<><><>0<>0<>060e958097461a41dc079e49360f9b97<>res://.godot/imported/TEX_Water_01.png-644cf4971eab017a3a78f958cfd77af1.ctex::
 ::res://art/sprites/::1794730959
-::res://art/sprites/Identified Monster Ver.21/::1794731220
+::res://art/sprites/Identified Monster Ver.21/::1794754365
 00 ìXÉVâüâé.txt::TextFile::-1::1750336506::0::1::::<><><>0<>0<><>::
 Abortive.jpg::CompressedTexture2D::3630514425661660936::1457087082::1794731200::1::::<><><>0<>0<>3d04e38c628a349704226e7fe91a6adc<>res://.godot/imported/Abortive.jpg-52cf9f2b1137adb45b90da0f49741ea1.ctex::
 Abyss Worm Green.jpg::CompressedTexture2D::2876637815601655046::1457087082::1794731200::1::::<><><>0<>0<>a0e2f3231e5ca0cb4ed4de29ebaabea4<>res://.godot/imported/Abyss Worm Green.jpg-db9581b6d8e81cfd79816b2e8de30d92.ctex::
@@ -900,22 +914,27 @@ main.tscn::PackedScene::4239571644273002636::1794749057::0::1::::<><><>0<>0<><>:
 ::res://game/encounters/::1794749310
 shrine.gd::GDScript::5364694294576738425::1794749247::0::1::::<>Node3D<><>0<>0<><>::
 shrine.tscn::PackedScene::-1::1794749247::0::1::::<><><>0<>0<><>::res://game/encounters/shrine.gd<>res://game/world/modules/candle.tscn
-treasure_chest.gd::GDScript::8239062870982604942::1794749247::0::1::::<>Node3D<><>0<>0<><>::
+treasure_chest.gd::GDScript::8239062870982604942::1794770368::0::1::::<>Node3D<><>0<>0<><>::
 treasure_chest.tscn::PackedScene::-1::1794749247::0::1::::<><><>0<>0<><>::res://game/encounters/treasure_chest.gd<>res://game/rendering/shaders/illustration.gdshader<>res://art/sprites/Identified Monster Ver.21/Treasure Box.jpg
-::res://game/enemies/::1794754044
-enemy.gd::GDScript::3672351162951814010::1794748780::0::1::::<>Node3D<><>0<>1<><>::
+::res://game/enemies/::1794769233
+bandit.tscn::PackedScene::-1::1794769233::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Identified Monster Ver.21/Thief.jpg
+enemy.gd::GDScript::3672351162951814010::1794770592::0::1::::<>Node3D<><>0<>1<><>::
 enemy_base.tscn::PackedScene::18610806473586965::1794754044::0::1::::<><><>0<>0<><>::uid://dp3gya3hn214w::::res://game/rendering/shaders/illustration.gdshader<>uid://b642w3e63nwe::::res://art/sprites/Identified Monster Ver.21/Wraith.jpg<>uid://bsk6c7ybbrka1::::res://game/enemies/enemy.gd
 skeleton.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Identified Monster Ver.21/Skeleton.jpg
 slime.gd::GDScript::2706985116858458377::1794750486::0::1::::<>Node3D<><>0<>0<><>::
 slime.tscn::PackedScene::6933576930342249901::1794751751::0::1::::<><><>0<>0<><>::uid://d0cpj0e1lc6eq::::res://art/sprites/Identified Monster Ver.21/Marine Drop.jpg<>uid://dp3gya3hn214w::::res://game/rendering/shaders/illustration.gdshader<>res://game/enemies/enemy_base.tscn<>uid://betjwcxg1sq54::::res://game/enemies/slime.gd
+spider.tscn::PackedScene::-1::1794770410::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Identified Monster Ver.21/Tarantula.jpg
+undead.tscn::PackedScene::-1::1794769233::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Unidentified Ver.20/Weird Humanoid.jpg
 wraith.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Identified Monster Ver.21/Wraith.jpg
-::res://game/gameplay/::1794753391
-run.gd::GDScript::7892637371286164341::1794753391::0::1::::<>Node3D<><>0<>0<><>::
-::res://game/player/::1794749811
-arms.gd::GDScript::2641212180970990014::1794749909::0::1::::<>Node3D<><>0<>0<><>::
+::res://game/gameplay/::1794809230
+run.gd::GDScript::7892637371286164341::1795074655::0::1::::<>Node3D<><>0<>0<><>::
+::res://game/player/::1795074527
+animated_weapons.gd::GDScript::1583137685469161040::1795075245::0::1::::<>Node3D<><>0<>0<><>::
+animated_weapons.tscn::PackedScene::-1::1795074867::0::1::::<><><>0<>0<><>::res://game/player/animated_weapons.gd<>res://art/models/weapons_runtime.glb
+arms.gd::GDScript::2641212180970990014::1795074527::0::1::::<>Node3D<><>0<>0<><>::
 hand_channel.gd::GDScript::6381601149227588316::1794749974::0::1::::<>AnimationPlayer<><>0<>1<><>::
 player.gd::GDScript::6788505775022270194::1794750533::0::1::::<>Camera3D<><>0<>0<><>::
-player.tscn::PackedScene::-1::1794749909::0::1::::<><><>0<>0<><>::res://game/player/player.gd<>res://game/player/arms.gd<>res://game/player/equipment/sword.tscn<>res://game/player/equipment/shield.tscn<>res://game/player/equipment/tome.tscn<>res://art/player/Fp hands/Fp hands.fbx<>res://art/player/Fp hands/texture of the arms 2.png<>res://game/rendering/shaders/ink.gdshader<>res://game/rendering/shaders/contour.gdshader<>res://game/player/hand_channel.gd
+player.tscn::PackedScene::-1::1795074447::0::1::::<><><>0<>0<><>::res://game/player/player.gd<>res://game/player/arms.gd<>res://game/player/animated_weapons.tscn<>res://game/player/equipment/sword.tscn<>res://game/player/equipment/shield.tscn<>res://game/player/equipment/tome.tscn<>res://art/player/Fp hands/Fp hands.fbx<>res://art/player/Fp hands/texture of the arms 2.png<>res://game/rendering/shaders/ink.gdshader<>res://game/rendering/shaders/contour.gdshader<>res://game/player/hand_channel.gd
 ::res://game/player/equipment/::1794748687
 fireball.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/rendering/shaders/ink.gdshader
 shield.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/rendering/shaders/contour.gdshader<>res://game/rendering/shaders/buckler.gdshader<>res://art/PSX_Dungeon/PSX_Dungeon/Textures/TEX_Planks_01.png<>res://game/rendering/shaders/ink.gdshader
@@ -923,28 +942,29 @@ sword.tscn::PackedScene::-1::1794749147::0::1::::<><><>0<>0<><>::res://art/playe
 tome.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/rendering/shaders/contour.gdshader<>res://game/rendering/shaders/ink.gdshader
 ::res://game/rendering/::1794749811
 hurt_vignette.gd::GDScript::8384743159458355991::1794749550::0::1::::<>ColorRect<><>0<>0<><>::
-::res://game/rendering/shaders/::1794753875
+::res://game/rendering/shaders/::1795075022
 buckler.gdshader::Shader::2939901305815511992::1794747973::0::1::::<><><>0<>0<><>::
 contour.gdshader::Shader::4128664230612733015::1794748560::0::1::::<><><>0<>0<><>::
 flagstone.gdshader::Shader::1829307194411067907::1794747973::0::1::::<><><>0<>0<><>::
-hurt_vignette.gdshader::Shader::4530944728135281504::1794753875::0::1::::<><><>0<>0<><>::
-illustration.gdshader::Shader::8270304487364815200::1794747973::0::1::::<><><>0<>0<><>::
+hurt_vignette.gdshader::Shader::4530944728135281504::1794969471::0::1::::<><><>0<>0<><>::
+illustration.gdshader::Shader::8270304487364815200::1794770592::0::1::::<><><>0<>0<><>::
 ink.gdshader::Shader::377026759153085198::1794750807::0::1::::<><><>0<>0<><>::
 palette.gdshader::Shader::3481224585924054645::1794748265::0::1::::<><><>0<>0<><>::
-post.gdshader::Shader::8436340897249653996::1794753577::0::1::::<><><>0<>0<><>::
+post.gdshader::Shader::8436340897249653996::1794969471::0::1::::<><><>0<>0<><>::
 route_omen.gdshader::Shader::7028197794865375739::1794750486::0::1::::<><><>0<>0<><>::
 torchlight.gdshaderinc::ShaderInclude::8660982594181382847::1794734092::0::1::::<><><>0<>0<><>::
+weapon.gdshader::Shader::1345202668520160112::1795075010::0::1::::<><><>0<>0<><>::
 wick.gdshader::Shader::2336224828278258233::1794734517::0::1::::<><><>0<>0<><>::
-::res://game/scenes/::1794747973
-main.tscn::PackedScene::-1::1794749551::0::1::::<><><>0<>0<><>::res://game/world/dungeon.gd<>res://game/gameplay/run.gd<>res://game/player/player.tscn<>res://game/player/equipment/fireball.tscn<>res://game/ui/hud.tscn<>res://game/rendering/shaders/post.gdshader<>res://game/rendering/shaders/palette.gdshader<>res://game/rendering/shaders/hurt_vignette.gdshader<>res://game/rendering/hurt_vignette.gd
-::res://game/ui/::1794749310
+::res://game/scenes/::1794769605
+main.tscn::PackedScene::2335119466559649065::1794769605::0::1::::<><><>0<>0<><>::uid://drpvq3aam5kyp::::res://game/rendering/hurt_vignette.gd<>uid://b5s286llgbxho::::res://game/rendering/shaders/hurt_vignette.gdshader<>res://game/player/equipment/fireball.tscn<>uid://cxton12qsrrss::::res://game/world/dungeon.gd<>res://game/ui/hud.tscn<>uid://bpuli36q3mes8::::res://game/rendering/shaders/palette.gdshader<>res://game/player/player.tscn<>uid://dsgvkjekw4b4g::::res://game/rendering/shaders/post.gdshader<>uid://dkpit4slen6ov::::res://game/gameplay/run.gd
+::res://game/ui/::1794809995
 action_icon.gd::GDScript::859825481749645873::1794748883::0::1::::<>Control<><>0<>0<><>::
-hud.gd::GDScript::1501441155739918751::1794749057::0::1::::<>Control<><>0<>0<><>::
-hud.tscn::PackedScene::-1::1794748977::0::1::::<><><>0<>0<><>::res://game/ui/hud.gd<>res://game/ui/action_icon.gd<>res://art/sprites/Identified Monster Ver.21/Wraith.jpg<>res://art/sprites/Identified Monster Ver.21/Treasure Box.jpg
+hud.gd::GDScript::1501441155739918751::1795075137::0::1::::<>Control<><>0<>0<><>::
+hud.tscn::PackedScene::-1::1794810295::0::1::::<><><>0<>0<><>::res://game/ui/hud.gd<>res://game/ui/action_icon.gd<>res://art/fonts/Beholden-Regular.ttf
 ::res://game/world/::1794749310
 corridor.gd::GDScript::8651685216966075270::1794750696::0::1::::<>Node3D<><>0<>0<><>::
 corridor.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/world/corridor.gd<>res://game/world/modules/deck.tscn<>res://game/world/modules/jamb.tscn<>res://game/world/modules/sconce.tscn<>res://game/world/modules/wall.tscn<>res://game/world/modules/arch.tscn
-dungeon.gd::GDScript::6427282609676109090::1794751993::0::1::::<>Node3D<><>0<>0<><>::
+dungeon.gd::GDScript::6427282609676109090::1794770368::0::1::::<>Node3D<><>0<>0<><>::
 ::res://game/world/materials/::1794749147
 masonry.tres::ShaderMaterial::-1::1794749147::0::1::::<><><>0<>0<><>::res://game/rendering/shaders/ink.gdshader<>res://art/PSX_Dungeon/PSX_Dungeon/Textures/Dungeon_Map.png
 ::res://game/world/modules/::1794751817

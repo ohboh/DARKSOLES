@@ -60,6 +60,7 @@ func _ready():
 	if save.load("user://descent.cfg")==OK: best=save.get_value("run","best",0)
 	reset_run()
 	state="title"
+	hands.reset_playback()
 func clear_outgoing_corridor():
 	for tile in outgoing_corridor.values():
 		tile.node.queue_free()
@@ -68,6 +69,7 @@ func clear_outgoing_corridor():
 
 func reset_run():
 	hands.reset_playback()
+	hands.get_node("AnimatedWeapons").start_run()
 	clear_outgoing_corridor()
 	treasure_index=-1
 	world.reset()
@@ -104,7 +106,7 @@ func hit(idx,amount,stun=0.):
 		if fight==idx: fight=-1
 		if near==idx: near=-1
 func act(i):
-	if state!="run" or cd[i]>0: return
+	if state!="run" or cd[i]>0 or hands.get_node("AnimatedWeapons").intro_stage > 0: return
 	var id=slots[i]
 	match id:
 		"Sword": pass

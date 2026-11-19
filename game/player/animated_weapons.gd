@@ -26,6 +26,8 @@ var shield_outline: ShaderMaterial
 @export var shield_parry: StringName = &"Shield_Parry"
 var players: Array[AnimationPlayer] = []
 var next_slash := 0
+var intro_stage := 0
+@export var sword_draw: StringName = &"Sword_Draw"
 
 func _ready():
 	var rig = $Rig
@@ -96,7 +98,28 @@ func hold_idle(side: int):
 	players[side].seek(0, true)
 	players[side].pause()
 
+func start_run():
+	reset_playback()
+	intro_stage = 1
+	players[1].play(shield_return, 0.0)
+	players[1].seek(0, true)
+	players[1].pause()
+	players[0].play(sword_draw, 0.0)
+	players[0].advance(0)
+
 func finish_action(clip: StringName, side: int):
+	if intro_stage > 0:
+		if intro_stage == 1 and side == 0 and clip == sword_draw:
+			intro_stage = 2
+			play_clip(0, sword_return)
+		elif intro_stage == 2 and side == 0 and clip == sword_return:
+			hold_idle(0)
+			intro_stage = 3
+			play_clip(1, shield_return)
+		elif intro_stage == 3 and side == 1 and clip == shield_return:
+			hold_idle(1)
+			intro_stage = 0
+		return
 	var return_clip := sword_return if side == 0 else shield_return
 	if clip != return_clip and players[side].has_animation(return_clip):
 		play_clip(side, return_clip)
@@ -108,6 +131,7 @@ func play_clip(side: int, clip: StringName):
 		players[side].play(clip, 0.04)
 
 func cue(action: StringName, has_left: bool):
+	if intro_stage > 0: return
 	match action:
 		&"sword":
 			if not sword_slashes.is_empty():
@@ -127,6 +151,7 @@ func set_shield_depth(depth: float):
 	shield_outline.set_shader_parameter("view_depth_scale", depth)
 
 func reset_playback():
+	intro_stage = 0
 	next_slash = 0
 	previous_distance = 0.0
 	walk_strength = 0.0

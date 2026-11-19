@@ -46,7 +46,6 @@ func refresh():
 func _draw():
 	if not run or not $Play.visible: return
 	draw_set_transform(Vector2.ZERO,0,size/Vector2(540,1170))
-	if run.slash>0: draw_line(Vector2(432,351),Vector2(108,725),Color.WHITE,2)
 	if run.success>0: draw_arc(Vector2(270,491),6+(0.3-run.success)*648,0,TAU,72,Color.WHITE,2)
 	if run.fight<0: return
 	var enemy=run.tiles[run.fight].obj

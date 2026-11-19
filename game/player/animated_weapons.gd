@@ -75,7 +75,8 @@ func emit_strike(action: StringName):
 
 func hold_idle(side: int):
 	var clip: StringName = &"Sword_Idle" if side == 0 else &"Shield_Idle"
-	play_clip(side, clip)
+	# Apply the idle immediately before pausing, without retaining the previous blend.
+	players[side].play(clip, 0.0)
 	players[side].seek(0, true)
 	players[side].pause()
 

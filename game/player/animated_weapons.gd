@@ -1,7 +1,7 @@
 extends Node3D
 signal strike(action: StringName)
 @export_group("Framing")
-@export var view_offset := Vector3.ZERO
+@export var view_offset := Vector3(0, 0.18, 0)
 @export_group("Impact timing")
 ## Seconds into each slash at which damage lands.
 @export var slash_impact_times := PackedFloat32Array([0.20, 0.20, 0.20])
@@ -59,9 +59,11 @@ func _ready():
 	for mesh in rig.find_children("*", "MeshInstance3D"):
 		var original = mesh.get_active_material(0)
 		var material := ShaderMaterial.new()
-		material.shader = preload("res://game/rendering/shaders/ink.gdshader")
+		material.shader = preload("res://game/rendering/shaders/weapon.gdshader")
 		if original is BaseMaterial3D and original.albedo_texture:
 			material.set_shader_parameter("atlas", original.albedo_texture)
+		if original is BaseMaterial3D:
+			material.set_shader_parameter("pigment", original.albedo_color)
 		var outline := ShaderMaterial.new()
 		outline.shader = preload("res://game/rendering/shaders/contour.gdshader")
 		material.next_pass = outline
@@ -110,3 +112,4 @@ func reset_playback():
 func animate(run, _dt):
 	$Rig/Sword_armature.visible = "Sword" in run.slots or "Parry" in run.slots
 	$Rig/Shield_armature.visible = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
+

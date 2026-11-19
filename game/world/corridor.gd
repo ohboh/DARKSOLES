@@ -1,6 +1,7 @@
 extends Node3D
 
 # Unused exit assemblies are removed once, when the streaming system places this tile.
+@export var door_variants: Array[PackedScene] = [preload("res://game/world/modules/doorway_2.tscn"), preload("res://game/world/modules/doorway_3.tscn")]
 @export var door_scene:PackedScene=preload("res://game/world/modules/doorway.tscn")
 @export var stairs_scene:PackedScene=preload("res://game/world/modules/descending_flight.tscn")
 @export var omen_scene:PackedScene=preload("res://game/world/modules/route_omen.tscn")
@@ -36,7 +37,9 @@ func configure(index:int, exits:Dictionary,terrain:String="hall",drop:float=1.05
 		var kind=exits[direction]
 		hint.material_override.set_shader_parameter("omen",2 if kind=="foe" else (1 if kind=="shrine" else 0))
 	if terrain=="door":
-		var doorway=door_scene.instantiate()
+		var candidates: Array[PackedScene] = [door_scene]
+		candidates.append_array(door_variants)
+		var doorway=candidates.pick_random().instantiate()
 		add_child(doorway)
 		hinge=doorway.get_node("Hinge")
 	elif terrain=="stairs":

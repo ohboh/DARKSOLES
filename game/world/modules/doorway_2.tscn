@@ -1,0 +1,66 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Door_02.fbx" id="door"]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Door_Frame_01.fbx" id="frame"]
+[ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Wall_01.fbx" id="upper_wall"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/contour.gdshader" id="outline_shader"]
+[ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Dungeon_Map.png" id="stone_atlas"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="ink"]
+[ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Doors_Map.png" id="wood"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/door.gdshader" id="door_shader"]
+[sub_resource type="ShaderMaterial" id="outline"]
+shader = ExtResource("outline_shader")
+shader_parameter/outline_width = 3.0
+[sub_resource type="ShaderMaterial" id="stone"]
+shader = ExtResource("ink")
+shader_parameter/atlas = ExtResource("stone_atlas")
+shader_parameter/stone = 1.0
+[sub_resource type="ShaderMaterial" id="woodmat"]
+next_pass = SubResource("outline")
+shader = ExtResource("door_shader")
+shader_parameter/atlas = ExtResource("wood")
+[sub_resource type="ShaderMaterial" id="iron"]
+next_pass = SubResource("outline")
+shader = ExtResource("ink")
+shader_parameter/pigment = Color(0.78,0.78,0.78,1)
+[sub_resource type="BoxMesh" id="strap"]
+size = Vector3(1.55,0.065,0.045)
+[sub_resource type="TorusMesh" id="ring"]
+inner_radius = 0.063
+outer_radius = 0.10
+rings = 12
+ring_segments = 6
+[node name="Doorway" type="Node3D"]
+[node name="Frame" parent="." instance=ExtResource("frame")]
+scale = Vector3(0.165,0.17,0.10)
+[node name="Cube_040" parent="Frame" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("stone")
+[node name="UpperMasonry" parent="." instance=ExtResource("upper_wall")]
+position = Vector3(0,3.4,0)
+scale = Vector3(0.165,0.15,0.10)
+[node name="Cube_038" parent="UpperMasonry" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("stone")
+[node name="Hinge" type="Node3D" parent="."]
+position = Vector3(0.825,0,0)
+[node name="Door" parent="Hinge" instance=ExtResource("door")]
+scale = Vector3(0.165,0.17,0.08)
+[node name="Cube_061" parent="Hinge/Door" index="0"]
+transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0,0)
+material_override = SubResource("woodmat")
+[node name="UpperStrap" type="MeshInstance3D" parent="Hinge"]
+position = Vector3(-0.815,1.96,0.098)
+mesh = SubResource("strap")
+material_override = SubResource("iron")
+[node name="LowerStrap" type="MeshInstance3D" parent="Hinge"]
+position = Vector3(-0.815,0.51,0.098)
+mesh = SubResource("strap")
+material_override = SubResource("iron")
+[node name="PullRing" type="MeshInstance3D" parent="Hinge"]
+position = Vector3(-1.40,1.15,0.14)
+rotation = Vector3(1.4,0,0)
+mesh = SubResource("ring")
+material_override = SubResource("iron")
+[editable path="UpperMasonry"]
+[editable path="Frame"]
+[editable path="Hinge/Door"]

@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Dungeon_Map.png" id="stone_atlas"]
 [ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="ink"]
 [ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Doors_Map.png" id="wood"]
+[ext_resource type="Shader" path="res://game/rendering/shaders/door.gdshader" id="door_shader"]
 [sub_resource type="ShaderMaterial" id="outline"]
 shader = ExtResource("outline_shader")
 shader_parameter/outline_width = 3.0
@@ -15,7 +16,7 @@ shader_parameter/atlas = ExtResource("stone_atlas")
 shader_parameter/stone = 1.0
 [sub_resource type="ShaderMaterial" id="woodmat"]
 next_pass = SubResource("outline")
-shader = ExtResource("ink")
+shader = ExtResource("door_shader")
 shader_parameter/atlas = ExtResource("wood")
 [sub_resource type="ShaderMaterial" id="iron"]
 next_pass = SubResource("outline")

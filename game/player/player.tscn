@@ -1,104 +1,12 @@
-[gd_scene format=3]
-[ext_resource type="Script" path="res://game/player/player.gd" id="controller"]
-[ext_resource type="Script" path="res://game/player/arms.gd" id="hands"]
+[gd_scene format=3 uid="uid://bq35djgyvbfnc"]
+[ext_resource type="Script" uid="uid://c3ynx0ibphe2e" path="res://game/player/player.gd" id="controller"]
 [ext_resource type="PackedScene" path="res://game/player/animated_weapons.tscn" id="weapons"]
-[ext_resource type="PackedScene" path="res://game/player/equipment/sword.tscn" id="sword"]
-[ext_resource type="PackedScene" path="res://game/player/equipment/shield.tscn" id="shield"]
-[ext_resource type="PackedScene" path="res://game/player/equipment/tome.tscn" id="tome"]
-[ext_resource type="PackedScene" path="res://art/player/Fp hands/Fp hands.fbx" id="rig"]
-[ext_resource type="Texture2D" path="res://art/player/Fp hands/texture of the arms 2.png" id="skin"]
-[ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="ink"]
-[ext_resource type="Shader" path="res://game/rendering/shaders/contour.gdshader" id="outline"]
 
-[ext_resource type="Script" path="res://game/player/hand_channel.gd" id="channel"]
-[sub_resource type="AnimationLibrary" id="authored"]
-[sub_resource type="ShaderMaterial" id="contour"]
-shader = ExtResource("outline")
-[sub_resource type="ShaderMaterial" id="surface"]
-shader = ExtResource("ink")
-next_pass = SubResource("contour")
-shader_parameter/atlas = ExtResource("skin")
-
-[node name="Player" type="Camera3D" ]
-script = ExtResource("controller")
-position = Vector3(0,1.7,0)
-rotation = Vector3(-0.095,0,0)
+[node name="Player" type="Camera3D" unique_id=1747304013]
+transform = Transform3D(1, 0, 0, 0, 0.9954909, 0.094857164, 0, -0.094857164, 0.9954909, 0, 1.7, 0)
 fov = 76.0
 near = 0.035
+script = ExtResource("controller")
+hit_stop_duration = 0.0
 
-[node name="Hands" type="Node3D" parent="." ]
-script = ExtResource("hands")
-
-[node name="Rig" parent="Hands" instance=ExtResource("rig")]
-rotation = Vector3(2.32129,0,0)
-scale = Vector3(0.77,0.77,0.77)
-
-[node name="Skeleton3D" parent="Hands/Rig/Armature" index="0"]
-bones/0/position = Vector3(-0.007924251, 0.06167417, -0.023123467)
-bones/8/rotation = Quaternion(0.2729829, -0.5947037, -0.38564602, 0.6504499)
-bones/9/rotation = Quaternion(0.03755504, 0.14319405, -0.4398247, 0.88579863)
-bones/10/rotation = Quaternion(0.043889612, 0.14636745, -0.4330452, 0.88832545)
-bones/12/rotation = Quaternion(0.2987577, -0.6140078, -0.390632, 0.6173693)
-bones/13/rotation = Quaternion(0.010596594, 0.119281, -0.44618002, 0.8868952)
-bones/14/rotation = Quaternion(0.019253379, 0.12078097, -0.44499895, 0.88713986)
-bones/16/rotation = Quaternion(0.29875082, -0.6547942, -0.3795024, 0.5813523)
-bones/17/rotation = Quaternion(-0.028765079, 0.08779557, -0.45484525, 0.88576525)
-bones/18/rotation = Quaternion(-0.021856723, 0.08965181, -0.45000026, 0.888248)
-bones/20/rotation = Quaternion(0.35313183, -0.61195445, -0.29643434, 0.64260125)
-bones/21/rotation = Quaternion(-0.08709551, -0.041541215, 0.44913697, 0.8882369)
-bones/22/rotation = Quaternion(0.081899926, 0.043723248, -0.45140845, 0.88747454)
-bones/36/position = Vector3(0.009749526, 0.05858562, -0.020659149)
-bones/44/rotation = Quaternion(0.2985249, 0.6774576, 0.19814369, 0.64239645)
-bones/45/rotation = Quaternion(0.031107375, 0.008221684, 0.45877516, 0.88796973)
-bones/46/rotation = Quaternion(0.025074895, 0.008168877, 0.45936543, 0.88785577)
-bones/48/rotation = Quaternion(0.27859154, 0.7191703, 0.18241924, 0.60983926)
-bones/49/rotation = Quaternion(-0.018138543, 0.021270238, 0.45567414, 0.8897076)
-bones/50/rotation = Quaternion(-0.018650841, 0.020842366, 0.4638961, 0.885448)
-bones/52/rotation = Quaternion(0.3070087, 0.7423731, 0.16538121, 0.5720812)
-bones/53/rotation = Quaternion(-0.046326533, 0.06282081, 0.45159152, 0.88880396)
-bones/54/rotation = Quaternion(-0.048283927, 0.062295113, 0.4549055, 0.8870451)
-bones/56/rotation = Quaternion(0.336643, 0.65813655, 0.115856476, 0.6634041)
-bones/57/rotation = Quaternion(-0.080260254, -0.07142627, -0.45689112, 0.8830102)
-bones/58/rotation = Quaternion(0.076969996, 0.07183915, 0.45284486, 0.8853509)
-
-[node name="Cube_001" index="0" parent="Hands/Rig/Armature/Skeleton3D" ]
-material_override = SubResource("surface")
-
-[node name="ClipLibrary" type="AnimationPlayer" parent="Hands"]
-libraries/ = SubResource("authored")
-
-[node name="LeftHand" type="AnimationPlayer" parent="Hands"]
-script = ExtResource("channel")
-control_roots = Array[StringName]([&"Bone.023.R", &"Bone.024.R", &"Bone.025.R", &"Bone.026.R", &"Bone.027.R", &"Bone.028.R"])
-
-[node name="RightHand" type="AnimationPlayer" parent="Hands"]
-script = ExtResource("channel")
-shoulder_bone = &"Bone.004.R"
-palm_bone = &"Bone.008.R"
-control_roots = Array[StringName]([&"Bone.023.L", &"Bone.024.L", &"Bone.025.L", &"Bone.026.L", &"Bone.027.L", &"Bone.028.L"])
-
-[node name="LeftGrip" type="BoneAttachment3D" parent="Hands/Rig/Armature/Skeleton3D"]
-bone_name = "Bone.008.L"
-bone_idx = 8
-
-[node name="Shield" parent="Hands/Rig/Armature/Skeleton3D/LeftGrip" instance=ExtResource("shield")]
-transform = Transform3D(-0.0002452545, -0.065277435, 0.09400693, 0.11272629, -0.016384812, -0.011083359, 0.01977987, 0.09256838, 0.06433012, -0.00717289, 6.7194924e-05, -0.0012257472)
-
-[node name="Tome" parent="Hands/Rig/Armature/Skeleton3D/LeftGrip" instance=ExtResource("tome")]
-transform = Transform3D(0.025743641, -0.065277435, 0.090413645, 0.10527326, -0.016384812, -0.04180427, 0.036787547, 0.09256838, 0.05635854, -0.0069554523, 0.00018911157, 0.004326202)
-visible = false
-
-[node name="RightGrip" type="BoneAttachment3D" parent="Hands/Rig/Armature/Skeleton3D"]
-bone_name = "Bone.008.R"
-bone_idx = 44
-
-[node name="Sword" parent="Hands/Rig/Armature/Skeleton3D/RightGrip" instance=ExtResource("sword")]
-transform = Transform3D(0.038332738, 0.067331, -0.08423568, -0.1052571, 0.0039178375, -0.044767182, -0.023453267, 0.092464626, 0.06323573, 0.003610786, 0.0027934164, 0.006373193)
-
-[node name="Tome" parent="Hands/Rig/Armature/Skeleton3D/RightGrip" instance=ExtResource("tome")]
-transform = Transform3D(0.052673254, 0.05681893, -0.08423568, -0.10159212, 0.027810922, -0.044767182, -0.0017557996, 0.09537652, 0.06323573, 0.006220307, 0.0031507276, 0.0043024234)
-visible = false
-
-[editable path="Hands/Rig"]
-
-[node name="AnimatedWeapons" parent="Hands" instance=ExtResource("weapons")]
+[node name="AnimatedWeapons" parent="." instance=ExtResource("weapons")]

@@ -19,16 +19,9 @@ Start with **game/scenes/main.tscn**. The scene tree contains the Dungeon genera
 
 Procedural route selection, input timing, skeletal posing, and the animated combat rings are scripted. To add an enemy variant, create an inherited scene from enemy_base.tscn, set its illustration and stats, then assign it to an enemy slot on Dungeon.
 
-## Animating the first-person arms
+## Animating the first-person weapons
 
-Open **game/player/player.tscn**. The shared skeleton starts in the in-game grip pose, with the equipment attached to its palm bones.
-
-1. Select **Hands → ClipLibrary**, create a named clip in the Animation panel, and key bone position, rotation, or scale on **Hands → Rig → Armature → Skeleton3D**. Scrub the clip to preview the equipment following the hands. Imported takes from **Rig → AnimationPlayer** also appear in the assignment lists. Local clips take precedence when names match.
-2. Select **Hands → RightHand → Actions** and choose your swing clip for **Sword**. Select **Hands → LeftHand → Actions** and choose your guard clip for **Shield**. Locomotion and reaction slots work the same way.
-3. Each channel plays its own bone hierarchy, so a right-hand swing and left-hand guard can overlap. For a two-handed action, assign the same clip to that action on both channels. Playback uses skeletal transform tracks. The equipment follows the grip sockets.
-4. Idle and Walk repeat. Actions play once and return to locomotion. Slots start **Unassigned**, with the existing procedural poses available while you animate. The Player node controls gameplay timing independently of clip length.
-
-Edit an item's local transform beneath **LeftGrip** or **RightGrip** to change how it sits in the fingers. Both are BoneAttachment3D nodes under Skeleton3D. The masks follow shoulder ancestry because several bones in the supplied FBX have crossed name suffixes.
+Open game/player/animated_weapons.tscn to assign sword and shield clips and tune framing, walking sway, and impact timing. The weapon armatures play independently. Losing the left side disables the shield and shield bash.
 
 ## Dungeon transitions and route cues
 
@@ -44,6 +37,4 @@ Run the mechanics regression from the project directory:
 
     godot --headless --path . --script res://tests/check_run.gd
 
-Run the hand animation regression with:
 
-    godot --headless --path . --script res://tests/check_arm_animations.gd

@@ -3,8 +3,7 @@ extends Node3D
 @export_range(0.25, 3.0, 0.05) var enemy_encounter_range := 1.0
 @onready var cam=$Player
 @onready var world=$Dungeon
-@onready var hands=$Player/Hands
-@onready var weapons=$Player/Hands/AnimatedWeapons
+@onready var weapons=$Player/AnimatedWeapons
 var hit_stop_remaining := 0.0
 var movement_scale := 1.0
 @onready var bolt=$Fireball
@@ -56,14 +55,14 @@ var turn_to=Vector3.ZERO
 var turn_entry_heading=0.
 const JUNCTION_HALF_WIDTH=1.5
 func _ready():
-	hands.get_node("AnimatedWeapons").strike.connect(resolve_weapon_strike)
+	weapons.strike.connect(resolve_weapon_strike)
 	world.geometry_changed.connect(func(): light_dirty=true)
 	ui.bind(self)
 	var save=ConfigFile.new()
 	if save.load("user://descent.cfg")==OK: best=save.get_value("run","best",0)
 	reset_run()
 	state="title"
-	hands.reset_playback()
+	weapons.reset_playback()
 func clear_outgoing_corridor():
 	for tile in outgoing_corridor.values():
 		tile.node.queue_free()
@@ -74,8 +73,7 @@ func reset_run():
 	hit_stop_remaining = 0.0
 	movement_scale = 1.0
 	weapons.set_playback_speed(1.0)
-	hands.reset_playback()
-	hands.get_node("AnimatedWeapons").start_run()
+	weapons.start_run()
 	clear_outgoing_corridor()
 	treasure_index=-1
 	world.reset()
@@ -94,13 +92,13 @@ func damage(n):
 	hp-=n; flash=.45; shake=.35
 	if hp<=0:
 		state="dead"
-		hands.cue(&"death",arm)
+		weapons.cue(&"death",arm)
 		best=maxi(best,int(p*2))
 		var save=ConfigFile.new()
 		save.set_value("run","best",best)
 		save.save("user://descent.cfg")
 	else:
-		hands.cue(&"hurt",arm)
+		weapons.cue(&"hurt",arm)
 	if hp>0 and arm and hp<=cam.arm_loss_health:
 		arm=false; guard=0.; flash=.9; shake=.7; say("You lose your arm")
 func hit(idx,amount,stun=0.):
@@ -131,7 +129,7 @@ func act(i):
 			projectile=near; flight=cam.flight_duration
 		"Mend": hp=mini(maximum,hp+cam.flask_healing); say("Blood flask")
 	cd[i]=cam.cooldowns[id]
-	hands.cue(StringName(id.to_lower().replace(" ","_")),arm)
+	weapons.cue(StringName(id.to_lower().replace(" ","_")),arm)
 func resolve_weapon_strike(action: StringName):
 	if state != "run" or fight < 0: return
 	match action:
@@ -150,13 +148,13 @@ func combat(enemy,dt):
 		enemy.timer=cam.parry_stun
 		success=.3
 		say("PARRY")
-		hands.cue(&"parry_success",arm)
+		weapons.cue(&"parry_success",arm)
 	elif guard>0:
 		if enemy.heavy:
 			guard=0.; say("Guard broken"); damage(1)
-			if hp>0: hands.cue(&"guard_broken",arm)
+			if hp>0: weapons.cue(&"guard_broken",arm)
 		else:
-			shake=.12; say("Blocked"); hands.cue(&"blocked",arm)
+			shake=.12; say("Blocked"); weapons.cue(&"blocked",arm)
 	else:
 		damage(enemy.heavy_damage if enemy.heavy else enemy.light_damage)
 func decide_treasure(open:bool):
@@ -278,7 +276,7 @@ func _process(delta):
 	cam.rotation.x=lerp_angle(cam.rotation.x,pitch_target,1.-exp(-7.*dt))
 	cam.rotation.y=yaw
 	cam.position=loc+Vector3(sin(time*97)*shake*.06,eye_height+.018*sin(p*TAU)+cos(time*83)*shake*.04,0)
-	hands.animate(self,dt)
+	weapons.animate(self,dt)
 	bolt.visible=projectile>=0 and tiles.has(projectile)
 	if bolt.visible: bolt.position=cam.position.lerp(tiles[projectile].node.position+Vector3.UP,1.-flight/cam.flight_duration)
 	for t in tiles.values():

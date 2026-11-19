@@ -67,6 +67,10 @@ func _ready():
 			material.set_shader_parameter("pigment", original.albedo_color)
 		var outline := ShaderMaterial.new()
 		outline.shader = preload("res://game/rendering/shaders/contour.gdshader")
+		# Compress shield depth while preserving its projected position and size.
+		if mesh.name == "Shield":
+			material.set_shader_parameter("view_depth_scale", 0.25)
+			outline.set_shader_parameter("view_depth_scale", 0.25)
 		material.next_pass = outline
 		mesh.material_override = material
 	reset_playback()

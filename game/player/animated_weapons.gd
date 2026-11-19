@@ -11,6 +11,7 @@ signal strike(action: StringName)
 @export var sword_slashes: Array[StringName] = [&"Sword_Slash_1", &"Sword_Slash_2", &"Sword_Slash_3"]
 @export var sword_parry: StringName = &"Sword_Parry"
 @export var sword_return: StringName = &"Sword_toIdle"
+@export var shield_return: StringName = &"Shield_toIdle"
 @export var shield_use: StringName = &"Shield_Use"
 @export var shield_bash: StringName = &"Shield_Bash"
 @export var shield_parry: StringName = &"Shield_Parry"
@@ -81,8 +82,9 @@ func hold_idle(side: int):
 	players[side].pause()
 
 func finish_action(clip: StringName, side: int):
-	if side == 0 and clip != sword_return:
-		play_clip(0, sword_return)
+	var return_clip := sword_return if side == 0 else shield_return
+	if clip != return_clip and players[side].has_animation(return_clip):
+		play_clip(side, return_clip)
 	else:
 		hold_idle(side)
 

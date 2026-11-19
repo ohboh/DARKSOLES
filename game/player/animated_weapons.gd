@@ -1,7 +1,7 @@
 extends Node3D
 signal strike(action: StringName)
 @export_group("Framing")
-@export var view_offset := Vector3(0, -0.04, 0.32)
+@export var view_offset := Vector3.ZERO
 @export_group("Impact timing")
 ## Seconds into each slash at which damage lands.
 @export var slash_impact_times := PackedFloat32Array([0.20, 0.20, 0.20])
@@ -21,6 +21,10 @@ func _ready():
 	var rig = $Rig
 	var camera: Camera3D = rig.get_node("Camera")
 	rig.transform = camera.transform.affine_inverse()
+	var gameplay_camera := get_viewport().get_camera_3d()
+	if gameplay_camera:
+		var factor := tan(deg_to_rad(gameplay_camera.fov)*0.5) / tan(deg_to_rad(camera.fov)*0.5)
+		rig.transform = Transform3D(Basis.from_scale(Vector3(factor, factor, 1)), Vector3.ZERO) * rig.transform
 	rig.position += view_offset
 	camera.current = false
 	camera.queue_free()
@@ -67,13 +71,17 @@ func _ready():
 func emit_strike(action: StringName):
 	strike.emit(action)
 
+func hold_idle(side: int):
+	var clip: StringName = &"Sword_Idle" if side == 0 else &"Shield_Idle"
+	play_clip(side, clip)
+	players[side].seek(0, true)
+	players[side].pause()
+
 func finish_action(clip: StringName, side: int):
 	if side == 0 and clip != sword_return:
 		play_clip(0, sword_return)
-	elif side == 1:
-		play_clip(1, shield_use)
-		players[1].seek(0, true)
-		players[1].pause()
+	else:
+		hold_idle(side)
 
 func play_clip(side: int, clip: StringName):
 	if players[side].has_animation(clip):
@@ -97,9 +105,7 @@ func cue(action: StringName, has_left: bool):
 func reset_playback():
 	next_slash = 0
 	for side in 2:
-		play_clip(side, sword_return if side==0 else shield_use)
-		players[side].seek(0, true)
-		players[side].pause()
+		hold_idle(side)
 
 func animate(run, _dt):
 	$Rig/Sword_armature.visible = "Sword" in run.slots or "Parry" in run.slots

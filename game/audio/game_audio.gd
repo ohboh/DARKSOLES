@@ -3,14 +3,14 @@ extends Node
 @export_range(-40, 0, 1) var volume_db := -3.0
 @export_range(0.0, 0.15, 0.01) var pitch_variation := 0.05
 @export_range(0.0, 0.3, 0.01) var door_pitch_variation := 0.12
-@export var event_levels := {"step": -21, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -8, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
+@export var event_levels := {"step": -21, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -3, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
 const SOUNDS = {
 	"step": preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_1.wav"),
 	"draw": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_unsheathe_2.wav"),
 	"swing": preload("res://addons/soundza_game_sfx_starter/whooshes_swings/quick_air_whoosh.wav"),
 	"impact": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_hits_body.wav"),
 	"block": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_hit.wav"),
-	"parry": preload("res://addons/soundza_game_sfx_starter/from freesound/parry.ogg"),
+	"parry": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_clash_1.wav"),
 	"bash": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_bash.wav"),
 	"hurt": preload("res://addons/soundza_game_sfx_starter/hits_impacts/deep_punch_thud.wav"),
 	"death": preload("res://addons/soundza_game_sfx_starter/ui_menu/ominous_stinger.wav"),
@@ -40,6 +40,14 @@ const SOUNDS = {
 var music_players: Array[AudioStreamPlayer] = []
 var music_tween: Tween
 var music_gameplay := false
+@export var footstep_samples: Array[AudioStream] = [
+	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_1.wav"),
+	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_2.wav"),
+	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_3.wav"),
+	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_4.wav"),
+	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_5.wav"),
+]
+var last_footstep := -1
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -77,6 +85,12 @@ func play(event: String, override_sound: AudioStream = null):
 			break
 	cursor = (cursor + 1) % voices.size()
 	voice.stream = override_sound if override_sound != null else SOUNDS[event]
+	if event == "step" and not footstep_samples.is_empty():
+		var index := random.randi_range(0, footstep_samples.size()-1)
+		if index == last_footstep and footstep_samples.size() > 1:
+			index = (index + random.randi_range(1, footstep_samples.size()-1)) % footstep_samples.size()
+		last_footstep = index
+		voice.stream = footstep_samples[index]
 	voice.volume_db = volume_db + float(event_levels.get(event, -12))
 	var variation := door_pitch_variation if event == "door" else pitch_variation
 	voice.pitch_scale = random.randf_range(1.0-variation, 1.0+variation)

@@ -5,8 +5,8 @@ var run
 
 func bind(controller):
 	run=controller
-	$Title/Descend.pressed.connect(run.reset_run)
-	$Death/Restart.pressed.connect(run.reset_run)
+	$Title/Descend.pressed.connect(run.request_run)
+	$Death/Restart.pressed.connect(run.request_run)
 	$Treasure/Open.pressed.connect(run.decide_treasure.bind(true))
 	$Treasure/Leave.pressed.connect(run.decide_treasure.bind(false))
 	$Relic/Leave.pressed.connect(run.replace_slot.bind(-1))
@@ -68,7 +68,7 @@ func _unhandled_key_input(event):
 	if not run or not event.pressed or event.echo: return
 	match event.keycode:
 		KEY_ENTER,KEY_SPACE:
-			if run.state in ["title","dead"]: run.reset_run()
+			if run.state in ["title","dead"]: run.request_run()
 		KEY_1,KEY_A: run.act(0)
 		KEY_2,KEY_S: run.act(1)
 		KEY_3,KEY_D: run.act(2)

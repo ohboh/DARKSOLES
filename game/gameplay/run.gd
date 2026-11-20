@@ -55,6 +55,9 @@ var turn_to=Vector3.ZERO
 var turn_entry_heading=0.
 const JUNCTION_HALF_WIDTH=1.5
 @onready var audio = $Audio
+@onready var transition_overlay: ColorRect = $Transition/Black
+@export_range(0.1, 2.0, 0.05) var fade_duration := 0.45
+var transitioning := false
 
 func _ready():
 	weapons.strike.connect(resolve_weapon_strike)
@@ -66,6 +69,34 @@ func _ready():
 	state="title"
 	weapons.reset_playback()
 	audio.reset()
+	fade_title_in()
+func fade_title_in():
+	transitioning = true
+	var tween := create_tween()
+	tween.tween_property(transition_overlay, "color:a", 0.0, fade_duration)
+	await tween.finished
+	transitioning = false
+
+func request_run():
+	if transitioning: return
+	transitioning = true
+	var fade_out := create_tween()
+	fade_out.tween_property(transition_overlay, "color:a", 1.0, fade_duration)
+	await fade_out.finished
+	# Present the black frame before generating the new dungeon.
+	await get_tree().process_frame
+	reset_run()
+	weapons.set_playback_speed(0.0)
+	audio.reset()
+	ui.refresh()
+	await get_tree().create_timer(0.2).timeout
+	var fade_in := create_tween()
+	fade_in.tween_property(transition_overlay, "color:a", 0.0, fade_duration)
+	await fade_in.finished
+	weapons.set_playback_speed(1.0)
+	weapons.start_run()
+	transitioning = false
+
 func clear_outgoing_corridor():
 	for tile in outgoing_corridor.values():
 		tile.node.queue_free()
@@ -121,7 +152,7 @@ func hit(idx,amount,stun=0.):
 		if fight==idx: fight=-1
 		if near==idx: near=-1
 func act(i):
-	if state!="run" or hit_stop_remaining > 0 or cd[i]>0 or weapons.intro_stage > 0: return
+	if transitioning or state!="run" or hit_stop_remaining > 0 or cd[i]>0 or weapons.intro_stage > 0: return
 	var id=slots[i]
 	match id:
 		"Sword": pass
@@ -256,6 +287,7 @@ func advance(dt):
 	for k in tiles.keys():
 		if k<int(p)-2: tiles[k].node.queue_free(); tiles.erase(k)
 func _process(delta):
+	if transitioning: return
 	if hit_stop_remaining > 0:
 		hit_stop_remaining = maxf(0.0, hit_stop_remaining - delta)
 		if hit_stop_remaining > 0: return

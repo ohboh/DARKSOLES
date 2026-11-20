@@ -25,7 +25,7 @@ const SOUNDS = {
 }
 @export var impact_sounds: Dictionary[String, AudioStream] = {
 	"flesh": SOUNDS["impact"],
-	"bone": preload("res://addons/soundza_game_sfx_starter/doors_switches/wood_door_knock.wav"),
+	"bone": preload("res://addons/soundza_game_sfx_starter/from freesound/bone_hit.wav"),
 	"slime": preload("res://addons/soundza_game_sfx_starter/hits_impacts/wet_impact_flesh_hit.wav"),
 	"wood": preload("res://addons/soundza_game_sfx_starter/hits_impacts/woody_baseball_bonk.wav"),
 	"metal": preload("res://addons/soundza_game_sfx_starter/swords_melee/short_metallic_impact_hit.wav"),

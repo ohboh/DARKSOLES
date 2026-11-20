@@ -3,7 +3,7 @@ extends Node
 @export_range(-40, 0, 1) var volume_db := -3.0
 @export_range(0.0, 0.15, 0.01) var pitch_variation := 0.05
 @export_range(0.0, 0.3, 0.01) var door_pitch_variation := 0.12
-@export var event_levels := {"step": -18, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -8, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
+@export var event_levels := {"step": -21, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -8, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
 const SOUNDS = {
 	"step": preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
 	"draw": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_unsheathe_2.wav"),
@@ -23,12 +23,6 @@ const SOUNDS = {
 	"choice": preload("res://addons/soundza_game_sfx_starter/ui_menu/button_tick.wav"),
 	"break": preload("res://addons/soundza_game_sfx_starter/doors_switches/break_crack_door.wav"),
 }
-@export var footstep_variants: Array[AudioStream] = [
-	preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
-	preload("res://addons/soundza_game_sfx_starter/footsteps/footstep_1.wav"),
-]
-@export_range(0.0, 4.0, 0.1) var footstep_volume_variation_db := 1.5
-var last_step := -1
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -53,13 +47,6 @@ func play(event: String):
 	cursor = (cursor + 1) % voices.size()
 	voice.stream = SOUNDS[event]
 	voice.volume_db = volume_db + float(event_levels.get(event, -12))
-	if event == "step" and not footstep_variants.is_empty():
-		var index := random.randi_range(0, footstep_variants.size()-1)
-		if footstep_variants.size() > 1 and index == last_step:
-			index = (index + random.randi_range(1, footstep_variants.size()-1)) % footstep_variants.size()
-		last_step = index
-		voice.stream = footstep_variants[index]
-		voice.volume_db += random.randf_range(-footstep_volume_variation_db, footstep_volume_variation_db)
 	var variation := door_pitch_variation if event == "door" else pitch_variation
 	voice.pitch_scale = random.randf_range(1.0-variation, 1.0+variation)
 	voice.play()

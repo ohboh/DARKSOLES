@@ -6,7 +6,7 @@ extends Node
 const SOUNDS = {
 	"step": preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
 	"draw": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_unsheathe_2.wav"),
-	"swing": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_slash.wav"),
+	"swing": preload("res://addons/soundza_game_sfx_starter/whooshes_swings/quick_air_whoosh.wav"),
 	"impact": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_hits_body.wav"),
 	"block": preload("res://addons/soundza_game_sfx_starter/swords_melee/metal_armor_clank.wav"),
 	"parry": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_clash_1.wav"),
@@ -22,6 +22,12 @@ const SOUNDS = {
 	"choice": preload("res://addons/soundza_game_sfx_starter/ui_menu/button_tick.wav"),
 	"break": preload("res://addons/soundza_game_sfx_starter/doors_switches/break_crack_door.wav"),
 }
+@export var footstep_variants: Array[AudioStream] = [
+	preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
+	preload("res://addons/soundza_game_sfx_starter/footsteps/footstep_1.wav"),
+]
+@export_range(0.0, 4.0, 0.1) var footstep_volume_variation_db := 1.5
+var last_step := -1
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -46,6 +52,13 @@ func play(event: String):
 	cursor = (cursor + 1) % voices.size()
 	voice.stream = SOUNDS[event]
 	voice.volume_db = volume_db + float(event_levels.get(event, -12))
+	if event == "step" and not footstep_variants.is_empty():
+		var index := random.randi_range(0, footstep_variants.size()-1)
+		if footstep_variants.size() > 1 and index == last_step:
+			index = (index + random.randi_range(1, footstep_variants.size()-1)) % footstep_variants.size()
+		last_step = index
+		voice.stream = footstep_variants[index]
+		voice.volume_db += random.randf_range(-footstep_volume_variation_db, footstep_volume_variation_db)
 	voice.pitch_scale = random.randf_range(1.0-pitch_variation, 1.0+pitch_variation)
 	voice.play()
 

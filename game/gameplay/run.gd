@@ -54,6 +54,8 @@ var turn_center=Vector3.ZERO
 var turn_to=Vector3.ZERO
 var turn_entry_heading=0.
 const JUNCTION_HALF_WIDTH=1.5
+@onready var audio = $Audio
+
 func _ready():
 	weapons.strike.connect(resolve_weapon_strike)
 	world.geometry_changed.connect(func(): light_dirty=true)
@@ -63,6 +65,7 @@ func _ready():
 	reset_run()
 	state="title"
 	weapons.reset_playback()
+	audio.reset()
 func clear_outgoing_corridor():
 	for tile in outgoing_corridor.values():
 		tile.node.queue_free()
@@ -70,6 +73,7 @@ func clear_outgoing_corridor():
 	outgoing_corridor.clear()
 
 func reset_run():
+	audio.reset()
 	hit_stop_remaining = 0.0
 	movement_scale = 1.0
 	weapons.set_playback_speed(1.0)
@@ -89,9 +93,11 @@ func generate():
 func say(s):
 	notice=s; notice_t=1.1
 func damage(n):
+	audio.play("hurt")
 	hp-=n; flash=.45; shake=.35
 	if hp<=0:
 		state="dead"
+		audio.play("death")
 		weapons.cue(&"death",arm)
 		best=maxi(best,int(p*2))
 		var save=ConfigFile.new()
@@ -106,6 +112,7 @@ func hit(idx,amount,stun=0.):
 	var t=tiles[idx]
 	t.obj.take_hit(amount,stun)
 	if amount > 0 or stun > 0:
+		audio.play("impact")
 		hit_stop_remaining = cam.hit_stop_duration
 		if hit_stop_remaining > 0: weapons.set_playback_speed(0.0)
 	if t.obj.hp<=0:
@@ -130,6 +137,8 @@ func act(i):
 		"Mend": hp=mini(maximum,hp+cam.flask_healing); say("Blood flask")
 	cd[i]=cam.cooldowns[id]
 	weapons.cue(StringName(id.to_lower().replace(" ","_")),arm)
+	if id == "Fireball": audio.play("cast")
+	elif id == "Mend": audio.play("heal")
 func resolve_weapon_strike(action: StringName):
 	if state != "run" or fight < 0: return
 	match action:
@@ -148,13 +157,14 @@ func combat(enemy,dt):
 		enemy.timer=cam.parry_stun
 		success=.3
 		say("PARRY")
+		audio.play("parry")
 		weapons.cue(&"parry_success",arm)
 	elif guard>0:
 		if enemy.heavy:
-			guard=0.; say("Guard broken"); damage(1)
+			guard=0.; say("Guard broken"); audio.play("break"); damage(1)
 			if hp>0: weapons.cue(&"guard_broken",arm)
 		else:
-			shake=.12; say("Blocked"); weapons.cue(&"blocked",arm)
+			shake=.12; say("Blocked"); audio.play("block"); weapons.cue(&"blocked",arm)
 	else:
 		damage(enemy.heavy_damage if enemy.heavy else enemy.light_damage)
 func decide_treasure(open:bool):
@@ -165,6 +175,7 @@ func decide_treasure(open:bool):
 	treasure_index=-1
 	state="run"
 	if not open: return
+	audio.play("chest")
 	if world.slime_scene and randf() < chest.obj.slime_ambush_chance:
 		chest.obj.queue_free()
 		chest.obj=world.slime_scene.instantiate()
@@ -184,13 +195,13 @@ func decide_treasure(open:bool):
 
 func replace_slot(i):
 	if state!="relic": return
-	if i>=0: slots[i]=offer; cd[i]=0.
+	if i>=0: slots[i]=offer; cd[i]=0.; audio.play("relic")
 	state="run"
 func choices():
 	if state=="run" and jt>=0 and fight<0 and jt+1-p<3: return tiles[jt].paths.keys()
 	return []
 func choose(d):
-	if d in choices(): pending=d
+	if d in choices(): pending=d; audio.play("choice")
 func advance(dt):
 	near=-1; jt=-1
 	for n in range(int(p),int(p)+4):
@@ -235,6 +246,7 @@ func advance(dt):
 			t.obj.hide()
 			hp=mini(maximum,hp+t.obj.healing)
 			say(t.obj.message)
+			audio.play("heal")
 	generate()
 	for k in tiles.keys():
 		if k<int(p)-2: tiles[k].node.queue_free(); tiles.erase(k)
@@ -252,7 +264,7 @@ func _process(delta):
 		if projectile>=0:
 			flight-=dt
 			if flight<=0:
-				hit(projectile,cam.fireball_damage); projectile=-1; say("Burned")
+				hit(projectile,cam.fireball_damage); projectile=-1; say("Burned"); audio.play("fire_hit")
 		if state=="run": advance(dt)
 		elif state=="turn":
 			turn_t+=dt/.7
@@ -277,6 +289,7 @@ func _process(delta):
 	cam.rotation.y=yaw
 	cam.position=loc+Vector3(sin(time*97)*shake*.06,eye_height+.018*sin(p*TAU)+cos(time*83)*shake*.04,0)
 	weapons.animate(self,dt)
+	audio.update_steps(p, state=="run" and fight<0 and weapons.intro_stage==0, weapons.steps_per_tile)
 	bolt.visible=projectile>=0 and tiles.has(projectile)
 	if bolt.visible: bolt.position=cam.position.lerp(tiles[projectile].node.position+Vector3.UP,1.-flight/cam.flight_duration)
 	for t in tiles.values():

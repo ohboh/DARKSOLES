@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://dsgvkjekw4b4g" path="res://game/rendering/shaders/post.gdshader" id="post"]
 [ext_resource type="Script" uid="uid://dkpit4slen6ov" path="res://game/gameplay/run.gd" id="run"]
 
+[ext_resource type="Script" path="res://game/audio/game_audio.gd" id="audio_script"]
 [sub_resource type="ShaderMaterial" id="postfx"]
 resource_local_to_scene = true
 shader = ExtResource("post")
@@ -28,6 +29,7 @@ shader_parameter/peak_density = 0.32
 shader_parameter/injury = 0.0
 shader_parameter/impact = 0.0
 shader_parameter/beat = 0.0
+
 
 [node name="Darksoles" type="Node3D" unique_id=1091938980]
 script = ExtResource("run")
@@ -75,3 +77,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("blood_script")
+
+[node name="Audio" type="Node" parent="."]
+script = ExtResource("audio_script")

@@ -6,6 +6,7 @@ extends Node3D
 @export var stairs_scene:PackedScene=preload("res://game/world/modules/descending_flight.tscn")
 @export var omen_scene:PackedScene=preload("res://game/world/modules/route_omen.tscn")
 var hinge:Node3D
+var door_sounded := false
 
 func configure(index:int, exits:Dictionary,terrain:String="hall",drop:float=1.05):
 	for side in [-1,1]:
@@ -51,6 +52,9 @@ func configure(index:int, exits:Dictionary,terrain:String="hall",drop:float=1.05
 		$WallRight.position.y-=drop
 
 func update_door(local_progress:float):
+	if not door_sounded and local_progress > -.65:
+		door_sounded = true
+		get_tree().call_group("game_audio", "play", "door")
 	hinge.rotation.y=-PI*.51*smoothstep(-.65,.22,local_progress)
 
 func discard(child_name:String):

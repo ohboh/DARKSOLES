@@ -110,6 +110,7 @@ func start_run():
 	players[1].seek(0, true)
 	players[1].pause()
 	players[0].play(sword_draw, 0.0)
+	get_tree().call_group("game_audio", "play", "draw")
 	players[0].advance(0)
 
 func finish_action(clip: StringName, side: int):
@@ -134,6 +135,8 @@ func finish_action(clip: StringName, side: int):
 func play_clip(side: int, clip: StringName):
 	if players[side].has_animation(clip):
 		players[side].play(clip, 0.04)
+		if clip in sword_slashes: get_tree().call_group("game_audio", "play", "swing")
+		elif clip == shield_bash: get_tree().call_group("game_audio", "play", "bash")
 
 func cue(action: StringName, has_left: bool):
 	if intro_stage > 0: return

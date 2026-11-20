@@ -62,7 +62,7 @@ func _ready():
 	ui.bind(self)
 	var save=ConfigFile.new()
 	if save.load("user://descent.cfg")==OK: best=save.get_value("run","best",0)
-	reset_run()
+	reset_run(false)
 	state="title"
 	weapons.reset_playback()
 	audio.reset()
@@ -72,7 +72,8 @@ func clear_outgoing_corridor():
 	light_dirty=true
 	outgoing_corridor.clear()
 
-func reset_run():
+func reset_run(with_music: bool = true):
+	if with_music: audio.start_gameplay_music()
 	audio.reset()
 	hit_stop_remaining = 0.0
 	movement_scale = 1.0

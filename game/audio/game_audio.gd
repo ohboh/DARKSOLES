@@ -5,13 +5,13 @@ extends Node
 @export_range(0.0, 0.3, 0.01) var door_pitch_variation := 0.12
 @export var event_levels := {"step": -21, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -8, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
 const SOUNDS = {
-	"step": preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
+	"step": preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_1.wav"),
 	"draw": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_unsheathe_2.wav"),
 	"swing": preload("res://addons/soundza_game_sfx_starter/whooshes_swings/quick_air_whoosh.wav"),
 	"impact": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_hits_body.wav"),
-	"block": preload("res://addons/soundza_game_sfx_starter/swords_melee/metal_armor_clank.wav"),
-	"parry": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_clash_1.wav"),
-	"bash": preload("res://addons/soundza_game_sfx_starter/swords_melee/weapon_swing_1.wav"),
+	"block": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_hit.wav"),
+	"parry": preload("res://addons/soundza_game_sfx_starter/from freesound/parry.ogg"),
+	"bash": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_bash.wav"),
 	"hurt": preload("res://addons/soundza_game_sfx_starter/hits_impacts/deep_punch_thud.wav"),
 	"death": preload("res://addons/soundza_game_sfx_starter/ui_menu/ominous_stinger.wav"),
 	"door": preload("res://addons/soundza_game_sfx_starter/doors_switches/creaky_door_open.wav"),
@@ -29,9 +29,17 @@ const SOUNDS = {
 	"slime": preload("res://addons/soundza_game_sfx_starter/hits_impacts/wet_impact_flesh_hit.wav"),
 	"wood": preload("res://addons/soundza_game_sfx_starter/hits_impacts/woody_baseball_bonk.wav"),
 	"metal": preload("res://addons/soundza_game_sfx_starter/swords_melee/short_metallic_impact_hit.wav"),
-	"shield": preload("res://addons/soundza_game_sfx_starter/swords_melee/metal_armor_clank.wav"),
+	"shield": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_hit.wav"),
 	"spectral": preload("res://addons/soundza_game_sfx_starter/magic/puff_of_smoke.wav"),
 }
+@export_group("Music")
+@export_range(-40, 0, 1) var music_volume_db := -20.0
+@export_range(0.1, 5.0, 0.1) var music_crossfade_seconds := 1.5
+@export var title_music: AudioStream = preload("res://music/Bonfires_dark_fantasy/WAV_Mistridden_Woods.wav")
+@export var gameplay_music: AudioStream = preload("res://music/Bonfires_dark_fantasy/WAV_Necrons_Tower.wav")
+var music_players: Array[AudioStreamPlayer] = []
+var music_tween: Tween
+var music_gameplay := false
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -40,6 +48,14 @@ var step_distance := 0.0
 
 func _ready():
 	add_to_group("game_audio")
+	for stream in [title_music, gameplay_music]:
+		var player := AudioStreamPlayer.new()
+		player.stream = stream
+		player.volume_db = -80.0
+		add_child(player)
+		music_players.append(player)
+	music_players[0].volume_db = music_volume_db
+	music_players[0].play()
 	random.randomize()
 	for i in 8:
 		var voice := AudioStreamPlayer.new()
@@ -79,3 +95,13 @@ func update_steps(distance: float, walking: bool, steps_per_tile: float):
 	if step_distance >= 1.0 / steps_per_tile:
 		step_distance = fmod(step_distance, 1.0 / steps_per_tile)
 		play("step")
+
+
+func start_gameplay_music():
+	if music_gameplay: return
+	music_gameplay = true
+	music_players[1].play()
+	music_tween = create_tween().set_parallel(true)
+	music_tween.tween_property(music_players[0], "volume_db", -80.0, music_crossfade_seconds)
+	music_tween.tween_property(music_players[1], "volume_db", music_volume_db, music_crossfade_seconds)
+	music_tween.chain().tween_callback(music_players[0].stop)

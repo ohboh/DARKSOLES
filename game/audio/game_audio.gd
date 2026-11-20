@@ -10,7 +10,7 @@ const SOUNDS = {
 	"swing": preload("res://addons/soundza_game_sfx_starter/whooshes_swings/quick_air_whoosh.wav"),
 	"impact": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_hits_body.wav"),
 	"block": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_hit.wav"),
-	"parry": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_clash_1.wav"),
+	"parry": preload("res://addons/soundza_game_sfx_starter/from freesound/parry.wav"),
 	"bash": preload("res://addons/soundza_game_sfx_starter/from freesound/shield_bash.wav"),
 	"hurt": preload("res://addons/soundza_game_sfx_starter/hits_impacts/deep_punch_thud.wav"),
 	"death": preload("res://addons/soundza_game_sfx_starter/ui_menu/ominous_stinger.wav"),

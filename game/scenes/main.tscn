@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://8jfcum0tl6hx"]
 
+[ext_resource type="Script" uid="uid://c7hpsodohw2yi" path="res://game/audio/game_audio.gd" id="audio_script"]
 [ext_resource type="Script" uid="uid://drpvq3aam5kyp" path="res://game/rendering/hurt_vignette.gd" id="blood_script"]
 [ext_resource type="Shader" uid="uid://b5s286llgbxho" path="res://game/rendering/shaders/hurt_vignette.gdshader" id="blood_shader"]
 [ext_resource type="PackedScene" path="res://game/player/equipment/fireball.tscn" id="bolt"]
 [ext_resource type="Script" uid="uid://cxton12qsrrss" path="res://game/world/dungeon.gd" id="controller"]
 [ext_resource type="PackedScene" path="res://game/ui/hud.tscn" id="hud"]
 [ext_resource type="Shader" uid="uid://bpuli36q3mes8" path="res://game/rendering/shaders/palette.gdshader" id="palette"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="player"]
+[ext_resource type="PackedScene" uid="uid://bq35djgyvbfnc" path="res://game/player/player.tscn" id="player"]
 [ext_resource type="Shader" uid="uid://dsgvkjekw4b4g" path="res://game/rendering/shaders/post.gdshader" id="post"]
 [ext_resource type="Script" uid="uid://dkpit4slen6ov" path="res://game/gameplay/run.gd" id="run"]
 
-[ext_resource type="Script" path="res://game/audio/game_audio.gd" id="audio_script"]
 [sub_resource type="ShaderMaterial" id="postfx"]
 resource_local_to_scene = true
 shader = ExtResource("post")
@@ -30,7 +30,6 @@ shader_parameter/injury = 0.0
 shader_parameter/impact = 0.0
 shader_parameter/beat = 0.0
 
-
 [node name="Darksoles" type="Node3D" unique_id=1091938980]
 script = ExtResource("run")
 enemy_encounter_range = 0.75
@@ -39,7 +38,6 @@ enemy_encounter_range = 0.75
 script = ExtResource("controller")
 
 [node name="Player" parent="." unique_id=799476707 instance=ExtResource("player")]
-transform = Transform3D(1, 0, 0, 0, 0.9954909, 0.094857164, 0, -0.094857164, 0.9954909, 0, 1.7, 0)
 bash_stun = 0.6000000000000001
 
 [node name="Fireball" parent="." unique_id=1391911953 instance=ExtResource("bolt")]
@@ -78,15 +76,34 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("blood_script")
 
-[node name="Audio" type="Node" parent="."]
+[node name="Audio" type="Node" parent="." unique_id=1333303165]
 script = ExtResource("audio_script")
+event_levels = {
+"bash": -12,
+"block": -12,
+"break": -12,
+"cast": -14,
+"chest": -13,
+"choice": -20,
+"death": -12,
+"door": -14,
+"draw": -9,
+"fire_hit": -18,
+"heal": -16,
+"hurt": -12,
+"impact": -9,
+"parry": -16,
+"relic": -15,
+"step": -11,
+"swing": -12
+}
 
-
-[node name="Transition" type="CanvasLayer" parent="."]
+[node name="Transition" type="CanvasLayer" parent="." unique_id=1895151808]
 layer = 100
 
-[node name="Black" type="ColorRect" parent="Transition"]
+[node name="Black" type="ColorRect" parent="Transition" unique_id=1264736684]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 1)
 mouse_filter = 2
+color = Color(0, 0, 0, 1)

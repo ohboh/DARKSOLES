@@ -186,4 +186,3 @@ func animate(run, dt):
 	set_shield_depth(1.0 if parrying else 0.25)
 	weapon_roots[0].visible = "Sword" in run.slots or "Parry" in run.slots
 	weapon_roots[1].visible = run.arm and ("Shield" in run.slots or "Shield Bash" in run.slots)
-

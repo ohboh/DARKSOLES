@@ -14,7 +14,7 @@ extends Camera3D
 @export_range(1,20) var fireball_damage := 2
 @export_range(.05,2,.01) var flight_duration := .28
 @export_range(1,20) var flask_healing := 1
-@export var cooldowns := {"Sword":.45,"Shield":.9,"Parry":.7,"Shield Bash":1.3,"Fireball":3.5,"Mend":5.}
+@export var cooldowns := {"Sword":.7,"Shield":1.3,"Parry":1.2,"Shield Bash":2.0,"Fireball":4.5,"Mend":7.}
 @export_range(0,20) var arm_loss_health := 2
 @export_enum("Sword","Shield","Parry","Shield Bash","Mend","Fireball") var first_action := "Sword"
 @export_enum("Sword","Shield","Parry","Shield Bash","Mend","Fireball") var second_action := "Shield"

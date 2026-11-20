@@ -52,10 +52,11 @@ func configure(index:int, exits:Dictionary,terrain:String="hall",drop:float=1.05
 		$WallRight.position.y-=drop
 
 func update_door(local_progress:float):
-	if not door_sounded and local_progress > -.65:
+	var opening := smoothstep(-.65,.22,local_progress)
+	hinge.rotation.y = -PI * .51 * opening
+	if not door_sounded and opening > .01:
 		door_sounded = true
 		get_tree().call_group("game_audio", "play", "door")
-	hinge.rotation.y=-PI*.51*smoothstep(-.65,.22,local_progress)
 
 func discard(child_name:String):
 	var child=get_node(child_name)

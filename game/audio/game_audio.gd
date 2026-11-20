@@ -2,6 +2,7 @@ extends Node
 
 @export_range(-40, 0, 1) var volume_db := -3.0
 @export_range(0.0, 0.15, 0.01) var pitch_variation := 0.05
+@export_range(0.0, 0.3, 0.01) var door_pitch_variation := 0.12
 @export var event_levels := {"step": -18, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -8, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
 const SOUNDS = {
 	"step": preload("res://addons/soundza_game_sfx_starter/footsteps/leather_boots_step_2.wav"),
@@ -13,7 +14,7 @@ const SOUNDS = {
 	"bash": preload("res://addons/soundza_game_sfx_starter/swords_melee/weapon_swing_1.wav"),
 	"hurt": preload("res://addons/soundza_game_sfx_starter/hits_impacts/deep_punch_thud.wav"),
 	"death": preload("res://addons/soundza_game_sfx_starter/ui_menu/ominous_stinger.wav"),
-	"door": preload("res://addons/soundza_game_sfx_starter/doors_switches/wooden_door_creak.wav"),
+	"door": preload("res://addons/soundza_game_sfx_starter/doors_switches/creaky_door_open.wav"),
 	"chest": preload("res://addons/soundza_game_sfx_starter/doors_switches/key_lock_and_door_23.wav"),
 	"relic": preload("res://addons/soundza_game_sfx_starter/pickups_powerups/coins_1.wav"),
 	"heal": preload("res://addons/soundza_game_sfx_starter/magic/magical_heal_chime.wav"),
@@ -59,7 +60,8 @@ func play(event: String):
 		last_step = index
 		voice.stream = footstep_variants[index]
 		voice.volume_db += random.randf_range(-footstep_volume_variation_db, footstep_volume_variation_db)
-	voice.pitch_scale = random.randf_range(1.0-pitch_variation, 1.0+pitch_variation)
+	var variation := door_pitch_variation if event == "door" else pitch_variation
+	voice.pitch_scale = random.randf_range(1.0-variation, 1.0+variation)
 	voice.play()
 
 func reset():

@@ -250,6 +250,7 @@ func advance(dt):
 		pending=tiles[jt].paths.keys()[0]
 	var slow := junction_time_scale()
 	movement_scale = slow
+	audio.set_playback_speed(slow)
 	var previous_position: float = p
 	p+=dt*(cam.walking_speed+minf(1.4,p/120))*slow
 	var encounter_position: float = near - enemy_encounter_range
@@ -293,7 +294,9 @@ func _process(delta):
 		if hit_stop_remaining > 0: return
 		weapons.set_playback_speed(movement_scale)
 	var frame_dt := minf(delta, .05)
-	var dt := frame_dt * junction_time_scale()
+	var time_scale := junction_time_scale()
+	audio.set_playback_speed(time_scale)
+	var dt := frame_dt * time_scale
 	time+=dt
 	if state not in ["title","dead"]:
 		for i in 3: cd[i]=maxf(0.,cd[i]-dt)

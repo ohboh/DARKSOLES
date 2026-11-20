@@ -48,6 +48,8 @@ var music_gameplay := false
 	preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_5.wav"),
 ]
 var last_footstep := -1
+var playback_speed := 1.0
+var base_pitches: Dictionary[AudioStreamPlayer, float] = {}
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -69,6 +71,7 @@ func _ready():
 		var voice := AudioStreamPlayer.new()
 		add_child(voice)
 		voices.append(voice)
+		base_pitches[voice] = 1.0
 
 func play_impact(enemy):
 	var sound: AudioStream = enemy.impact_sound
@@ -93,10 +96,19 @@ func play(event: String, override_sound: AudioStream = null):
 		voice.stream = footstep_samples[index]
 	voice.volume_db = volume_db + float(event_levels.get(event, -12))
 	var variation := door_pitch_variation if event == "door" else pitch_variation
-	voice.pitch_scale = random.randf_range(1.0-variation, 1.0+variation)
+	base_pitches[voice] = random.randf_range(1.0-variation, 1.0+variation)
+	voice.pitch_scale = base_pitches[voice] * playback_speed
 	voice.play()
 
+func set_playback_speed(speed: float):
+	speed = clampf(speed, 0.05, 2.0)
+	if is_equal_approx(speed, playback_speed): return
+	playback_speed = speed
+	for voice in voices:
+		voice.pitch_scale = base_pitches[voice] * playback_speed
+
 func reset():
+	set_playback_speed(1.0)
 	for voice in voices: voice.stop()
 	previous_distance = 0.0
 	step_distance = 0.0

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Tarantula.jpg" id="art"]
 
 [node name="Spider" instance=ExtResource("base")]
+impact_material = "flesh"
 illustration = ExtResource("art")
 base_health = 2
 heavy_chance = 0.18

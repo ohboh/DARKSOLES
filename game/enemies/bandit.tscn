@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Thief.jpg" id="art"]
 
 [node name="Bandit" instance=ExtResource("base")]
+impact_material = "flesh"
 illustration = ExtResource("art")
 base_health = 2
 heavy_chance = 0.3

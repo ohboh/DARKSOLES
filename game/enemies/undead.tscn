@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://art/sprites/Unidentified Ver.20/Weird Humanoid.jpg" id="art"]
 
 [node name="Undead" instance=ExtResource("base")]
+impact_material = "flesh"
 illustration = ExtResource("art")
 base_health = 3
 heavy_chance = 0.55

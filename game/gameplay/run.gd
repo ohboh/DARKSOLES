@@ -112,7 +112,7 @@ func hit(idx,amount,stun=0.):
 	var t=tiles[idx]
 	t.obj.take_hit(amount,stun)
 	if amount > 0 or stun > 0:
-		audio.play("impact")
+		audio.play_impact(t.obj)
 		hit_stop_remaining = cam.hit_stop_duration
 		if hit_stop_remaining > 0: weapons.set_playback_speed(0.0)
 	if t.obj.hp<=0:

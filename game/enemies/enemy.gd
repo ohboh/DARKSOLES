@@ -7,6 +7,10 @@ extends Node3D
 		illustration = value
 		if is_node_ready():
 			apply_illustration()
+@export_group("Hit audio")
+@export_enum("flesh", "bone", "slime", "wood", "metal", "shield", "spectral") var impact_material := "flesh"
+## Optional sound for this enemy, overriding the material preset.
+@export var impact_sound: AudioStream
 @export_group("Health")
 @export_range(1, 50) var base_health := 2
 @export_range(1, 50) var minimum_health := 2

@@ -23,6 +23,15 @@ const SOUNDS = {
 	"choice": preload("res://addons/soundza_game_sfx_starter/ui_menu/button_tick.wav"),
 	"break": preload("res://addons/soundza_game_sfx_starter/doors_switches/break_crack_door.wav"),
 }
+@export var impact_sounds: Dictionary[String, AudioStream] = {
+	"flesh": SOUNDS["impact"],
+	"bone": preload("res://addons/soundza_game_sfx_starter/doors_switches/wood_door_knock.wav"),
+	"slime": preload("res://addons/soundza_game_sfx_starter/hits_impacts/wet_impact_flesh_hit.wav"),
+	"wood": preload("res://addons/soundza_game_sfx_starter/hits_impacts/woody_baseball_bonk.wav"),
+	"metal": preload("res://addons/soundza_game_sfx_starter/swords_melee/short_metallic_impact_hit.wav"),
+	"shield": preload("res://addons/soundza_game_sfx_starter/swords_melee/metal_armor_clank.wav"),
+	"spectral": preload("res://addons/soundza_game_sfx_starter/magic/puff_of_smoke.wav"),
+}
 var voices: Array[AudioStreamPlayer] = []
 var random := RandomNumberGenerator.new()
 var cursor := 0
@@ -37,7 +46,13 @@ func _ready():
 		add_child(voice)
 		voices.append(voice)
 
-func play(event: String):
+func play_impact(enemy):
+	var sound: AudioStream = enemy.impact_sound
+	if sound == null:
+		sound = impact_sounds.get(enemy.impact_material, SOUNDS["impact"])
+	play("impact", sound)
+
+func play(event: String, override_sound: AudioStream = null):
 	if not SOUNDS.has(event): return
 	var voice := voices[cursor]
 	for available in voices:
@@ -45,7 +60,7 @@ func play(event: String):
 			voice = available
 			break
 	cursor = (cursor + 1) % voices.size()
-	voice.stream = SOUNDS[event]
+	voice.stream = override_sound if override_sound != null else SOUNDS[event]
 	voice.volume_db = volume_db + float(event_levels.get(event, -12))
 	var variation := door_pitch_variation if event == "door" else pitch_variation
 	voice.pitch_scale = random.randf_range(1.0-variation, 1.0+variation)

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Skeleton.jpg" id="art"]
 
 [node name="Skeleton" instance=ExtResource("base")]
+impact_material = "bone"
 illustration = ExtResource("art")
 base_health = 1
 heavy_chance = 0.25

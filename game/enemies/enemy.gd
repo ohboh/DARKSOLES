@@ -20,6 +20,8 @@ extends Node3D
 @export_range(.1, 5, .01) var heavy_windup := 1.15
 @export var light_damage := 1
 @export var heavy_damage := 2
+## Multiplies windup and recovery durations. Lower values make attacks faster.
+@export_range(0.5, 1.5, 0.01) var attack_timing_scale := 0.92
 @export var first_attack_delay := .7
 @export var recovery_range := Vector2(.7,1.3)
 @export var stun_damage_multiplier := 2
@@ -44,7 +46,7 @@ func apply_illustration():
 
 func start_encounter(depth: float):
 	hp = maxi(minimum_health,base_health + mini(3,int(depth/30.)))
-	timer = first_attack_delay
+	timer = first_attack_delay * attack_timing_scale
 
 func take_hit(amount: int, stun: float):
 	hit = .15
@@ -60,12 +62,12 @@ func advance_attack(dt: float, depth: float) -> bool:
 	match mode:
 		"idle":
 			heavy = randf()<heavy_chance
-			dur = (heavy_windup if heavy else light_windup)*(1.-minf(.3,depth/500.))
+			dur = (heavy_windup if heavy else light_windup)*(1.-minf(.3,depth/500.))*attack_timing_scale
 			timer=dur
 			mode="wind"
 		"wind":
 			mode="idle"
-			timer=randf_range(recovery_range.x,recovery_range.y)
+			timer=randf_range(recovery_range.x,recovery_range.y)*attack_timing_scale
 			return true
 		"stun":
 			mode="idle"

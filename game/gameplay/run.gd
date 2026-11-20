@@ -202,6 +202,11 @@ func choices():
 	return []
 func choose(d):
 	if d in choices(): pending=d; audio.play("choice")
+func junction_time_scale() -> float:
+	if state == "run" and near < 0 and pending == 9 and choices().size() > 1:
+		return 0.28
+	return 1.0
+
 func advance(dt):
 	near=-1; jt=-1
 	for n in range(int(p),int(p)+4):
@@ -209,10 +214,9 @@ func advance(dt):
 		var t=tiles[n]
 		if t.paths.size() and not t.done: jt=n; break
 		if near<0 and t.kind=="foe" and not t.dead: near=n
-	var slow=1.
-	if jt>=0:
-		if tiles[jt].paths.size()==1: pending=tiles[jt].paths.keys()[0]
-		elif near<0 and pending==9 and jt+1-p<3: slow=.28
+	if jt>=0 and tiles[jt].paths.size()==1:
+		pending=tiles[jt].paths.keys()[0]
+	var slow := junction_time_scale()
 	movement_scale = slow
 	var previous_position: float = p
 	p+=dt*(cam.walking_speed+minf(1.4,p/120))*slow
@@ -255,7 +259,8 @@ func _process(delta):
 		hit_stop_remaining = maxf(0.0, hit_stop_remaining - delta)
 		if hit_stop_remaining > 0: return
 		weapons.set_playback_speed(movement_scale)
-	var dt=minf(delta,.05)
+	var frame_dt := minf(delta, .05)
+	var dt := frame_dt * junction_time_scale()
 	time+=dt
 	if state not in ["title","dead"]:
 		for i in 3: cd[i]=maxf(0.,cd[i]-dt)
@@ -265,7 +270,7 @@ func _process(delta):
 			flight-=dt
 			if flight<=0:
 				hit(projectile,cam.fireball_damage); projectile=-1; say("Burned"); audio.play("fire_hit")
-		if state=="run": advance(dt)
+		if state=="run": advance(frame_dt)
 		elif state=="turn":
 			turn_t+=dt/.7
 			if turn_t>=1:

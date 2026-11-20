@@ -3,7 +3,7 @@ extends Node
 @export_range(-40, 0, 1) var volume_db := -3.0
 @export_range(0.0, 0.15, 0.01) var pitch_variation := 0.05
 @export_range(0.0, 0.3, 0.01) var door_pitch_variation := 0.12
-@export var event_levels := {"step": -21, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -3, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
+@export var event_levels := {"step": -11, "draw": -9, "swing": -12, "impact": -9, "block": -12, "parry": -3, "bash": -12, "hurt": -12, "death": -12, "door": -14, "chest": -13, "relic": -15, "heal": -16, "cast": -14, "fire_hit": -18, "choice": -20, "break": -12}
 const SOUNDS = {
 	"step": preload("res://addons/soundza_game_sfx_starter/from freesound/footstep_1.wav"),
 	"draw": preload("res://addons/soundza_game_sfx_starter/swords_melee/sword_unsheathe_2.wav"),

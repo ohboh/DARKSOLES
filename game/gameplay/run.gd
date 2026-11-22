@@ -27,7 +27,7 @@ var selected_hand := 0
 var selected_actions: Array[String] = []
 var guard_hand := 1
 var parry_hand := 0
-var slots=["Sword","Shield","Parry"]
+var slots=["Slash","Shield","Sword Parry"]
 var cd=[0.,0.,0.]
 var arm=true
 var guard=0.
@@ -126,7 +126,7 @@ func reset_run(with_music: bool = true):
 	world.reset()
 	p=0.; hp=cam.starting_health; maximum=cam.starting_health; kills=0; arm=true; guard=0.; parry=0.; slash=0.; flash=0.; shake=0.; success=0.; bash=0.
 	near=-1; fight=-1; projectile=-1; pending=9; jt=-1
-	notice_t=0.; slots=[cam.first_action,cam.second_action,cam.third_action]; cd=[0.,0.,0.]
+	notice_t=0.; slots=[cam.action_name(cam.first_action),cam.action_name(cam.second_action),cam.action_name(cam.third_action)]; cd=[0.,0.,0.]
 	origin=Vector3.ZERO; heading=0.; anchor=0.; state="run"
 	generate()
 func at(distance_:float):
@@ -171,11 +171,11 @@ func act(i):
 	if id.is_empty() or (slot_hands[i] == 1 and not arm): return
 	weapons.active_hand = slot_hands[i]
 	match id:
-		"Sword": pass
+		"Slash": pass
 		"Shield":
 			guard_hand = slot_hands[i]
 			guard=cam.guard_window
-		"Parry": parry_hand=slot_hands[i]; parry=cam.parry_window
+		"Sword Parry", "Shield Parry": parry_hand=slot_hands[i]; parry=cam.parry_window
 		"Shield Bash":
 			if fight<0: return
 			pass
@@ -183,7 +183,7 @@ func act(i):
 			if near<0: return
 			projectile=near; flight=cam.flight_duration
 		"Mend": hp=mini(maximum,hp+cam.flask_healing); say("Blood flask")
-	cd[i]=cam.cooldowns[id]
+	cd[i]=cam.action_cooldown(id)
 	weapons.cue(StringName(id.to_lower().replace(" ","_")),arm)
 	if id == "Fireball": audio.play("cast")
 	elif id == "Mend": audio.play("heal")
@@ -237,7 +237,7 @@ func decide_treasure(open:bool):
 	state = "weapon_offer"
 
 func weapon_actions() -> Array:
-	return ["Sword", "Parry"] if offered_weapon == "sword" else ["Shield", "Shield Bash", "Parry"]
+	return ["Slash", "Sword Parry"] if offered_weapon == "sword" else ["Shield", "Shield Bash", "Shield Parry"]
 
 func pickup_choice(index: int):
 	match state:

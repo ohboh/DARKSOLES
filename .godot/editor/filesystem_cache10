@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1795188371
+::res://::1795346424
 icon.svg::CompressedTexture2D::7932054279207129367::1794726758::1794726767::1::::<><><>0<>0<>085fd0f9c74f91cb066f8b956230f32c<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1795098144::0::1::::<><><>0<>0<><>::
 ::res://addons/::1793937596
@@ -1154,8 +1154,8 @@ undead.tscn::PackedScene::-1::1795186867::0::1::::<><><>0<>0<><>::res://game/ene
 wraith.tscn::PackedScene::-1::1795186867::0::1::::<><><>0<>0<><>::res://game/enemies/enemy_base.tscn<>res://art/sprites/Identified Monster Ver.21/Wraith.jpg
 ::res://game/gameplay/::1794809230
 run.gd::GDScript::7892637371286164341::1795188946::0::1::::<>Node3D<><>0<>0<><>::
-::res://game/player/::1795098144
-animated_weapons.gd::GDScript::1583137685469161040::1795186339::0::1::::<>Node3D<><>0<>0<><>::
+::res://game/player/::1795190539
+animated_weapons.gd::GDScript::1583137685469161040::1795190539::0::1::::<>Node3D<><>0<>0<><>::
 animated_weapons.tscn::PackedScene::-1::1795074867::0::1::::<><><>0<>0<><>::res://game/player/animated_weapons.gd<>res://art/models/weapons_runtime.glb
 player.gd::GDScript::6788505775022270194::1795186992::0::1::::<>Camera3D<><>0<>0<><>::
 player.tscn::PackedScene::3569072109277538088::1795098144::0::1::::<><><>0<>0<><>::uid://c3ynx0ibphe2e::::res://game/player/player.gd<>res://game/player/animated_weapons.tscn
@@ -1166,22 +1166,22 @@ sword.tscn::PackedScene::-1::1794749147::0::1::::<><><>0<>0<><>::res://art/playe
 tome.tscn::PackedScene::-1::1794748780::0::1::::<><><>0<>0<><>::res://game/rendering/shaders/contour.gdshader<>res://game/rendering/shaders/ink.gdshader
 ::res://game/rendering/::1794749811
 hurt_vignette.gd::GDScript::8384743159458355991::1794749550::0::1::::<>ColorRect<><>0<>0<><>::
-::res://game/rendering/shaders/::1795097306
+::res://game/rendering/shaders/::1795190539
 buckler.gdshader::Shader::2939901305815511992::1794747973::0::1::::<><><>0<>0<><>::
 contour.gdshader::Shader::4128664230612733015::1795097306::0::1::::<><><>0<>0<><>::
 door.gdshader::Shader::4185952205889578976::1795097306::0::1::::<><><>0<>0<><>::
 flagstone.gdshader::Shader::1829307194411067907::1794747973::0::1::::<><><>0<>0<><>::
-hurt_vignette.gdshader::Shader::4530944728135281504::1795097306::0::1::::<><><>0<>0<><>::
+hurt_vignette.gdshader::Shader::4530944728135281504::1795190539::0::1::::<><><>0<>0<><>::
 illustration.gdshader::Shader::8270304487364815200::1794770592::0::1::::<><><>0<>0<><>::
 ink.gdshader::Shader::377026759153085198::1794750807::0::1::::<><><>0<>0<><>::
 palette.gdshader::Shader::3481224585924054645::1794748265::0::1::::<><><>0<>0<><>::
-post.gdshader::Shader::8436340897249653996::1795097306::0::1::::<><><>0<>0<><>::
+post.gdshader::Shader::8436340897249653996::1795190539::0::1::::<><><>0<>0<><>::
 route_omen.gdshader::Shader::7028197794865375739::1794750486::0::1::::<><><>0<>0<><>::
 torchlight.gdshaderinc::ShaderInclude::8660982594181382847::1794734092::0::1::::<><><>0<>0<><>::
 weapon.gdshader::Shader::1345202668520160112::1795097306::0::1::::<><><>0<>0<><>::
 wick.gdshader::Shader::2336224828278258233::1794734517::0::1::::<><><>0<>0<><>::
-::res://game/scenes/::1794769605
-main.tscn::PackedScene::2335119466559649065::1795188739::0::1::::<><><>0<>0<><>::uid://drpvq3aam5kyp::::res://game/rendering/hurt_vignette.gd<>uid://b5s286llgbxho::::res://game/rendering/shaders/hurt_vignette.gdshader<>res://game/player/equipment/fireball.tscn<>uid://cxton12qsrrss::::res://game/world/dungeon.gd<>res://game/ui/hud.tscn<>uid://bpuli36q3mes8::::res://game/rendering/shaders/palette.gdshader<>res://game/player/player.tscn<>uid://dsgvkjekw4b4g::::res://game/rendering/shaders/post.gdshader<>uid://dkpit4slen6ov::::res://game/gameplay/run.gd
+::res://game/scenes/::1795190583
+main.tscn::PackedScene::2335119466559649065::1795190583::0::1::::<><><>0<>0<><>::uid://c7hpsodohw2yi::::res://game/audio/game_audio.gd<>uid://drpvq3aam5kyp::::res://game/rendering/hurt_vignette.gd<>uid://b5s286llgbxho::::res://game/rendering/shaders/hurt_vignette.gdshader<>res://game/player/equipment/fireball.tscn<>uid://cxton12qsrrss::::res://game/world/dungeon.gd<>res://game/ui/hud.tscn<>uid://bpuli36q3mes8::::res://game/rendering/shaders/palette.gdshader<>uid://bq35djgyvbfnc::::res://game/player/player.tscn<>uid://dsgvkjekw4b4g::::res://game/rendering/shaders/post.gdshader<>uid://dkpit4slen6ov::::res://game/gameplay/run.gd
 ::res://game/ui/::1794809995
 action_icon.gd::GDScript::859825481749645873::1794748883::0::1::::<>Control<><>0<>0<><>::
 hud.gd::GDScript::1501441155739918751::1795188739::0::1::::<>Control<><>0<>0<><>::

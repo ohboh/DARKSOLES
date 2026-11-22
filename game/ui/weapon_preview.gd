@@ -31,10 +31,10 @@ func show_weapon(kind: String):
 		var model:=MeshInstance3D.new()
 		model.mesh=mesh.mesh
 		model.position=-mesh.get_aabb().get_center()
-		var material:=ShaderMaterial.new()
-		material.shader=preload("res://game/rendering/shaders/preview.gdshader")
-		material.set_shader_parameter("atlas",mesh.get_active_material(0).albedo_texture)
-		model.material_override=material
+		var mat:=ShaderMaterial.new()
+		mat.shader=preload("res://game/rendering/shaders/preview.gdshader")
+		mat.set_shader_parameter("atlas",mesh.get_active_material(0).albedo_texture)
+		model.material_override=mat
 		pivot.add_child(model)
 	source.free()
 

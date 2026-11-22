@@ -32,7 +32,7 @@ func refresh():
 			slot.get_node("Icon").action=action
 			var cover=slot.get_node("Cooldown")
 			cover.visible=run.cd[i]>0
-			cover.anchor_top=1.-run.cd[i]/run.cam.cooldowns.get(action,1.0)
+			cover.anchor_top=1.-run.cd[i]/run.cam.action_cooldown(action)
 			slot.modulate=Color(.4,.4,.4) if not run.arm and run.slot_hands[i]==1 else Color.WHITE
 	elif $Relic.visible:
 		refresh_pickup()
@@ -114,7 +114,7 @@ func refresh_pickup():
 				labels.append(("[+] " if action in run.selected_actions else "")+caption)
 			while labels.size()<3: labels.append("")
 			$Relic/Leave.visible=true
-			$Relic/Leave.text="Assign selected"
+			$Relic/Leave.text="Select actions" if run.selected_actions.is_empty() else "Confirm actions"
 			$Relic/Leave.disabled=run.selected_actions.is_empty()
 		"weapon_slots":
 			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"

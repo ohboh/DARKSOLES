@@ -142,12 +142,14 @@ func play_clip(side: int, clip: StringName):
 func cue(action: StringName, has_left: bool):
 	if intro_stage > 0: return
 	match action:
-		&"sword":
+		&"slash", &"sword":
 			if not sword_slashes.is_empty():
 				play_clip(0, sword_slashes[next_slash % sword_slashes.size()])
 				next_slash += 1
-		&"parry":
-			play_clip(0, sword_parry) if weapon_kind == "sword" else play_clip(1, shield_parry)
+		&"sword_parry":
+			play_clip(0, sword_parry)
+		&"shield_parry":
+			play_clip(1, shield_parry)
 		&"shield":
 			if has_left: play_clip(1, shield_use)
 		&"shield_bash":

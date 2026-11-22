@@ -1,23 +1,18 @@
 extends Control
 
+var action_choice := 0
 var run
 @export var descriptions={"Shield Bash":"Staggers a foe.","Fireball":"Burns the nearest foe.","Mend":"Restores one life."}
 
 func bind(controller):
 	run=controller
-	var background := ColorRect.new()
-	background.color=Color.BLACK
-	background.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$Relic.add_child(background)
-	$Relic.move_child(background,0)
 	$Title/Descend.pressed.connect(run.request_run)
 	$Death/Restart.pressed.connect(run.request_run)
 	$Treasure/Open.pressed.connect(run.decide_treasure.bind(true))
 	$Treasure/Leave.pressed.connect(run.decide_treasure.bind(false))
 	$Relic/Leave.pressed.connect(run.replace_slot.bind(-1))
 	for i in 3:
-		get_node("Relic/Slot%d"%(i+1)).pressed.connect(run.replace_slot.bind(i))
+		get_node("Relic/Slot%d"%(i+1)).pressed.connect(pickup_button.bind(i))
 		get_node("Play/Slot%d"%(i+1)).pressed.connect(run.act.bind(i))
 	refresh()
 
@@ -81,35 +76,59 @@ func _unhandled_key_input(event):
 		KEY_UP: run.choose(0)
 		KEY_RIGHT: run.choose(1)
 
+func pickup_button(index: int):
+	match run.state:
+		"weapon_offer":
+			if index == 1: return
+			run.pickup_choice(0 if index == 0 else 1)
+		"weapon_hand":
+			if index == 1:
+				run.pickup_choice(-1)
+			else:
+				action_choice=0
+				run.pickup_choice(1 if index==0 else 0)
+		"weapon_actions":
+			if index == 2:
+				if not run.selected_actions.is_empty(): run.pickup_choice(-1)
+				return
+			if index == 0: run.pickup_choice(action_choice)
+			action_choice+=1
+			if action_choice >= run.weapon_actions().size():
+				if not run.selected_actions.is_empty(): run.pickup_choice(-1)
+				action_choice=0
+		"weapon_slots":
+			run.pickup_choice(index)
+	refresh()
+
 func refresh_pickup():
 	$Relic/Heading.text="WEAPON FOUND"
 	$Relic/Offer.text=run.offer
 	$Relic/Description.text="Slash / Parry" if run.offered_weapon=="sword" else "Guard / Bash / Parry"
+	$Relic/Leave.visible=false
 	var labels: Array = []
-	$Relic/Leave.visible=true
-	$Relic/Leave.disabled=false
+	var disabled := [false,false,false]
 	match run.state:
 		"weapon_offer":
 			$Relic/Instruction.text="Take this weapon?"
-			labels=["Take","Discard"]
-			$Relic/Leave.visible=false
+			labels=["Take","","Discard"]
+			disabled[1]=true
 		"weapon_hand":
 			$Relic/Instruction.text="Replace which hand?"
-			labels=["Right / "+run.equipped[0], "Left / "+run.equipped[1]]
-			$Relic/Leave.text="Back"
+			labels=["Left","Back","Right"]
+			disabled[0]=not run.arm
 		"weapon_actions":
-			$Relic/Instruction.text="Choose actions"
-			for action in run.weapon_actions():
-				labels.append(("+ " if action in run.selected_actions else "")+("Slash" if action=="Sword" else action))
-			$Relic/Leave.text="Assign slots"
-			$Relic/Leave.disabled=run.selected_actions.is_empty()
+			var action: String=run.weapon_actions()[action_choice]
+			var caption: String="Slash" if action=="Sword" else action
+			$Relic/Instruction.text="Add "+caption+"?"
+			labels=["Add "+caption,"Skip","Done"]
+			disabled[2]=run.selected_actions.is_empty()
 		"weapon_slots":
 			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"
 			for action in run.slots: labels.append(action if not action.is_empty() else "Empty")
-			$Relic/Leave.visible=false
+			for i in run.assigned_pickup_slots: disabled[i]=true
 	for i in 3:
 		var button=get_node("Relic/Slot%d"%(i+1))
-		button.visible=i<labels.size()
-		button.disabled=(run.state=="weapon_hand" and i==1 and not run.arm) or (run.state=="weapon_slots" and i in run.assigned_pickup_slots)
-		if i<labels.size(): button.text=labels[i]
+		button.visible=not labels[i].is_empty()
+		button.disabled=disabled[i]
+		button.text=labels[i]
 	$WeaponPreview.show_weapon(run.offered_weapon)

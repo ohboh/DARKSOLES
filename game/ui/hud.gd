@@ -30,7 +30,7 @@ func refresh():
 		for i in 3:
 			var slot=get_node("Play/Slot%d"%(i+1))
 			var action=run.slots[i]
-			slot.get_node("Caption").text=("Slash" if action=="Sword" else action) + (" · R" if run.slot_hands[i]==0 else " · L") if not action.is_empty() else "Empty"
+			slot.get_node("Caption").text=("Parry" if action in ["Sword Parry", "Shield Parry"] else "Slash" if action=="Sword" else action) + (" · R" if run.slot_hands[i]==0 else " · L") if not action.is_empty() else "Empty"
 			slot.get_node("Icon").action=action
 			var cover=slot.get_node("Cooldown")
 			cover.visible=run.cd[i]>0

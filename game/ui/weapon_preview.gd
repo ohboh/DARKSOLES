@@ -36,6 +36,9 @@ func show_weapon(kind: String):
 		var mat:=ShaderMaterial.new()
 		mat.shader=preload("res://game/rendering/shaders/preview.gdshader")
 		mat.set_shader_parameter("atlas",mesh.get_active_material(0).albedo_texture)
+		var outline:=ShaderMaterial.new()
+		outline.shader=preload("res://game/rendering/shaders/contour.gdshader")
+		mat.next_pass=outline
 		model.material_override=mat
 		pivot.add_child(model)
 	source.free()

@@ -267,8 +267,6 @@ func pickup_choice(index: int):
 					if slot_hands[i] == selected_hand:
 						slots[i] = ""
 						cd[i] = 0.0
-				equipped[selected_hand] = offered_weapon
-				weapons.configure(equipped)
 				state = "weapon_slots"
 		"weapon_slots":
 			if index < 0 or index in assigned_pickup_slots: return
@@ -277,6 +275,8 @@ func pickup_choice(index: int):
 			slot_hands[index] = selected_hand
 			cd[index] = 0.0
 			if selected_actions.is_empty():
+				equipped[selected_hand] = offered_weapon
+				weapons.configure(equipped)
 				audio.play("relic")
 				state = "run"
 

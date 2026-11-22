@@ -127,6 +127,8 @@ func reset_run(with_music: bool = true):
 	p=0.; hp=cam.starting_health; maximum=cam.starting_health; kills=0; arm=true; guard=0.; parry=0.; slash=0.; flash=0.; shake=0.; success=0.; bash=0.
 	near=-1; fight=-1; projectile=-1; pending=9; jt=-1
 	notice_t=0.; slots=[cam.action_name(cam.first_action),cam.action_name(cam.second_action),cam.action_name(cam.third_action)]; cd=[0.,0.,0.]
+	for i in 3:
+		slot_hands[i] = 1 if slots[i] in ["Shield", "Shield Bash", "Shield Parry"] else 0
 	origin=Vector3.ZERO; heading=0.; anchor=0.; state="run"
 	generate()
 func at(distance_:float):

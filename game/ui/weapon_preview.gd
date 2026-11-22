@@ -3,9 +3,11 @@ var current_kind := ""
 var pivot: Node3D
 
 func _ready():
+	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var viewport := SubViewport.new()
 	viewport.size=Vector2i(300,400)
 	viewport.transparent_bg=true
+	viewport.gui_disable_input=true
 	viewport.own_world_3d=true
 	viewport.render_target_update_mode=SubViewport.UPDATE_WHEN_VISIBLE
 	add_child(viewport)

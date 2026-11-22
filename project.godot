@@ -73,3 +73,7 @@ torch_5={
 "type": "vec3",
 "value": Vector3(1000000, 1000000, 1000000)
 }
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true

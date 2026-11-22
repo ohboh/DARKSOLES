@@ -1,6 +1,8 @@
 extends Control
 
 var run
+var pickup_touch_button: Button
+var pickup_touch_index := -1
 @export var descriptions={"Shield Bash":"Staggers a foe.","Fireball":"Burns the nearest foe.","Mend":"Restores one life."}
 
 func bind(controller):
@@ -55,6 +57,31 @@ func _draw():
 	elif enemy.mode=="stun":
 		draw_string(get_theme_default_font(),Vector2(0,center.y-137),"STUNNED",HORIZONTAL_ALIGNMENT_CENTER,540,17)
 
+# Handle native touch directly: mobile editor touch need not emulate a mouse.
+func _input(event):
+	if not event is InputEventScreenTouch or not run: return
+	if not run.state.begins_with("weapon_"):
+		pickup_touch_button = null
+		pickup_touch_index = -1
+		return
+	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+	if event.pressed:
+		if pickup_touch_index != -1: return
+		for button in [$Relic/Slot1, $Relic/Slot2, $Relic/Slot3, $Relic/Leave]:
+			if button.is_visible_in_tree() and not button.disabled and button.get_global_rect().has_point(point):
+				pickup_touch_button = button
+				pickup_touch_index = event.index
+				get_viewport().set_input_as_handled()
+				return
+	elif event.index == pickup_touch_index:
+		var button := pickup_touch_button
+		pickup_touch_button = null
+		pickup_touch_index = -1
+		get_viewport().set_input_as_handled()
+		if is_instance_valid(button) and not event.canceled and button.is_visible_in_tree() and not button.disabled and button.get_global_rect().has_point(point):
+			button.pressed.emit()
+			refresh()
+
 func _gui_input(event):
 	if not run: return
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
@@ -81,9 +108,7 @@ func pickup_button(index: int):
 			if index > 1: return
 			run.pickup_choice(index)
 		"weapon_hand":
-			if index == 1:
-				run.pickup_choice(-1)
-			else:
+			if index < 2:
 				run.pickup_choice(1 if index==0 else 0)
 		"weapon_actions":
 			if index < run.weapon_actions().size():
@@ -105,7 +130,10 @@ func refresh_pickup():
 			labels=["Take","Discard",""]
 		"weapon_hand":
 			$Relic/Instruction.text="Replace which hand?"
-			labels=["Left","Back","Right"]
+			labels=["Left","Right",""]
+			$Relic/Leave.visible=true
+			$Relic/Leave.disabled=false
+			$Relic/Leave.text="Back"
 			disabled[0]=not run.arm
 		"weapon_actions":
 			$Relic/Instruction.text="Choose your actions"
@@ -113,8 +141,8 @@ func refresh_pickup():
 				var caption: String="Slash" if action=="Sword" else action
 				labels.append(("[+] " if action in run.selected_actions else "")+caption)
 			while labels.size()<3: labels.append("")
-			$Relic/Leave.visible=true
-			$Relic/Leave.text="Select actions" if run.selected_actions.is_empty() else "Confirm actions"
+			$Relic/Leave.visible=not run.selected_actions.is_empty()
+			$Relic/Leave.text="Confirm"
 			$Relic/Leave.disabled=run.selected_actions.is_empty()
 		"weapon_slots":
 			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"

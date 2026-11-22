@@ -5,6 +5,7 @@ var run
 
 func bind(controller):
 	run=controller
+	$Play/Talk.pressed.connect(run.begin_talk)
 	$Title/Descend.pressed.connect(run.request_run)
 	$Death/Restart.pressed.connect(run.request_run)
 	$Treasure/Open.pressed.connect(run.decide_treasure.bind(true))
@@ -20,13 +21,27 @@ func refresh():
 	$Relic.visible=run.state.begins_with("weapon_")
 	$Death.visible=run.state=="dead"
 	$Treasure.visible=run.state=="treasure"
-	$Play.visible=run.state in ["run","turn"]
+	$Play.visible=run.state in ["run","turn","talk","talk_reply"]
 	if $Play.visible:
+		var talking: bool = run.state in ["talk", "talk_reply"]
+		$Play/Talk.visible = run.state == "talk" or (run.state == "run" and run.fight >= 0 and not run.tiles[run.fight].obj.talked)
+		$Play/Talk.text = "Back" if run.state == "talk" else "Talk"
+		$Play/Dialogue.visible = talking
+		$Play/Dialogue.text = run.dialogue
+		$Play/Dialogue.visible_characters = int(run.dialogue_age * 30.0)
 		$Play/BranchPrompt.visible = run.pending == 9 and run.choices().size() > 1
 		$Play/Distance.text="%d m"%int(run.p*2)
 		$Play/Notice.text=run.notice if run.notice_t>0 else ""
 		for i in 3:
 			var slot=get_node("Play/Slot%d"%(i+1))
+			slot.disabled = run.state == "talk_reply"
+			if talking:
+				slot.get_node("Caption").text = ["Plead", "Reason", "Threaten"][i]
+				slot.get_node("Icon").visible = false
+				slot.get_node("Cooldown").visible = false
+				slot.modulate = Color.WHITE
+				continue
+			slot.get_node("Icon").visible = true
 			var action=run.slots[i]
 			slot.get_node("Caption").text=("Parry" if action in ["Sword Parry", "Shield Parry"] else "Slash" if action=="Sword" else action) + (" · R" if run.slot_hands[i]==0 else " · L") if not action.is_empty() else "Empty"
 			slot.get_node("Icon").action=action

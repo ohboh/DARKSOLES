@@ -4,6 +4,10 @@
 [ext_resource type="Texture2D" path="res://art/sprites/Identified Monster Ver.21/Thief.jpg" id="art"]
 
 [node name="Bandit" instance=ExtResource("base")]
+talk_chances = Vector3(0.45, 0.8, 0.1)
+talk_greeting = "Steel or words, traveler? Choose carefully."
+talk_success = "Keep walking. I never saw you."
+talk_failure = "You take me for a fool?"
 impact_material = "flesh"
 illustration = ExtResource("art")
 base_health = 2

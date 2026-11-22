@@ -167,7 +167,35 @@ func hit(idx,amount,stun=0.):
 		t.dead=true; t.obj.hide(); kills+=1; say("Slain")
 		if fight==idx: fight=-1
 		if near==idx: near=-1
+var dialogue := ""
+var dialogue_age := 0.0
+var dialogue_wait := 0.0
+var talk_enemy := -1
+var talk_spared := false
+
+func begin_talk():
+	if state == "talk":
+		state = "run"
+		return
+	if state != "run" or fight < 0 or tiles[fight].obj.talked: return
+	talk_enemy = fight
+	dialogue = tiles[fight].obj.talk_greeting
+	dialogue_age = 0.0
+	state = "talk"
+
+func talk_choice(index: int):
+	var enemy = tiles[talk_enemy].obj
+	enemy.talked = true
+	talk_spared = randf() < enemy.talk_chances[index]
+	dialogue = enemy.talk_success if talk_spared else enemy.talk_failure
+	dialogue_age = 0.0
+	dialogue_wait = dialogue.length() / 30.0 + 1.5
+	state = "talk_reply"
+
 func act(i):
+	if state == "talk":
+		talk_choice(i)
+		return
 	if transitioning or state!="run" or hit_stop_remaining > 0 or cd[i]>0 or weapons.intro_stage > 0: return
 	var id=slots[i]
 	if id.is_empty() or (slot_hands[i] == 1 and not arm): return
@@ -202,7 +230,7 @@ func resolve_weapon_strike(action: StringName, hand: int):
 
 func combat(enemy,dt):
 	if not enemy.advance_attack(dt,p): return
-	if parry>0:
+	if parry>0 and not enemy.unparryable:
 		enemy.mode="stun"
 		enemy.timer=cam.parry_stun
 		success=.3
@@ -342,6 +370,19 @@ func advance(dt):
 	for k in tiles.keys():
 		if k<int(p)-2: tiles[k].node.queue_free(); tiles.erase(k)
 func _process(delta):
+	if state in ["talk", "talk_reply"]:
+		dialogue_age += delta
+		if state == "talk_reply":
+			dialogue_wait -= delta
+			if dialogue_wait <= 0.0:
+				var enemy = tiles[talk_enemy].obj
+				if talk_spared:
+					tiles[talk_enemy].dead = true
+					enemy.hide()
+					fight = -1
+					near = -1
+				else: enemy.provoke()
+				state = "run"
 	if transitioning: return
 	if hit_stop_remaining > 0:
 		hit_stop_remaining = maxf(0.0, hit_stop_remaining - delta)

@@ -1,8 +1,6 @@
 extends Control
 
 var run
-var pickup_touch_button: Button
-var pickup_touch_index := -1
 @export var descriptions={"Shield Bash":"Staggers a foe.","Fireball":"Burns the nearest foe.","Mend":"Restores one life."}
 
 func bind(controller):
@@ -56,31 +54,6 @@ func _draw():
 		draw_arc(center,42+114*enemy.timer/enemy.dur,0,TAU,100,Color.RED if enemy.heavy else Color.WHITE,4)
 	elif enemy.mode=="stun":
 		draw_string(get_theme_default_font(),Vector2(0,center.y-137),"STUNNED",HORIZONTAL_ALIGNMENT_CENTER,540,17)
-
-# Handle native touch directly: mobile editor touch need not emulate a mouse.
-func _input(event):
-	if not event is InputEventScreenTouch or not run: return
-	if not run.state.begins_with("weapon_"):
-		pickup_touch_button = null
-		pickup_touch_index = -1
-		return
-	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
-	if event.pressed:
-		if pickup_touch_index != -1: return
-		for button in [$Relic/Slot1, $Relic/Slot2, $Relic/Slot3, $Relic/Leave]:
-			if button.is_visible_in_tree() and not button.disabled and button.get_global_rect().has_point(point):
-				pickup_touch_button = button
-				pickup_touch_index = event.index
-				get_viewport().set_input_as_handled()
-				return
-	elif event.index == pickup_touch_index:
-		var button := pickup_touch_button
-		pickup_touch_button = null
-		pickup_touch_index = -1
-		get_viewport().set_input_as_handled()
-		if is_instance_valid(button) and not event.canceled and button.is_visible_in_tree() and not button.disabled and button.get_global_rect().has_point(point):
-			button.pressed.emit()
-			refresh()
 
 func _gui_input(event):
 	if not run: return

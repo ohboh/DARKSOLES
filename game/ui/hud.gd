@@ -1,6 +1,5 @@
 extends Control
 
-var action_choice := 0
 var run
 @export var descriptions={"Shield Bash":"Staggers a foe.","Fireball":"Burns the nearest foe.","Mend":"Restores one life."}
 
@@ -85,17 +84,10 @@ func pickup_button(index: int):
 			if index == 1:
 				run.pickup_choice(-1)
 			else:
-				action_choice=0
 				run.pickup_choice(1 if index==0 else 0)
 		"weapon_actions":
-			if index == 2:
-				if not run.selected_actions.is_empty(): run.pickup_choice(-1)
-				return
-			if index == 0: run.pickup_choice(action_choice)
-			action_choice+=1
-			if action_choice >= run.weapon_actions().size():
-				if not run.selected_actions.is_empty(): run.pickup_choice(-1)
-				action_choice=0
+			if index < run.weapon_actions().size():
+				run.pickup_choice(index)
 		"weapon_slots":
 			run.pickup_choice(index)
 	refresh()
@@ -116,26 +108,33 @@ func refresh_pickup():
 			labels=["Left","Back","Right"]
 			disabled[0]=not run.arm
 		"weapon_actions":
-			var action: String=run.weapon_actions()[action_choice]
-			var caption: String="Slash" if action=="Sword" else action
-			$Relic/Instruction.text="Add "+caption+"?"
-			labels=["Add "+caption,"Skip","Done"]
-			disabled[2]=run.selected_actions.is_empty()
+			$Relic/Instruction.text="Choose your actions"
+			for action in run.weapon_actions():
+				var caption: String="Slash" if action=="Sword" else action
+				labels.append(("[+] " if action in run.selected_actions else "")+caption)
+			while labels.size()<3: labels.append("")
+			$Relic/Leave.visible=true
+			$Relic/Leave.text="Assign selected"
+			$Relic/Leave.disabled=run.selected_actions.is_empty()
 		"weapon_slots":
 			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"
 			for action in run.slots: labels.append(action if not action.is_empty() else "Empty")
 			for i in run.assigned_pickup_slots: disabled[i]=true
+	var count := 0
+	for label in labels:
+		if not label.is_empty(): count+=1
+	var left: float=$Play/Slot1.anchor_left
+	var right: float=$Play/Slot3.anchor_right
+	var gap: float=$Play/Slot2.anchor_left-$Play/Slot1.anchor_right
+	var width: float=(right-left-gap*(count-1))/count
+	var position_index := 0
 	for i in 3:
 		var button=get_node("Relic/Slot%d"%(i+1))
 		button.visible=not labels[i].is_empty()
 		button.disabled=disabled[i]
 		button.text=labels[i]
-		var action_button=get_node("Play/Slot%d"%(i+1))
-		button.anchor_left=action_button.anchor_left
-		button.anchor_right=action_button.anchor_right
-		if run.state=="weapon_offer" and i<2:
-			var width: float=$Play/Slot1.anchor_right-$Play/Slot1.anchor_left
-			var gap: float=$Play/Slot2.anchor_left-$Play/Slot1.anchor_right
-			button.anchor_left=(1.0-2.0*width-gap)*0.5+i*(width+gap)
+		if button.visible:
+			button.anchor_left=left+position_index*(width+gap)
 			button.anchor_right=button.anchor_left+width
+			position_index+=1
 	$WeaponPreview.show_weapon(run.offered_weapon)

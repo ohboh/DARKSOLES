@@ -5,6 +5,12 @@ var run
 
 func bind(controller):
 	run=controller
+	var background := ColorRect.new()
+	background.color=Color.BLACK
+	background.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	$Relic.add_child(background)
+	$Relic.move_child(background,0)
 	$Title/Descend.pressed.connect(run.request_run)
 	$Death/Restart.pressed.connect(run.request_run)
 	$Treasure/Open.pressed.connect(run.decide_treasure.bind(true))
@@ -17,7 +23,7 @@ func bind(controller):
 
 func refresh():
 	$Title.visible=run.state=="title"
-	$Relic.visible=run.state=="relic"
+	$Relic.visible=run.state.begins_with("weapon_")
 	$Death.visible=run.state=="dead"
 	$Treasure.visible=run.state=="treasure"
 	$Play.visible=run.state in ["run","turn"]
@@ -28,19 +34,18 @@ func refresh():
 		for i in 3:
 			var slot=get_node("Play/Slot%d"%(i+1))
 			var action=run.slots[i]
-			slot.get_node("Caption").text=action
+			slot.get_node("Caption").text=("Slash" if action=="Sword" else action) + (" · R" if run.slot_hands[i]==0 else " · L") if not action.is_empty() else "Empty"
 			slot.get_node("Icon").action=action
 			var cover=slot.get_node("Cooldown")
 			cover.visible=run.cd[i]>0
-			cover.anchor_top=1.-run.cd[i]/run.cam.cooldowns[action]
-			slot.modulate=Color(.4,.4,.4) if not run.arm and action in ["Shield","Shield Bash"] else Color.WHITE
+			cover.anchor_top=1.-run.cd[i]/run.cam.cooldowns.get(action,1.0)
+			slot.modulate=Color(.4,.4,.4) if not run.arm and run.slot_hands[i]==1 else Color.WHITE
 	elif $Relic.visible:
-		$Relic/Offer.text=run.offer
-		$Relic/Description.text=descriptions.get(run.offer,"")
-		for i in 3: get_node("Relic/Slot%d"%(i+1)).text=run.slots[i]
+		refresh_pickup()
 	elif $Death.visible:
 		$Death/Summary.text="%d m descended   ·   %d foes slain"%[run.p*2,run.kills]
 		$Death/Best.text="Best descent   /   %d m"%run.best
+	$WeaponPreview.visible=$Relic.visible
 	queue_redraw()
 
 func _draw():
@@ -75,3 +80,36 @@ func _unhandled_key_input(event):
 		KEY_LEFT: run.choose(-1)
 		KEY_UP: run.choose(0)
 		KEY_RIGHT: run.choose(1)
+
+func refresh_pickup():
+	$Relic/Heading.text="WEAPON FOUND"
+	$Relic/Offer.text=run.offer
+	$Relic/Description.text="Slash / Parry" if run.offered_weapon=="sword" else "Guard / Bash / Parry"
+	var labels: Array = []
+	$Relic/Leave.visible=true
+	$Relic/Leave.disabled=false
+	match run.state:
+		"weapon_offer":
+			$Relic/Instruction.text="Take this weapon?"
+			labels=["Take","Discard"]
+			$Relic/Leave.visible=false
+		"weapon_hand":
+			$Relic/Instruction.text="Replace which hand?"
+			labels=["Right / "+run.equipped[0], "Left / "+run.equipped[1]]
+			$Relic/Leave.text="Back"
+		"weapon_actions":
+			$Relic/Instruction.text="Choose actions"
+			for action in run.weapon_actions():
+				labels.append(("+ " if action in run.selected_actions else "")+("Slash" if action=="Sword" else action))
+			$Relic/Leave.text="Assign slots"
+			$Relic/Leave.disabled=run.selected_actions.is_empty()
+		"weapon_slots":
+			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"
+			for action in run.slots: labels.append(action if not action.is_empty() else "Empty")
+			$Relic/Leave.visible=false
+	for i in 3:
+		var button=get_node("Relic/Slot%d"%(i+1))
+		button.visible=i<labels.size()
+		button.disabled=(run.state=="weapon_hand" and i==1 and not run.arm) or (run.state=="weapon_slots" and i in run.assigned_pickup_slots)
+		if i<labels.size(): button.text=labels[i]
+	$WeaponPreview.show_weapon(run.offered_weapon)

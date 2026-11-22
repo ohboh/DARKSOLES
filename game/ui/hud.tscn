@@ -2,6 +2,7 @@
 [ext_resource type="Script" path="res://game/ui/hud.gd" id="hud"]
 [ext_resource type="Script" path="res://game/ui/action_icon.gd" id="icon"]
 [ext_resource type="FontFile" path="res://art/fonts/Beholden-Regular.ttf" id="font"]
+[ext_resource type="Script" path="res://game/ui/weapon_preview.gd" id="preview"]
 [sub_resource type="StyleBoxEmpty" id="empty"]
 [sub_resource type="StyleBoxFlat" id="button"]
 bg_color = Color(0,0,0,1)
@@ -427,3 +428,14 @@ mouse_filter = 2
 text = "Parry"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+
+[node name="WeaponPreview" type="SubViewportContainer" parent="."]
+anchor_left = 0.22
+anchor_top = 0.30
+anchor_right = 0.78
+anchor_bottom = 0.72
+stretch = true
+mouse_filter = 2
+visible = false
+script = ExtResource("preview")

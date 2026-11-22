@@ -19,6 +19,14 @@ var hp=5
 var maximum=5
 var kills=0
 var best=0
+var equipped := ["sword", "shield"]
+var slot_hands := [0, 1, 0]
+var offered_weapon := "sword"
+var assigned_pickup_slots: Array[int] = []
+var selected_hand := 0
+var selected_actions: Array[String] = []
+var guard_hand := 1
+var parry_hand := 0
 var slots=["Sword","Shield","Parry"]
 var cd=[0.,0.,0.]
 var arm=true
@@ -104,6 +112,9 @@ func clear_outgoing_corridor():
 	outgoing_corridor.clear()
 
 func reset_run(with_music: bool = true):
+	equipped = ["sword", "shield"]
+	slot_hands = [0, 1, 0]
+	weapons.configure(equipped)
 	if with_music: audio.start_gameplay_music()
 	audio.reset()
 	hit_stop_remaining = 0.0
@@ -138,7 +149,10 @@ func damage(n):
 	else:
 		weapons.cue(&"hurt",arm)
 	if hp>0 and arm and hp<=cam.arm_loss_health:
-		arm=false; guard=0.; flash=.9; shake=.7; say("You lose your arm")
+		arm=false;
+		if guard_hand==1: guard=0.
+		if parry_hand==1: parry=0.
+		flash=.9; shake=.7; say("You lose your arm")
 func hit(idx,amount,stun=0.):
 	if not tiles.has(idx) or tiles[idx].dead: return
 	var t=tiles[idx]
@@ -154,14 +168,16 @@ func hit(idx,amount,stun=0.):
 func act(i):
 	if transitioning or state!="run" or hit_stop_remaining > 0 or cd[i]>0 or weapons.intro_stage > 0: return
 	var id=slots[i]
+	if id.is_empty() or (slot_hands[i] == 1 and not arm): return
+	weapons.active_hand = slot_hands[i]
 	match id:
 		"Sword": pass
 		"Shield":
-			if not arm: return
+			guard_hand = slot_hands[i]
 			guard=cam.guard_window
-		"Parry": parry=cam.parry_window
+		"Parry": parry_hand=slot_hands[i]; parry=cam.parry_window
 		"Shield Bash":
-			if not arm or fight<0: return
+			if fight<0: return
 			pass
 		"Fireball":
 			if near<0: return
@@ -171,14 +187,14 @@ func act(i):
 	weapons.cue(StringName(id.to_lower().replace(" ","_")),arm)
 	if id == "Fireball": audio.play("cast")
 	elif id == "Mend": audio.play("heal")
-func resolve_weapon_strike(action: StringName):
+func resolve_weapon_strike(action: StringName, hand: int):
+	if hand == 1 and not arm: return
 	if state != "run" or fight < 0: return
 	match action:
 		&"sword":
 			slash = .18
 			hit(fight, cam.sword_damage)
 		&"shield_bash":
-			if not arm: return
 			bash = .2
 			hit(fight, randi_range(0, cam.bash_max_damage), cam.bash_stun)
 
@@ -196,7 +212,7 @@ func combat(enemy,dt):
 			guard=0.; say("Guard broken"); audio.play("break"); damage(1)
 			if hp>0: weapons.cue(&"guard_broken",arm)
 		else:
-			shake=.12; say("Blocked"); audio.play("block"); weapons.cue(&"blocked",arm)
+			shake=.12; say("Blocked"); audio.play("block"); weapons.active_hand=guard_hand; weapons.cue(&"blocked",arm)
 	else:
 		damage(enemy.heavy_damage if enemy.heavy else enemy.light_damage)
 func decide_treasure(open:bool):
@@ -216,19 +232,55 @@ func decide_treasure(open:bool):
 		chest.kind="foe"
 		chest.dead=false
 		return
-	var pool=chest.obj.relics.filter(func(x): return not slots.has(x))
-	if pool.is_empty():
-		maximum+=chest.obj.vitality_bonus
-		hp=maximum
-		say("Vitality")
-	else:
-		offer=pool.pick_random()
-		state="relic"
+	offered_weapon = chest.obj.weapon_pool.pick_random() if not chest.obj.weapon_pool.is_empty() else "sword"
+	offer = "Broken Sword" if offered_weapon == "sword" else "Shield"
+	state = "weapon_offer"
+
+func weapon_actions() -> Array:
+	return ["Sword", "Parry"] if offered_weapon == "sword" else ["Shield", "Shield Bash", "Parry"]
+
+func pickup_choice(index: int):
+	match state:
+		"weapon_offer":
+			if index == 0: state = "weapon_hand"
+			else: state = "run"
+		"weapon_hand":
+			if index < 0:
+				state = "weapon_offer"
+				return
+			if index == 1 and not arm: return
+			selected_hand = index
+			selected_actions.clear()
+			assigned_pickup_slots.clear()
+			state = "weapon_actions"
+		"weapon_actions":
+			var available := weapon_actions()
+			if index >= 0 and index < available.size():
+				var action: String = available[index]
+				if action in selected_actions: selected_actions.erase(action)
+				elif selected_actions.size() < 3: selected_actions.append(action)
+			elif index == -1 and not selected_actions.is_empty():
+				# Remove this hand's actions before assigning the chosen new ones.
+				for i in 3:
+					if slot_hands[i] == selected_hand:
+						slots[i] = ""
+						cd[i] = 0.0
+				equipped[selected_hand] = offered_weapon
+				weapons.configure(equipped)
+				state = "weapon_slots"
+		"weapon_slots":
+			if index < 0 or index in assigned_pickup_slots: return
+			assigned_pickup_slots.append(index)
+			slots[index] = selected_actions.pop_front()
+			slot_hands[index] = selected_hand
+			cd[index] = 0.0
+			if selected_actions.is_empty():
+				audio.play("relic")
+				state = "run"
 
 func replace_slot(i):
-	if state!="relic": return
-	if i>=0: slots[i]=offer; cd[i]=0.; audio.play("relic")
-	state="run"
+	pickup_choice(i)
+
 func choices():
 	if state=="run" and jt>=0 and fight<0 and jt+1-p<3: return tiles[jt].paths.keys()
 	return []

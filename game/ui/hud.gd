@@ -79,8 +79,8 @@ func _unhandled_key_input(event):
 func pickup_button(index: int):
 	match run.state:
 		"weapon_offer":
-			if index == 1: return
-			run.pickup_choice(0 if index == 0 else 1)
+			if index > 1: return
+			run.pickup_choice(index)
 		"weapon_hand":
 			if index == 1:
 				run.pickup_choice(-1)
@@ -110,8 +110,7 @@ func refresh_pickup():
 	match run.state:
 		"weapon_offer":
 			$Relic/Instruction.text="Take this weapon?"
-			labels=["Take","","Discard"]
-			disabled[1]=true
+			labels=["Take","Discard",""]
 		"weapon_hand":
 			$Relic/Instruction.text="Replace which hand?"
 			labels=["Left","Back","Right"]
@@ -131,4 +130,12 @@ func refresh_pickup():
 		button.visible=not labels[i].is_empty()
 		button.disabled=disabled[i]
 		button.text=labels[i]
+		var action_button=get_node("Play/Slot%d"%(i+1))
+		button.anchor_left=action_button.anchor_left
+		button.anchor_right=action_button.anchor_right
+		if run.state=="weapon_offer" and i<2:
+			var width: float=$Play/Slot1.anchor_right-$Play/Slot1.anchor_left
+			var gap: float=$Play/Slot2.anchor_left-$Play/Slot1.anchor_right
+			button.anchor_left=(1.0-2.0*width-gap)*0.5+i*(width+gap)
+			button.anchor_right=button.anchor_left+width
 	$WeaponPreview.show_weapon(run.offered_weapon)

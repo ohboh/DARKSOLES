@@ -33,6 +33,9 @@ extends Node3D
 @export var talk_success := "It retreats into the darkness."
 @export var talk_failure := "Your words provoke it. Brace yourself!"
 @export_range(1, 6) var anger_attacks := 3
+@export_range(0.3, 2.0, 0.05) var anger_windup := 0.7
+@export_range(0.1, 2.0, 0.05) var anger_recovery := 0.45
+@export_range(0.3, 2.0, 0.05) var anger_first_delay := 0.8
 var talked := false
 var flurry := 0
 var unparryable := false
@@ -40,7 +43,7 @@ var unparryable := false
 func provoke():
 	flurry = anger_attacks
 	mode = "idle"
-	timer = 0.5
+	timer = anger_first_delay
 
 var hp: int
 var mode := "idle"
@@ -80,7 +83,7 @@ func advance_attack(dt: float, depth: float) -> bool:
 			unparryable = flurry > 0
 			heavy = unparryable or randf()<heavy_chance
 			dur = (heavy_windup if heavy else light_windup)*(1.-minf(.3,depth/500.))*attack_timing_scale
-			if unparryable: dur = 0.35
+			if unparryable: dur = anger_windup
 			timer=dur
 			mode="wind"
 		"wind":
@@ -88,7 +91,7 @@ func advance_attack(dt: float, depth: float) -> bool:
 			timer=randf_range(recovery_range.x,recovery_range.y)*attack_timing_scale
 			if unparryable:
 				flurry -= 1
-				timer = 0.18
+				timer = anger_recovery
 			return true
 		"stun":
 			mode="idle"

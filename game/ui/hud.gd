@@ -35,6 +35,10 @@ func refresh():
 		for i in 3:
 			var slot=get_node("Play/Slot%d"%(i+1))
 			slot.disabled = run.state == "talk_reply"
+			var caption: Label = slot.get_node("Caption")
+			caption.anchor_top = 0.0 if talking else 0.57391304
+			caption.anchor_bottom = 1.0 if talking else 0.95652174
+			caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			if talking:
 				slot.get_node("Caption").text = ["Plead", "Reason", "Threaten"][i]
 				slot.get_node("Icon").visible = false

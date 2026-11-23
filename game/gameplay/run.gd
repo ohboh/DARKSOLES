@@ -230,7 +230,7 @@ func resolve_weapon_strike(action: StringName, hand: int):
 
 func combat(enemy,dt):
 	if not enemy.advance_attack(dt,p): return
-	if parry>0 and not enemy.unparryable:
+	if parry>0:
 		enemy.mode="stun"
 		enemy.timer=cam.parry_stun
 		success=.3

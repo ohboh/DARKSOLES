@@ -1,11 +1,14 @@
 [gd_scene format=4]
 
+[ext_resource type="Script" path="res://game/world/static_mesh_batch.gd" id="batch"]
 [ext_resource type="ShaderMaterial" path="res://game/world/materials/masonry.tres" id="stone"]
 [ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Pillar.fbx" id="model_Pillar"]
 [ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Arch.fbx" id="model_Arch"]
 
 
 [node name="Arch" type="Node3D" unique_id=819407834]
+script = ExtResource("batch")
+batch_sources = Array[NodePath]([NodePath("LeftPillar/MeshInstance3D/Cylinder_019"), NodePath("RightPillar/MeshInstance3D/Cylinder_019")])
 
 [node name="LeftPillar" type="Node3D" parent="." unique_id=1432078451]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.25, 0)

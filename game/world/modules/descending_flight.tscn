@@ -1,4 +1,5 @@
 [gd_scene format=3]
+[ext_resource type="Script" path="res://game/world/static_mesh_batch.gd" id="batch"]
 [ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="ink"]
 [ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/TEX_Stair_02.png" id="tex"]
 [ext_resource type="PackedScene" path="res://game/world/modules/sconce.tscn" id="sconce"]
@@ -8,6 +9,8 @@ shader_parameter/atlas = ExtResource("tex")
 [sub_resource type="BoxMesh" id="tread"]
 size = Vector3(3.32,0.15,0.376)
 [node name="DescendingFlight" type="Node3D"]
+script = ExtResource("batch")
+batch_sources = Array[NodePath]([NodePath("Tread1"), NodePath("Tread2"), NodePath("Tread3"), NodePath("Tread4"), NodePath("Tread5"), NodePath("Tread6"), NodePath("Tread7"), NodePath("Tread8")])
 [node name="LowerLandingLight" parent="." instance=ExtResource("sconce")]
 position = Vector3(-1.50,0.14,-1.30)
 rotation = Vector3(0,3.141593,0)

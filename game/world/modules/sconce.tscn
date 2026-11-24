@@ -1,5 +1,6 @@
 [gd_scene format=4]
 
+[ext_resource type="Script" path="res://game/world/static_mesh_batch.gd" id="batch"]
 [ext_resource type="PackedScene" path="res://art/PSX_Dungeon/PSX_Dungeon/Models/Candle_01.fbx" id="model_Candle_01"]
 [ext_resource type="Shader" path="res://game/rendering/shaders/ink.gdshader" id="1_tvwld"]
 [ext_resource type="Texture2D" path="res://art/PSX_Dungeon/PSX_Dungeon/Textures/Dungeon_Map.png" id="2_4nh1b"]
@@ -51,6 +52,8 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
 [node name="Sconce" type="Node3D" unique_id=626158572]
+script = ExtResource("batch")
+batch_sources = Array[NodePath]([NodePath("DripA"), NodePath("DripB"), NodePath("DripC")])
 
 [node name="Wax" type="Node3D" parent="." unique_id=2107403742]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)

@@ -24,8 +24,23 @@ extends Node3D
 ## Plead, Reason, Threaten: chance to peacefully end this encounter.
 @export var talk_chances := Vector3(0.15, 0.0, 0.35)
 @export var talk_greeting := "It watches you without a word."
-@export var talk_success := "It retreats into the darkness."
-@export var talk_failure := "Your words provoke it. Brace yourself!"
+## Response lists follow the action bar order: Plead, Reason, Threaten.
+@export var peaceful_replies := PackedStringArray(["Your lowered hands quiet it. It moves aside.", "It studies you, then steps aside.", "It shrinks back from your voice."])
+@export var angry_replies := PackedStringArray(["It takes your trembling for weakness.", "It waits for your voice to stop. Then it lunges.", "It answers your challenge with a lunge."])
+@export var wounded_greeting := "It flinches when you raise your empty hand."
+@export var wounded_chances := Vector3(0.05, 0.0, 0.55)
+@export var wounded_peaceful_replies := PackedStringArray(["It waits until your weapon drops, then slips past.", "It watches your blade as it withdraws.", "One glance at your weapon sends it scrambling aside."])
+@export var wounded_angry_replies := PackedStringArray(["Your plea comes too late. It bears down on you.", "Its eyes follow the weapon that struck it.", "Wounded and cornered, it springs at you."])
+var was_attacked := false
+
+func talk_reply(choice: int, spared: bool) -> String:
+	var replies := peaceful_replies if spared else angry_replies
+	if was_attacked:
+		replies = wounded_peaceful_replies if spared else wounded_angry_replies
+	if choice < replies.size() and not replies[choice].is_empty():
+		return replies[choice]
+	return "It steps aside." if spared else "It lunges."
+
 @export_range(1, 6) var anger_attacks := 3
 @export_range(0.3, 2.0, 0.05) var anger_windup := 0.7
 @export_range(0.1, 2.0, 0.05) var anger_recovery := 0.45
@@ -53,10 +68,14 @@ func _ready():
 	start_encounter(0.)
 
 func start_encounter(depth: float):
+	was_attacked = false
+	talked = false
 	hp = maxi(minimum_health,base_health + mini(3,int(depth/30.)))
 	timer = first_attack_delay * attack_timing_scale
 
 func take_hit(amount: int, stun: float):
+	if amount > 0 or stun > 0:
+		was_attacked = true
 	hit = .15
 	hp -= amount * (stun_damage_multiplier if mode=="stun" else 1)
 	if hp>0 and stun>0:

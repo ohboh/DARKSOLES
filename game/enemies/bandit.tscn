@@ -13,8 +13,12 @@ shader_parameter/illustration = ExtResource("art")
 [node name="Bandit" instance=ExtResource("base")]
 talk_chances = Vector3(0.45, 0.8, 0.1)
 talk_greeting = "Steel or words, traveler? Choose carefully."
-talk_success = "Keep walking. I never saw you."
-talk_failure = "You take me for a fool?"
+peaceful_replies = PackedStringArray("Keep your head down. My mates are less forgiving.", "Aye. A fight brings the dead running. Get going.", "Easy. There's room for two on this road.")
+angry_replies = PackedStringArray("Save your breath. You'll need it.", "Funny how every traveler knows what's best for me.", "In my own passage? Draw.")
+wounded_greeting = "Now you want to talk? You drew blood."
+wounded_chances = Vector3(0.15, 0.35, 0.55)
+wounded_peaceful_replies = PackedStringArray("Put that blade away. Then walk.", "You're right. I'll need this hand tomorrow.", "Fine. You've made your point. Pass.")
+wounded_angry_replies = PackedStringArray("Mercy? Look what you did to my hand.", "You had time for words before you swung.", "One lucky hit and you think I'm beaten?")
 impact_material = "flesh"
 base_health = 2
 heavy_chance = 0.3

@@ -179,15 +179,17 @@ func begin_talk():
 		return
 	if state != "run" or fight < 0 or tiles[fight].obj.talked: return
 	talk_enemy = fight
-	dialogue = tiles[fight].obj.talk_greeting
+	var enemy = tiles[fight].obj
+	dialogue = enemy.wounded_greeting if enemy.was_attacked else enemy.talk_greeting
 	dialogue_age = 0.0
 	state = "talk"
 
 func talk_choice(index: int):
 	var enemy = tiles[talk_enemy].obj
 	enemy.talked = true
-	talk_spared = randf() < enemy.talk_chances[index]
-	dialogue = enemy.talk_success if talk_spared else enemy.talk_failure
+	var chances: Vector3 = enemy.wounded_chances if enemy.was_attacked else enemy.talk_chances
+	talk_spared = randf() < chances[index]
+	dialogue = enemy.talk_reply(index, talk_spared)
 	dialogue_age = 0.0
 	dialogue_wait = dialogue.length() / 30.0 + 1.5
 	state = "talk_reply"

@@ -1,11 +1,11 @@
 extends Node3D
 signal strike(action: StringName, hand: int)
 @export var steps_per_tile := 1.6
-@onready var rigs = [$Right, $Left]
+@onready var rigs = [$RightHand, $LeftHand]
 var equipped := ["sword", "shield"]
 var active_hand := 0
 var intro_stage: int:
-	get: return maxi($Right.intro_stage, $Left.intro_stage)
+	get: return maxi($RightHand.intro_stage, $LeftHand.intro_stage)
 
 func _ready():
 	for hand in 2:

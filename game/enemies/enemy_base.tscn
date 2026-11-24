@@ -8,6 +8,7 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_qm7ts")
+shader_parameter/illustration = ExtResource("2_sjdbi")
 
 [sub_resource type="QuadMesh" id="QuadMesh_5fuh2"]
 size = Vector2(2.4, 2.4)
@@ -23,7 +24,6 @@ fill_to = Vector2(1, 0.5)
 
 [node name="Enemy" type="Node3D" unique_id=1918114722]
 script = ExtResource("script")
-illustration = ExtResource("2_sjdbi")
 
 [node name="Illustration" type="MeshInstance3D" parent="." unique_id=718635760]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.106, 0)

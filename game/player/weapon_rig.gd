@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 signal strike(action: StringName)
 @export_group("Framing")
@@ -27,7 +28,7 @@ var shield_outline: ShaderMaterial
 @export var shield_bash: StringName = &"Shield_Bash"
 @export var shield_parry: StringName = &"Shield_Parry"
 var players: Array[AnimationPlayer] = []
-var weapon_kind := "sword"
+@export_enum("sword", "shield") var weapon_kind := "sword"
 var next_slash := 0
 var intro_stage := 0
 @export var sword_draw: StringName = &"Sword_Draw"
@@ -36,11 +37,21 @@ func _ready():
 	var rig = $Rig
 	var camera: Camera3D = rig.get_node("Camera")
 	rig.transform = camera.transform.affine_inverse()
-	var gameplay_camera := get_viewport().get_camera_3d()
+	var gameplay_camera := get_parent().get_parent() as Camera3D
+	if not gameplay_camera and not Engine.is_editor_hint():
+		gameplay_camera = get_viewport().get_camera_3d()
 	if gameplay_camera:
 		var factor := tan(deg_to_rad(gameplay_camera.fov)*0.5) / tan(deg_to_rad(camera.fov)*0.5)
 		rig.transform = Transform3D(Basis.from_scale(Vector3(factor, factor, 1)), Vector3.ZERO) * rig.transform
 	rig.position += view_offset
+	if Engine.is_editor_hint():
+		rig.get_node("Sword_armature").visible = weapon_kind == "sword"
+		rig.get_node("Shield_armature").visible = weapon_kind == "shield"
+		var preview: AnimationPlayer = rig.get_node("AnimationPlayer")
+		preview.play("Sword_Idle" if weapon_kind == "sword" else "Shield_Idle")
+		preview.seek(0, true)
+		preview.pause()
+		return
 	camera.current = false
 	camera.queue_free()
 	var source: AnimationPlayer = rig.get_node("AnimationPlayer")

@@ -3,8 +3,17 @@
 [ext_resource type="PackedScene" path="res://game/enemies/enemy_base.tscn" id="base"]
 [ext_resource type="Texture2D" path="res://art/sprites/Unidentified Ver.20/Weird Humanoid.jpg" id="art"]
 
+[ext_resource type="Shader" path="res://game/rendering/shaders/illustration.gdshader" id="ink"]
+
+[sub_resource type="ShaderMaterial" id="EnemyInk"]
+resource_local_to_scene = true
+shader = ExtResource("ink")
+shader_parameter/illustration = ExtResource("art")
+
 [node name="Undead" instance=ExtResource("base")]
 impact_material = "flesh"
-illustration = ExtResource("art")
 base_health = 3
 heavy_chance = 0.55
+
+[node name="Illustration" parent="." index="0"]
+material_override = SubResource("EnemyInk")

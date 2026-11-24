@@ -1,12 +1,6 @@
 @tool
 extends Node3D
 
-@export_group("Appearance")
-@export var illustration: Texture2D:
-	set(value):
-		illustration = value
-		if is_node_ready():
-			apply_illustration()
 @export_group("Hit audio")
 @export_enum("flesh", "bone", "slime", "wood", "metal", "shield", "spectral") var impact_material := "flesh"
 ## Optional sound for this enemy, overriding the material preset.
@@ -35,7 +29,7 @@ extends Node3D
 @export_range(1, 6) var anger_attacks := 3
 @export_range(0.3, 2.0, 0.05) var anger_windup := 0.7
 @export_range(0.1, 2.0, 0.05) var anger_recovery := 0.45
-@export_range(0.3, 2.0, 0.05) var anger_first_delay := 0.8
+@export_range(0.3, 2.0, 0.05) var anger_first_delay := 0.25
 var talked := false
 var flurry := 0
 var flurry_attack := false
@@ -56,12 +50,7 @@ var hit := 0.
 @onready var rest_pose: Transform3D = sprite.transform
 
 func _ready():
-	apply_illustration()
 	start_encounter(0.)
-
-func apply_illustration():
-	if illustration:
-		$Illustration.material_override.set_shader_parameter("illustration", illustration)
 
 func start_encounter(depth: float):
 	hp = maxi(minimum_health,base_health + mini(3,int(depth/30.)))

@@ -55,7 +55,7 @@ func suite():
 	first.advance_attack(5.,0.)
 	verify(first.hp==9 and first.heavy,"Inspector overrides drive enemy combat")
 	verify(first.sprite.material_override!=other.sprite.material_override,"Per-instance shader isolation")
-	verify(other.illustration.resource_path.ends_with("Wraith.jpg"),"Inherited variant artwork")
+	verify(other.get_node("Illustration").material_override.get_shader_parameter("illustration").resource_path.ends_with("Wraith.jpg"),"Inherited variant artwork")
 	print("Scene, inheritance and native touch checks: ",failures," failures")
 	quit(int(failures>0))
 

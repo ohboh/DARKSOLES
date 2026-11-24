@@ -3,5 +3,6 @@
 [ext_resource type="PackedScene" path="res://game/player/weapon_rig.tscn" id="rig"]
 [node name="AnimatedWeapons" type="Node3D"]
 script = ExtResource("script")
-[node name="Right" parent="." instance=ExtResource("rig")]
-[node name="Left" parent="." instance=ExtResource("rig")]
+[node name="RightHand" parent="." instance=ExtResource("rig")]
+[node name="LeftHand" parent="." instance=ExtResource("rig")]
+weapon_kind = "shield"

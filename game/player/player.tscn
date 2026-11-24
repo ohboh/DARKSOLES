@@ -11,3 +11,5 @@ script = ExtResource("controller")
 hit_stop_duration = 0.0
 
 [node name="AnimatedWeapons" parent="." unique_id=439667273 instance=ExtResource("weapons")]
+
+[editable path="AnimatedWeapons"]

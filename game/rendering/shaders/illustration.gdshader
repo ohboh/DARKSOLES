@@ -3,6 +3,7 @@ render_mode unshaded, cull_disabled;
 #include "res://game/rendering/shaders/torchlight.gdshaderinc"
 uniform sampler2D illustration : source_color, filter_linear_mipmap;
 uniform float heavy_rim = 0.0;
+uniform float retreat_fade = 0.0;
 uniform float hit_flash = 0.0;
 uniform float outline_width : hint_range(1.,10.) = 4.;
 varying vec3 point;
@@ -12,6 +13,11 @@ void fragment() {
 	float value = dot(ink, vec3(0.30, 0.59, 0.11));
 	float light=illumination(point,CAMERA_POSITION_WORLD,TIME);
 	vec2 radius_uv=min(fwidth(UV)*outline_width*VIEWPORT_SIZE.x/540.,vec2(.025));
+	if (retreat_fade > 0.0) {
+		vec2 cell = floor(FRAGCOORD.xy / max(1.0, floor(VIEWPORT_SIZE.x / 540.0 + 0.5)));
+		float grain = fract(52.9829189 * fract(dot(cell, vec2(0.06711056, 0.00583715))));
+		if (grain < retreat_fade) { discard; }
+	}
 	if (value < .048) {
 		// Expand the keyed silhouette outward, preserving the illustrated bones and fingers.
 		bool border=false;

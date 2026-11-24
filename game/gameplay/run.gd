@@ -171,6 +171,7 @@ var dialogue := ""
 var dialogue_age := 0.0
 var dialogue_wait := 0.0
 var talk_enemy := -1
+const RETREAT_FADE_SECONDS := 0.7
 var talk_spared := false
 
 func begin_talk():
@@ -376,6 +377,10 @@ func _process(delta):
 		dialogue_age += delta
 		if state == "talk_reply":
 			dialogue_wait -= delta
+			if talk_spared and dialogue_wait < RETREAT_FADE_SECONDS:
+				var retreating = tiles[talk_enemy].obj
+				retreating.glow.hide()
+				retreating.sprite.material_override.set_shader_parameter("retreat_fade", clampf(1.0 - dialogue_wait / RETREAT_FADE_SECONDS, 0.0, 1.0))
 			if dialogue_wait <= 0.0:
 				var enemy = tiles[talk_enemy].obj
 				if talk_spared:

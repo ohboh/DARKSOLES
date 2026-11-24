@@ -9,7 +9,16 @@ fov = 76.0
 near = 0.035
 script = ExtResource("controller")
 hit_stop_duration = 0.0
+first_action = "Shield"
+second_action = "Slash"
+third_action = "Shield Parry"
 
 [node name="AnimatedWeapons" parent="." unique_id=439667273 instance=ExtResource("weapons")]
+
+[node name="Right" parent="AnimatedWeapons" index="0"]
+slash_impact_times = PackedFloat32Array(0.2, 0.2, 0.2)
+
+[node name="Left" parent="AnimatedWeapons" index="1"]
+slash_impact_times = PackedFloat32Array(0.2, 0.2, 0.2)
 
 [editable path="AnimatedWeapons"]

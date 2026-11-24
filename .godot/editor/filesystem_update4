@@ -20,3 +20,4 @@ res://game/world/modules/descending_flight.tscn
 res://game/world/modules/sconce.tscn
 res://game/rendering/shaders/palette.gdshader
 res://game/gameplay/run.gd
+res://game/rendering/shaders/illustration.gdshader

@@ -32,3 +32,5 @@ mono_crash.*.json
 .godot/editor/filesystem_update4
 .godot/editor/project_metadata.cfg
 .godot/editor/script_editor_cache.cfg
+.godot/editor/editor_layout.cfg
+.godot/editor/filesystem_update4

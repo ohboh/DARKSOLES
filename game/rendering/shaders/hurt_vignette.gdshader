@@ -1,4 +1,5 @@
 shader_type canvas_item;
+#include "res://game/rendering/shaders/dither_grid.gdshaderinc"
 render_mode unshaded;
 
 // The uncovered center stays clear even at the peak of a critical-health beat.
@@ -19,7 +20,7 @@ void fragment() {
 	float edge = smoothstep(inner, 1.19, radius);
 	float coverage = edge * min(0.97, strength * (0.36 + 0.30 * beat) + impact * 0.22);
 	float blood = edge * min(coverage, peak_density * injury * (0.30 + 0.70 * beat) + impact * 0.28);
-	ivec2 p = ivec2(mod(floor(FRAGCOORD.xy), 4.0));
+	ivec2 p = ivec2(mod(dither_cell(FRAGCOORD.xy, SCREEN_PIXEL_SIZE), 4.0));
 	float threshold = (BAYER[p.y * 4 + p.x] + 0.5) / 16.0;
 	if (threshold >= coverage) { discard; }
 	COLOR = vec4(threshold < blood ? vec3(0.36,0.,0.) : vec3(0.), 1.);

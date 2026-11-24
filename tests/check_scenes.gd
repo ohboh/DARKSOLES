@@ -36,14 +36,14 @@ func suite():
 			if game.state=="treasure": break
 		await process_frame
 		verify(game.ui.get_node("Treasure").visible,"Chest panel")
-		await tap(game.ui.get_node("Treasure/"+operation))
+		await tap(game.ui.get_node("Treasure/BottomRow/"+operation))
 		game.ui.refresh()
 		if operation=="Leave":
 			verify(game.state=="run","Native Leave touch")
 		else:
 			verify(game.state=="relic","Native Open touch")
 			var offer=game.offer
-			await tap(game.ui.get_node("Relic/Slot2"))
+			await tap(game.ui.get_node("Relic/BottomRow/Slot2"))
 			verify(game.slots[1]==offer and game.state=="run","Native relic replacement")
 	var first=game.world.skeleton_scene.instantiate()
 	var other=game.world.wraith_scene.instantiate()

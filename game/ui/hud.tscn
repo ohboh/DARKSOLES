@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://game/ui/action_icon.gd" id="icon"]
 [ext_resource type="FontFile" path="res://art/fonts/Beholden-Regular.ttf" id="font"]
 [ext_resource type="Script" path="res://game/ui/weapon_preview.gd" id="preview"]
+[ext_resource type="PackedScene" path="res://game/ui/bottom_row.tscn" id="row"]
+[ext_resource type="PackedScene" path="res://game/ui/action_button.tscn" id="action_button"]
 [sub_resource type="StyleBoxEmpty" id="empty"]
 [sub_resource type="StyleBoxFlat" id="button"]
 bg_color = Color(0,0,0,1)
@@ -207,40 +209,24 @@ theme_override_font_sizes/font_size = 22
 theme_override_constants/outline_size = 4
 theme_override_colors/font_outline_color = Color(0,0,0,1)
 
-[node name="Slot1" type="Button" parent="Relic"]
+[node name="BottomRow" parent="Relic" instance=ExtResource("row")]
+
+[node name="Slot1" parent="Relic/BottomRow" instance=ExtResource("action_button")]
 clip_text = true
 theme_override_font_sizes/font_size = 20
-anchor_left = 0.02962963
-anchor_top = 0.87777778
-anchor_right = 0.33518519
-anchor_bottom = 0.97606838
 text = "Replace"
-action_mode = 0
-focus_mode = 0
 
-[node name="Slot2" type="Button" parent="Relic"]
+[node name="Slot2" parent="Relic/BottomRow" instance=ExtResource("action_button")]
 clip_text = true
 theme_override_font_sizes/font_size = 20
-anchor_left = 0.34629630
-anchor_top = 0.87777778
-anchor_right = 0.65185185
-anchor_bottom = 0.97606838
 text = "Replace"
-action_mode = 0
-focus_mode = 0
 
-[node name="Slot3" type="Button" parent="Relic"]
+[node name="Slot3" parent="Relic/BottomRow" instance=ExtResource("action_button")]
 clip_text = true
 theme_override_font_sizes/font_size = 20
-anchor_left = 0.66296296
-anchor_top = 0.87777778
-anchor_right = 0.96851852
-anchor_bottom = 0.97606838
 text = "Replace"
-action_mode = 0
-focus_mode = 0
 
-[node name="Leave" type="Button" parent="Relic"]
+[node name="Leave" parent="Relic" instance=ExtResource("action_button")]
 anchor_left = 0.35
 anchor_top = 0.8
 anchor_right = 0.65
@@ -275,23 +261,13 @@ theme_override_font_sizes/font_size = 26
 theme_override_constants/outline_size = 4
 theme_override_colors/font_outline_color = Color(0,0,0,1)
 
-[node name="Open" type="Button" parent="Treasure"]
-anchor_left = 0.02962963
-anchor_top = 0.87777778
-anchor_right = 0.49351852
-anchor_bottom = 0.97606838
-text = "Open"
-action_mode = 0
-focus_mode = 0
+[node name="BottomRow" parent="Treasure" instance=ExtResource("row")]
 
-[node name="Leave" type="Button" parent="Treasure"]
-anchor_left = 0.50462963
-anchor_top = 0.87777778
-anchor_right = 0.96851852
-anchor_bottom = 0.97606838
+[node name="Open" parent="Treasure/BottomRow" instance=ExtResource("action_button")]
+text = "Open"
+
+[node name="Leave" parent="Treasure/BottomRow" instance=ExtResource("action_button")]
 text = "Leave it"
-action_mode = 0
-focus_mode = 0
 
 [node name="Distance" type="Label" parent="Play"]
 anchor_left = 0.74259259
@@ -328,16 +304,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 29
 
-[node name="Slot1" type="Button" parent="Play"]
-anchor_left = 0.02962963
-anchor_top = 0.87777778
-anchor_right = 0.33518519
-anchor_bottom = 0.97606838
-text = ""
-action_mode = 0
-focus_mode = 0
+[node name="BottomRow" parent="Play" instance=ExtResource("row")]
 
-[node name="Cooldown" type="ColorRect" parent="Play/Slot1"]
+[node name="Slot1" parent="Play/BottomRow" instance=ExtResource("action_button")]
+text = ""
+
+[node name="Cooldown" type="ColorRect" parent="Play/BottomRow/Slot1"]
 anchor_left = 0.00000000
 anchor_top = 0.00000000
 anchor_right = 1.00000000
@@ -346,7 +318,7 @@ mouse_filter = 2
 color = Color(0.25,0.11,0.10,0.85)
 visible = false
 
-[node name="Icon" type="Control" parent="Play/Slot1"]
+[node name="Icon" type="Control" parent="Play/BottomRow/Slot1"]
 anchor_left = 0.00000000
 anchor_top = 0.06956522
 anchor_right = 1.00000000
@@ -354,7 +326,7 @@ anchor_bottom = 0.59130435
 mouse_filter = 2
 script = ExtResource("icon")
 
-[node name="Caption" type="Label" parent="Play/Slot1"]
+[node name="Caption" type="Label" parent="Play/BottomRow/Slot1"]
 anchor_left = 0.00000000
 anchor_top = 0.57391304
 anchor_right = 1.00000000
@@ -364,16 +336,10 @@ text = "Sword"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot2" type="Button" parent="Play"]
-anchor_left = 0.34629630
-anchor_top = 0.87777778
-anchor_right = 0.65185185
-anchor_bottom = 0.97606838
+[node name="Slot2" parent="Play/BottomRow" instance=ExtResource("action_button")]
 text = ""
-action_mode = 0
-focus_mode = 0
 
-[node name="Cooldown" type="ColorRect" parent="Play/Slot2"]
+[node name="Cooldown" type="ColorRect" parent="Play/BottomRow/Slot2"]
 anchor_left = 0.00000000
 anchor_top = 0.00000000
 anchor_right = 1.00000000
@@ -382,7 +348,7 @@ mouse_filter = 2
 color = Color(0.25,0.11,0.10,0.85)
 visible = false
 
-[node name="Icon" type="Control" parent="Play/Slot2"]
+[node name="Icon" type="Control" parent="Play/BottomRow/Slot2"]
 anchor_left = 0.00000000
 anchor_top = 0.06956522
 anchor_right = 1.00000000
@@ -390,7 +356,7 @@ anchor_bottom = 0.59130435
 mouse_filter = 2
 script = ExtResource("icon")
 
-[node name="Caption" type="Label" parent="Play/Slot2"]
+[node name="Caption" type="Label" parent="Play/BottomRow/Slot2"]
 anchor_left = 0.00000000
 anchor_top = 0.57391304
 anchor_right = 1.00000000
@@ -400,16 +366,10 @@ text = "Shield"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot3" type="Button" parent="Play"]
-anchor_left = 0.66296296
-anchor_top = 0.87777778
-anchor_right = 0.96851852
-anchor_bottom = 0.97606838
+[node name="Slot3" parent="Play/BottomRow" instance=ExtResource("action_button")]
 text = ""
-action_mode = 0
-focus_mode = 0
 
-[node name="Cooldown" type="ColorRect" parent="Play/Slot3"]
+[node name="Cooldown" type="ColorRect" parent="Play/BottomRow/Slot3"]
 anchor_left = 0.00000000
 anchor_top = 0.00000000
 anchor_right = 1.00000000
@@ -418,7 +378,7 @@ mouse_filter = 2
 color = Color(0.25,0.11,0.10,0.85)
 visible = false
 
-[node name="Icon" type="Control" parent="Play/Slot3"]
+[node name="Icon" type="Control" parent="Play/BottomRow/Slot3"]
 anchor_left = 0.00000000
 anchor_top = 0.06956522
 anchor_right = 1.00000000
@@ -426,7 +386,7 @@ anchor_bottom = 0.59130435
 mouse_filter = 2
 script = ExtResource("icon")
 
-[node name="Caption" type="Label" parent="Play/Slot3"]
+[node name="Caption" type="Label" parent="Play/BottomRow/Slot3"]
 anchor_left = 0.00000000
 anchor_top = 0.57391304
 anchor_right = 1.00000000
@@ -447,7 +407,7 @@ mouse_filter = 2
 visible = false
 script = ExtResource("preview")
 
-[node name="Talk" type="Button" parent="Play"]
+[node name="Talk" parent="Play" instance=ExtResource("action_button")]
 anchor_left = 0.35
 anchor_right = 0.65
 anchor_top = 0.8

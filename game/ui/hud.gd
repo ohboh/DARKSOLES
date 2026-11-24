@@ -8,12 +8,12 @@ func bind(controller):
 	$Play/Talk.pressed.connect(run.begin_talk)
 	$Title/Descend.pressed.connect(run.request_run)
 	$Death/Restart.pressed.connect(run.request_run)
-	$Treasure/Open.pressed.connect(run.decide_treasure.bind(true))
-	$Treasure/Leave.pressed.connect(run.decide_treasure.bind(false))
+	$Treasure/BottomRow/Open.pressed.connect(run.decide_treasure.bind(true))
+	$Treasure/BottomRow/Leave.pressed.connect(run.decide_treasure.bind(false))
 	$Relic/Leave.pressed.connect(run.replace_slot.bind(-1))
 	for i in 3:
-		get_node("Relic/Slot%d"%(i+1)).pressed.connect(pickup_button.bind(i))
-		get_node("Play/Slot%d"%(i+1)).pressed.connect(run.act.bind(i))
+		get_node("Relic/BottomRow/Slot%d"%(i+1)).pressed.connect(pickup_button.bind(i))
+		get_node("Play/BottomRow/Slot%d"%(i+1)).pressed.connect(run.act.bind(i))
 	refresh()
 
 func refresh():
@@ -33,7 +33,7 @@ func refresh():
 		$Play/Distance.text="%d m"%int(run.p*2)
 		$Play/Notice.text=run.notice if run.notice_t>0 else ""
 		for i in 3:
-			var slot=get_node("Play/Slot%d"%(i+1))
+			var slot=get_node("Play/BottomRow/Slot%d"%(i+1))
 			slot.disabled = run.state == "talk_reply"
 			var caption: Label = slot.get_node("Caption")
 			caption.anchor_top = 0.0 if talking else 0.57391304
@@ -79,7 +79,7 @@ func _gui_input(event):
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
 		if not event.pressed: return
 		if event is InputEventMouseButton and event.button_index!=MOUSE_BUTTON_LEFT: return
-		if event.position.y/size.y<1027./1170.:
+		if event.position.y < $Play/BottomRow.position.y:
 			run.choose(clampi(int(event.position.x/size.x*3.),0,2)-1)
 
 func _unhandled_key_input(event):
@@ -140,21 +140,9 @@ func refresh_pickup():
 			$Relic/Instruction.text="Place "+run.selected_actions[0]+" in a slot"
 			for action in run.slots: labels.append(action if not action.is_empty() else "Empty")
 			for i in run.assigned_pickup_slots: disabled[i]=true
-	var count := 0
-	for label in labels:
-		if not label.is_empty(): count+=1
-	var left: float=$Play/Slot1.anchor_left
-	var right: float=$Play/Slot3.anchor_right
-	var gap: float=$Play/Slot2.anchor_left-$Play/Slot1.anchor_right
-	var width: float=(right-left-gap*(count-1))/count
-	var position_index := 0
 	for i in 3:
-		var button=get_node("Relic/Slot%d"%(i+1))
+		var button=get_node("Relic/BottomRow/Slot%d"%(i+1))
 		button.visible=not labels[i].is_empty()
 		button.disabled=disabled[i]
 		button.text=labels[i]
-		if button.visible:
-			button.anchor_left=left+position_index*(width+gap)
-			button.anchor_right=button.anchor_left+width
-			position_index+=1
 	$WeaponPreview.show_weapon(run.offered_weapon)

@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ckcul6imal3dd"]
+
+[ext_resource type="Shader" uid="uid://by27q5fh0goyp" path="res://game/rendering/shaders/contour.gdshader" id="1_4cl1o"]
+[ext_resource type="Shader" uid="uid://fmvtto6b4yru" path="res://game/rendering/shaders/ink.gdshader" id="2_7nsng"]
+[ext_resource type="Texture2D" uid="uid://m3cyruohqcdl" path="res://art/player/sword/EspadaRef.png" id="3_45o3p"]
+[ext_resource type="PackedScene" uid="uid://cqi6o5y8qy3f8" path="res://art/player/sword/Espada PS1.fbx" id="model_Sword"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gva2q"]
+render_priority = 0
+shader = ExtResource("1_4cl1o")
+shader_parameter/outline_width = 7.0
+shader_parameter/view_depth_scale = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbvhi"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_gva2q")
+shader = ExtResource("2_7nsng")
+shader_parameter/atlas = ExtResource("3_45o3p")
+shader_parameter/pigment = Color(1, 1, 1, 1)
+shader_parameter/stone = 0.0
+shader_parameter/phase = 0.0
+
+[node name="Sword" type="Node3D" unique_id=1078307713]
+
+[node name="Blade" type="Node3D" parent="." unique_id=730141174]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+
+[node name="MeshInstance3D" parent="Blade" unique_id=400959885 instance=ExtResource("model_Sword")]
+transform = Transform3D(38.500256, 0, 0, 0, 76.2427, 0, 0, 0, 43.461445, 0, 0, -0.33521724)
+
+[node name="Espada" parent="Blade/MeshInstance3D" index="0" unique_id=560407492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_mbvhi")
+
+[editable path="Blade/MeshInstance3D"]

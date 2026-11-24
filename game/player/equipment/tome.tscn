@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dedh2g2n4t7dy"]
+
+[ext_resource type="Shader" uid="uid://by27q5fh0goyp" path="res://game/rendering/shaders/contour.gdshader" id="1_21q4u"]
+[ext_resource type="Shader" uid="uid://fmvtto6b4yru" path="res://game/rendering/shaders/ink.gdshader" id="2_eo151"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gva2q"]
+render_priority = 0
+shader = ExtResource("1_21q4u")
+shader_parameter/outline_width = 7.0
+shader_parameter/view_depth_scale = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7t77i"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_gva2q")
+shader = ExtResource("2_eo151")
+shader_parameter/pigment = Color(0.87058824, 0.72156864, 0.5294118, 1)
+shader_parameter/stone = 0.0
+shader_parameter/phase = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_erih6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bwp7e"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_gva2q")
+shader = ExtResource("2_eo151")
+shader_parameter/pigment = Color(1, 0, 0, 1)
+shader_parameter/stone = 0.0
+shader_parameter/phase = 0.0
+
+[node name="Tome" type="Node3D" unique_id=1268534872]
+
+[node name="Cover" type="MeshInstance3D" parent="." unique_id=512823287]
+transform = Transform3D(0.19, 0, 0, 0, 0.24, 0, 0, 0, 0.04, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_7t77i")
+mesh = SubResource("BoxMesh_erih6")
+
+[node name="Sigil" type="MeshInstance3D" parent="." unique_id=1285667936]
+transform = Transform3D(0.018, 0, 0, 0, 0.17, 0, 0, 0, 0.012, 0, 0, 0.025)
+material_override = SubResource("ShaderMaterial_bwp7e")
+mesh = SubResource("BoxMesh_erih6")
